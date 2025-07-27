@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./styles.css";
-import type { Seat } from "./types";
+import type { CustomStyles, Seat } from "./types";
 
 type Props = {
   seats: Record<string, Seat[]>;
@@ -9,6 +9,8 @@ type Props = {
   reservedSeats?: string[];
   onSelect?: (seat: Seat) => void;
   onUnselect?: (seat: Seat) => void;
+  showRowNumbers?: boolean;
+  styles?: CustomStyles;
 };
 
 const SEAT_STATUS: Record<string, string> = {
@@ -26,8 +28,22 @@ export const TheaterSeatSelect: React.FC<Props> = ({
   reservedSeats = [],
   onSelect = () => {},
   onUnselect = () => {},
+  showRowNumbers = true,
+  styles = {},
 }) => {
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
+
+  const {
+    rowGap = "10px",
+    columnGap = "6px",
+    headerStyles = {},
+    seatStyles = {},
+    availableStyles = {},
+    bookedStyles = {},
+    disabledStyles = {},
+    reservedStyles = {},
+    selectedStyles = {},
+  } = styles;
 
   const handleSeatClick = (seat: Seat) => {
     if (
@@ -56,33 +72,83 @@ export const TheaterSeatSelect: React.FC<Props> = ({
     return SEAT_STATUS.AVAILABLE;
   };
 
+  const getStatusStyle = (status: string) => {
+    // const base = {
+    //   padding: 0,
+    //   width: seat?.width || "32px",
+    //   height: seat?.height || "32px",
+    //   fontSize: "14px",
+    // };
+
+    const statusStyles: Record<string, React.CSSProperties> = {
+      [SEAT_STATUS.SELECTED]: { ...seatStyles, ...selectedStyles },
+      [SEAT_STATUS.DISABLED]: { ...seatStyles, ...disabledStyles },
+      [SEAT_STATUS.BOOKED]: { ...seatStyles, ...bookedStyles },
+      [SEAT_STATUS.RESERVED]: { ...seatStyles, ...reservedStyles },
+      [SEAT_STATUS.AVAILABLE]: { ...seatStyles, ...availableStyles },
+    };
+
+    return statusStyles[status];
+  };
+
   return (
-    <div className="seat-grid">
+    <div className="seat-grid" style={{ gap: rowGap }}>
       {Object.entries(seats).map(([rowLabel, rowSeats]) => {
-        if(rowSeats.length === 0){
-            return <div className="seat-row-label-wrapper"><span>{rowLabel}</span></div>
+        if (rowSeats.length === 0) {
+          return (
+            <div
+              className="seat-row-label-wrapper"
+              style={{ ...headerStyles }}
+              key={rowLabel}
+            >
+              {rowLabel}
+            </div>
+          );
         }
-        
-        return ( 
-        <div key={rowLabel} className="seat-row">
-          {rowSeats.map((seat) => {
-            if(seat?.isBlank){
-                return <div className='blackSeat'/>
-            }
-            const status = getSeatStatus(seat?.id);
-            return (
-              <button
-                key={seat?.id}
-                className={`seat ${status}`}
-                onClick={() => handleSeatClick(seat)}
-                disabled={[SEAT_STATUS.DISABLED, SEAT_STATUS.RESERVED]?.includes(seat.id)}
+
+        return (
+          <div className="seat-row" key={rowLabel} style={{ gap: columnGap }}>
+            {showRowNumbers && (
+              <span
+                style={{
+                  height: seatStyles?.height || "32px",
+                  width: seatStyles?.width || "32px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
               >
-                {seat.label || seat.id}
-              </button>
-            );
-          })}
-        </div>
-      )})}
+                {rowLabel}
+              </span>
+            )}
+            {rowSeats.map((seat) => {
+              if (seat?.isBlank) {
+                return <div className="blankSeat" style={{ ...seatStyles }} />;
+              }
+              const status = getSeatStatus(seat?.id);
+              return (
+                <div
+                  key={seat?.id}
+                  className={`seat ${status}`}
+                  style={{
+                    ...getStatusStyle(status),
+                    pointerEvents: [
+                      SEAT_STATUS.DISABLED,
+                      SEAT_STATUS.RESERVED,
+                      SEAT_STATUS.BOOKED,
+                    ]?.includes(seat.id)
+                      ? "none"
+                      : "auto",
+                  }}
+                  onClick={() => handleSeatClick(seat)}
+                >
+                  {seat.label || seat.id}
+                </div>
+              );
+            })}
+          </div>
+        );
+      })}
     </div>
   );
 };
