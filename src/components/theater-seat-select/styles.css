@@ -7,10 +7,6 @@
   flex-direction: column;
 }
 
-.seat-section {
-  margin: auto;
-}
-
 .seat-section-header {
   display: flex;
   justify-content: center;
@@ -30,6 +26,11 @@
 .seat-row {
   display: flex;
   gap: 6px;
+}
+
+.seat-group {
+  display: flex;
+  margin: auto;
 }
 
 .blankSeat {

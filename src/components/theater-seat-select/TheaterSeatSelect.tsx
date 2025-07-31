@@ -121,7 +121,7 @@ export const TheaterSeatSelect: React.FC<Props> = ({
         };
 
         return (
-          <div key={index} className="seat-section">
+          <div key={index}>
             {section?.title && (
               <div className="seat-section-header" style={{ ...headerStyles }}>
                 {section.title}
@@ -148,7 +148,7 @@ export const TheaterSeatSelect: React.FC<Props> = ({
                           {rowLabel}
                         </span>
                       )}
-
+                      <div className="seat-group" style={{gap:columnGap}}>
                       {rowSeats?.map((seat) => {
                         if (seat?.isBlank) {
                           return (
@@ -187,6 +187,7 @@ export const TheaterSeatSelect: React.FC<Props> = ({
                           </div>
                         );
                       })}
+                      </div>
                     </div>
                   ))
                 : null}
