@@ -20,6 +20,15 @@ type Props = {
   showDefaultScreen?: boolean;
   screenConfig?: screenConfig;
   CustomScreenComponent?: React.ComponentType;
+  CustomLegendComponent?: React.ComponentType;
+  showDefaultLegend?: boolean;
+  legendConfig?: {
+    bookedSeatText?: string;
+    selectedSeatText?: string;
+    reservedSeatText?: string;
+    disabledSeatText?: string;
+    availableSeatText?: string;
+  };
 };
 
 const SEAT_STATUS: Record<string, string> = {
@@ -51,6 +60,15 @@ export const TheaterSeatSelect: React.FC<Props> = ({
     color: "$fff",
   },
   CustomScreenComponent,
+  CustomLegendComponent,
+  showDefaultLegend = true,
+  legendConfig = {
+    bookedSeatText: "Booked",
+    selectedSeatText: "Selected",
+    reservedSeatText: "Reserved",
+    disabledSeatText: "Disabled",
+    availableSeatText: "Available",
+  },
 }) => {
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
 
@@ -92,6 +110,64 @@ export const TheaterSeatSelect: React.FC<Props> = ({
     else if (showBlankSeatLabel) return true;
 
     return false;
+  };
+
+  const renderDefaultLegend = () => {
+    return (
+      <div className="legend-container">
+        {(customStyles && customStyles.length > 0 ? customStyles : [{}])?.map(
+          (style, index) => (
+            <div className="legend-row" key={index}>
+              {legendConfig?.availableSeatText ? (
+                <div className="legend-item">
+                  <div
+                    className={`seat ${SEAT_STATUS.AVAILABLE}`}
+                    style={{ ...style?.seatStyles, ...style?.availableStyles }}
+                  />
+                  <span>{legendConfig?.availableSeatText}</span>
+                </div>
+              ) : null}
+              {legendConfig?.bookedSeatText ? (
+                <div className="legend-item">
+                  <div
+                    className={`seat ${SEAT_STATUS.BOOKED}`}
+                    style={{ ...style?.seatStyles, ...style.bookedStyles }}
+                  />
+                  <span>{legendConfig?.bookedSeatText}</span>
+                </div>
+              ) : null}
+              {legendConfig?.disabledSeatText ? (
+                <div className="legend-item">
+                  <div
+                    className={`seat ${SEAT_STATUS.DISABLED}`}
+                    style={{ ...style?.seatStyles, ...style.disabledStyles }}
+                  />
+                  <span>{legendConfig?.disabledSeatText}</span>
+                </div>
+              ) : null}
+              {legendConfig?.reservedSeatText ? (
+                <div className="legend-item">
+                  <div
+                    className={`seat ${SEAT_STATUS.RESERVED}`}
+                    style={{ ...style?.seatStyles, ...style.reservedStyles }}
+                  />
+                  <span>{legendConfig?.reservedSeatText}</span>
+                </div>
+              ) : null}
+              {legendConfig?.selectedSeatText ? (
+                <div className="legend-item">
+                  <div
+                    className={`seat ${SEAT_STATUS.SELECTED}`}
+                    style={{ ...style?.seatStyles, ...style.selectedStyles }}
+                  />
+                  <span>{legendConfig?.selectedSeatText}</span>
+                </div>
+              ) : null}
+            </div>
+          )
+        )}
+      </div>
+    );
   };
 
   return (
@@ -148,45 +224,45 @@ export const TheaterSeatSelect: React.FC<Props> = ({
                           {rowLabel}
                         </span>
                       )}
-                      <div className="seat-group" style={{gap:columnGap}}>
-                      {rowSeats?.map((seat) => {
-                        if (seat?.isBlank) {
+                      <div className="seat-group" style={{ gap: columnGap }}>
+                        {rowSeats?.map((seat) => {
+                          if (seat?.isBlank) {
+                            return (
+                              <div
+                                key={`blank-${rowLabel}-${seat.id}`}
+                                className="blankSeat"
+                                style={{
+                                  height: seatStyles?.height || "32px",
+                                  width: seatStyles?.width || "32px",
+                                }}
+                              />
+                            );
+                          }
+
+                          const status = getSeatStatus(seat.id);
+
                           return (
                             <div
-                              key={`blank-${rowLabel}-${seat.id}`}
-                              className="blankSeat"
+                              key={seat.id}
+                              className={`seat ${status}`}
                               style={{
-                                height: seatStyles?.height || "32px",
-                                width: seatStyles?.width || "32px",
+                                ...statusStyles[status],
+                                pointerEvents: [
+                                  SEAT_STATUS.DISABLED,
+                                  SEAT_STATUS.RESERVED,
+                                  SEAT_STATUS.BOOKED,
+                                ].includes(status)
+                                  ? "none"
+                                  : "auto",
                               }}
-                            />
+                              onClick={() => handleSeatClick(seat)}
+                            >
+                              {shouldShowSeatLabel(seat?.id)
+                                ? seat.label || seat.id
+                                : null}
+                            </div>
                           );
-                        }
-
-                        const status = getSeatStatus(seat.id);
-
-                        return (
-                          <div
-                            key={seat.id}
-                            className={`seat ${status}`}
-                            style={{
-                              ...statusStyles[status],
-                              pointerEvents: [
-                                SEAT_STATUS.DISABLED,
-                                SEAT_STATUS.RESERVED,
-                                SEAT_STATUS.BOOKED,
-                              ].includes(status)
-                                ? "none"
-                                : "auto",
-                            }}
-                            onClick={() => handleSeatClick(seat)}
-                          >
-                            {shouldShowSeatLabel(seat?.id)
-                              ? seat.label || seat.id
-                              : null}
-                          </div>
-                        );
-                      })}
+                        })}
                       </div>
                     </div>
                   ))
@@ -205,6 +281,13 @@ export const TheaterSeatSelect: React.FC<Props> = ({
             dangerouslySetInnerHTML={{ __html: getScreenSVG(screenConfig) }}
           />
         </div>
+      ) : null}
+      {CustomLegendComponent ? (
+        <div className="screen-container">
+          <CustomLegendComponent />
+        </div>
+      ) : showDefaultLegend ? (
+        renderDefaultLegend()
       ) : null}
     </div>
   );

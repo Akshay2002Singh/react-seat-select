@@ -5,6 +5,10 @@
 .threater-seat-selection {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  position: relative;
 }
 
 .seat-section-header {
@@ -96,4 +100,34 @@
 
 .screen-container {
   margin: auto;
+}
+
+.legend-container {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+}
+
+.legend-row {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.legend-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-item>div {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  width: 24px !important;
+  height: 24px !important;
 }
