@@ -1,14 +1,22 @@
-.threater-seat-selection * {
+.threater-seat-selection-wrapper * {
   box-sizing: border-box;
 }
 
-.threater-seat-selection {
+.threater-seat-selection-wrapper{
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
+}
+
+.threater-seat-selection-container{
+  width: 100%;
+  height: 100%;
   overflow: auto;
-  position: relative;
+}
+
+.threater-seat-selection {
+  display: table;
 }
 
 .seat-section-header {
@@ -99,7 +107,9 @@
 }
 
 .screen-container {
-  margin: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 .legend-container {

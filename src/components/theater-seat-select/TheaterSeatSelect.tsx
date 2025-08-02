@@ -171,117 +171,138 @@ export const TheaterSeatSelect: React.FC<Props> = ({
   };
 
   return (
-    <div className="threater-seat-selection">
-      {config?.map((section, index) => {
-        const currentSectionStyle =
-          customStyles?.[index] ?? customStyles[customStyles.length - 1] ?? {};
+    <div className="threater-seat-selection-wrapper">
+      <div className="threater-seat-selection-container">
+        <div className="threater-seat-selection">
+          {config?.map((section, index) => {
+            const currentSectionStyle =
+              customStyles?.[index] ??
+              customStyles[customStyles.length - 1] ??
+              {};
 
-        const {
-          rowGap = "10px",
-          columnGap = "6px",
-          headerStyles = {},
-          seatStyles = {},
-          availableStyles = {},
-          bookedStyles = {},
-          disabledStyles = {},
-          reservedStyles = {},
-          selectedStyles = {},
-        } = currentSectionStyle;
+            const {
+              rowGap = "10px",
+              columnGap = "6px",
+              headerStyles = {},
+              seatStyles = {},
+              availableStyles = {},
+              bookedStyles = {},
+              disabledStyles = {},
+              reservedStyles = {},
+              selectedStyles = {},
+            } = currentSectionStyle;
 
-        const statusStyles: Record<string, React.CSSProperties> = {
-          [SEAT_STATUS.SELECTED]: { ...seatStyles, ...selectedStyles },
-          [SEAT_STATUS.DISABLED]: { ...seatStyles, ...disabledStyles },
-          [SEAT_STATUS.BOOKED]: { ...seatStyles, ...bookedStyles },
-          [SEAT_STATUS.RESERVED]: { ...seatStyles, ...reservedStyles },
-          [SEAT_STATUS.AVAILABLE]: { ...seatStyles, ...availableStyles },
-        };
+            const statusStyles: Record<string, React.CSSProperties> = {
+              [SEAT_STATUS.SELECTED]: { ...seatStyles, ...selectedStyles },
+              [SEAT_STATUS.DISABLED]: { ...seatStyles, ...disabledStyles },
+              [SEAT_STATUS.BOOKED]: { ...seatStyles, ...bookedStyles },
+              [SEAT_STATUS.RESERVED]: { ...seatStyles, ...reservedStyles },
+              [SEAT_STATUS.AVAILABLE]: { ...seatStyles, ...availableStyles },
+            };
 
-        return (
-          <div key={index}>
-            {section?.title && (
-              <div className="seat-section-header" style={{ ...headerStyles }}>
-                {section.title}
-              </div>
-            )}
-            <div className="seat-grid" style={{ gap: rowGap }}>
-              {section?.seats
-                ? Object.entries(section.seats).map(([rowLabel, rowSeats]) => (
-                    <div
-                      className="seat-row"
-                      key={rowLabel}
-                      style={{ gap: columnGap }}
-                    >
-                      {showRowNumbers && (
-                        <span
-                          style={{
-                            height: seatStyles?.height || "32px",
-                            width: seatStyles?.width || "32px",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }}
-                        >
-                          {rowLabel}
-                        </span>
-                      )}
-                      <div className="seat-group" style={{ gap: columnGap }}>
-                        {rowSeats?.map((seat) => {
-                          if (seat?.isBlank) {
-                            return (
+            return (
+              <div key={index}>
+                {section?.title && (
+                  <div
+                    className="seat-section-header"
+                    style={{ ...headerStyles }}
+                  >
+                    {section.title}
+                  </div>
+                )}
+                <div className="seat-grid" style={{ gap: rowGap }}>
+                  {section?.seats
+                    ? Object.entries(section.seats).map(
+                        ([rowLabel, rowSeats]) => (
+                          <div
+                            className="seat-row"
+                            key={rowLabel}
+                            style={{ gap: columnGap }}
+                          >
+                            {showRowNumbers && (
+                              <span
+                                style={{
+                                  height: seatStyles?.height || "32px",
+                                  width: seatStyles?.width || "32px",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  flexShrink: 0,
+                                }}
+                              >
+                                {rowLabel}
+                              </span>
+                            )}
+                            <div
+                              className="seat-group"
+                              style={{ gap: columnGap }}
+                            >
+                              {rowSeats?.map((seat) => {
+                                if (seat?.isBlank) {
+                                  return (
+                                    <div
+                                      key={`blank-${rowLabel}-${seat.id}`}
+                                      className="blankSeat"
+                                      style={{
+                                        height: seatStyles?.height || "32px",
+                                        width: seatStyles?.width || "32px",
+                                      }}
+                                    />
+                                  );
+                                }
+
+                                const status = getSeatStatus(seat.id);
+
+                                return (
+                                  <div
+                                    key={seat.id}
+                                    className={`seat ${status}`}
+                                    style={{
+                                      ...statusStyles[status],
+                                      pointerEvents: [
+                                        SEAT_STATUS.DISABLED,
+                                        SEAT_STATUS.RESERVED,
+                                        SEAT_STATUS.BOOKED,
+                                      ].includes(status)
+                                        ? "none"
+                                        : "auto",
+                                    }}
+                                    onClick={() => handleSeatClick(seat)}
+                                  >
+                                    {shouldShowSeatLabel(seat?.id)
+                                      ? seat.label || seat.id
+                                      : null}
+                                  </div>
+                                );
+                              })}
+                              {/* add one blank seat for better spacing */}
                               <div
-                                key={`blank-${rowLabel}-${seat.id}`}
+                                key={`last-blank-${rowLabel}`}
                                 className="blankSeat"
                                 style={{
                                   height: seatStyles?.height || "32px",
                                   width: seatStyles?.width || "32px",
-                                }}
-                              />
-                            );
-                          }
-
-                          const status = getSeatStatus(seat.id);
-
-                          return (
-                            <div
-                              key={seat.id}
-                              className={`seat ${status}`}
-                              style={{
-                                ...statusStyles[status],
-                                pointerEvents: [
-                                  SEAT_STATUS.DISABLED,
-                                  SEAT_STATUS.RESERVED,
-                                  SEAT_STATUS.BOOKED,
-                                ].includes(status)
-                                  ? "none"
-                                  : "auto",
-                              }}
-                              onClick={() => handleSeatClick(seat)}
-                            >
-                              {shouldShowSeatLabel(seat?.id)
-                                ? seat.label || seat.id
-                                : null}
+                                  }}
+                                />
                             </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ))
-                : null}
+                          </div>
+                        )
+                      )
+                    : null}
+                </div>
+              </div>
+            );
+          })}
+          {CustomScreenComponent ? (
+            <div className="screen-container">
+              <CustomScreenComponent />
             </div>
-          </div>
-        );
-      })}
-      {CustomScreenComponent ? (
-        <div className="screen-container">
-          <CustomScreenComponent />
+          ) : showDefaultScreen ? (
+            <div className="screen-container" dangerouslySetInnerHTML={{ __html: getScreenSVG(screenConfig) }}>
+            </div>
+          ) : null}
         </div>
-      ) : showDefaultScreen ? (
-        <div className="screen-container">
-          <div
-            dangerouslySetInnerHTML={{ __html: getScreenSVG(screenConfig) }}
-          />
-        </div>
-      ) : null}
+      </div>
       {CustomLegendComponent ? (
         <div className="screen-container">
           <CustomLegendComponent />

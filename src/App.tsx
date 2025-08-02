@@ -2,6 +2,7 @@ import React from "react";
 import { TheaterSeatSelect } from "./components/theater-seat-select/TheaterSeatSelect";
 import type { Seat, SeatConfig } from "./components/theater-seat-select/types";
 import data from "./layout.ts";
+import SeatLayoutDesigner from "./components/SeatLayoutDesigner/SeatLayoutDesigner.tsx";
 
 // const generateSeats = (): Record<string, Seat[]> => {
 //   const rows = ["A", "B", "C", "D", "E", "F", "G","H","I","J","K","L","M"];
@@ -39,7 +40,7 @@ const App: React.FC = () => {
   return (
     <div style={{ padding: "20px" }}>
       <h2>Theater Seat Selection</h2>
-      <div style={{width: '1200px', height: "700px"}}>
+      <div style={{width: '800px', height: "700px"}}>
         <TheaterSeatSelect
           config={config}
           bookedSeats={bookedSeats}
@@ -148,6 +149,7 @@ const App: React.FC = () => {
           // ]}
         />
       </div>
+      <SeatLayoutDesigner />
     </div>
   );
 };

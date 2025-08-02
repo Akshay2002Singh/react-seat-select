@@ -738,7 +738,7 @@ export default [
     },
   },
   {
-    title: "CLUB: Rs 500",
+    title: "CLUB: Rs 300",
     price: 500,
     seats: {
       H: [
