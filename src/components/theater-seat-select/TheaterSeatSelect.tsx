@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import "./styles.css";
-import type { CustomStyles, screenConfig, Seat, SeatConfig } from "./types";
+import type {
+  CustomStyles,
+  screenConfig,
+  Seat,
+  SeatConfig,
+  SeatSection,
+} from "./types";
 import { getScreenSVG } from "./utils";
 
 type Props = {
@@ -11,6 +17,8 @@ type Props = {
   onSelect?: (seat: Seat) => void;
   onUnselect?: (seat: Seat) => void;
   showRowNumbers?: boolean;
+  maxSelectedSeats?: number;
+  autoSeatExpansion?: boolean;
   customStyles?: CustomStyles;
   showBookedSeatLabel?: boolean;
   showDisabledSeatLabel?: boolean;
@@ -47,6 +55,8 @@ export const TheaterSeatSelect: React.FC<Props> = ({
   onSelect = () => {},
   onUnselect = () => {},
   showRowNumbers = true,
+  maxSelectedSeats = null,
+  autoSeatExpansion = true,
   customStyles = [],
   showBookedSeatLabel = false,
   showDisabledSeatLabel = false,
@@ -72,23 +82,110 @@ export const TheaterSeatSelect: React.FC<Props> = ({
 }) => {
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
 
-  const handleSeatClick = (seat: Seat) => {
-    if (
-      bookedSeats?.includes(seat.id) ||
-      disabledSeats?.includes(seat.id) ||
-      reservedSeats?.includes(seat?.id)
-    )
-      return;
+  const isSeatUnavailable = (seat: Seat) =>
+    bookedSeats?.includes(seat.id) ||
+    disabledSeats?.includes(seat.id) ||
+    reservedSeats?.includes(seat.id);
 
-    const newSelected = new Set(selectedSeats);
-    if (newSelected.has(seat.id)) {
-      newSelected.delete(seat.id);
-      onUnselect(seat);
-    } else {
-      newSelected.add(seat.id);
-      onSelect(seat);
+  const handleSeatClick = (
+    clickedSeat: Seat,
+    rowLabel: string,
+    section: SeatSection
+  ) => {
+    const rowSeats = section?.seats?.[rowLabel];
+    if (!rowSeats) return;
+
+    if (selectedSeats.includes(clickedSeat.id)) {
+      const updated = selectedSeats.filter((id) => id !== clickedSeat.id);
+      setSelectedSeats(updated);
+      onUnselect(clickedSeat);
+      return;
     }
-    setSelectedSeats([...newSelected]);
+    else if(autoSeatExpansion && maxSelectedSeats){
+      if(selectedSeats.length == maxSelectedSeats || selectedSeats.length == 0){
+const requiredSeats = maxSelectedSeats;
+      const clickedIndex = rowSeats.findIndex(
+        (seat: Seat) => seat.id === clickedSeat.id
+      );
+      if (clickedIndex === -1) return;
+
+      const trySelect = (indexes: number[]): Seat[] => {
+        const result: Seat[] = [];
+        for (const i of indexes) {
+          const seat = rowSeats[i];
+          if (seat && !seat.isBlank && !isSeatUnavailable(seat)) {
+            result.push(seat);
+          } else {
+            break;
+          }
+        }
+        return result;
+      };
+
+      // 1. Try right side only
+      const rightIndexes = Array.from(
+        { length: requiredSeats - 1 },
+        (_, i) => clickedIndex + i + 1
+      );
+      const rightSeats = trySelect(rightIndexes);
+
+      if (rightSeats.length === requiredSeats-1) {
+        const newSelection = [clickedSeat.id,...rightSeats.map((s) => s.id)];
+        setSelectedSeats(newSelection);
+        rightSeats.forEach((seat) => onSelect(seat));
+        return;
+      }
+
+      // 2. Try left side only
+      const leftIndexes = Array.from(
+        { length: requiredSeats - 1 },
+        (_, i) => clickedIndex - i - 1
+      );
+      const leftSeats = trySelect(leftIndexes);
+
+      if (leftSeats.length === requiredSeats-1) {
+        const newSelection = [...leftSeats.map((s) => s.id), clickedSeat.id];
+        setSelectedSeats(newSelection);
+        leftSeats.forEach((seat) => onSelect(seat));
+        return;
+      }
+
+      let combinedSeats = [...leftSeats, clickedSeat, ...rightSeats];
+
+      combinedSeats = combinedSeats.slice(-maxSelectedSeats)
+
+      
+        const newSelection = [...combinedSeats.map((s) => s.id)];
+        setSelectedSeats(newSelection);
+        combinedSeats.forEach((seat) => onSelect(seat));
+      }
+      else{
+         if(selectedSeats.length==maxSelectedSeats){
+
+        setSelectedSeats([clickedSeat.id]);
+        return;
+      }
+      const newSelection = [...selectedSeats, clickedSeat.id];
+      setSelectedSeats(newSelection);
+      onSelect(clickedSeat);
+      }
+    }
+    else if(!autoSeatExpansion && maxSelectedSeats){
+  if(selectedSeats.length==maxSelectedSeats){
+
+        setSelectedSeats([clickedSeat.id]);
+        return;
+      }
+      const newSelection = [...selectedSeats, clickedSeat.id];
+      setSelectedSeats(newSelection);
+      onSelect(clickedSeat);
+    }
+    else{
+const newSelection = [...selectedSeats, clickedSeat.id];
+      setSelectedSeats(newSelection);
+      onSelect(clickedSeat);
+    }
+
   };
 
   const getSeatStatus = (seatId: string) => {
@@ -267,7 +364,9 @@ export const TheaterSeatSelect: React.FC<Props> = ({
                                         ? "none"
                                         : "auto",
                                     }}
-                                    onClick={() => handleSeatClick(seat)}
+                                    onClick={() =>
+                                      handleSeatClick(seat, rowLabel, section)
+                                    }
                                   >
                                     {shouldShowSeatLabel(seat?.id)
                                       ? seat.label || seat.id
@@ -282,8 +381,8 @@ export const TheaterSeatSelect: React.FC<Props> = ({
                                 style={{
                                   height: seatStyles?.height || "32px",
                                   width: seatStyles?.width || "32px",
-                                  }}
-                                />
+                                }}
+                              />
                             </div>
                           </div>
                         )
@@ -298,8 +397,10 @@ export const TheaterSeatSelect: React.FC<Props> = ({
               <CustomScreenComponent />
             </div>
           ) : showDefaultScreen ? (
-            <div className="screen-container" dangerouslySetInnerHTML={{ __html: getScreenSVG(screenConfig) }}>
-            </div>
+            <div
+              className="screen-container"
+              dangerouslySetInnerHTML={{ __html: getScreenSVG(screenConfig) }}
+            ></div>
           ) : null}
         </div>
       </div>

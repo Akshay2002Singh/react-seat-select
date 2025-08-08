@@ -26,7 +26,7 @@ const App: React.FC = () => {
   const config: SeatConfig = data;
 
   const bookedSeats = ["A2", "B5"];
-  const disabledSeats = ["A3", "C7"];
+  const disabledSeats = ["A3", "C7","A3","A4","A5","A6","A7","A8","A9","A10","A11","A12","A13","A14","A15","A16","A17","A18"];
   const reservedSeats = ["D1", "D2"];
 
   const handleSelect = (seat: Seat) => {
@@ -40,7 +40,7 @@ const App: React.FC = () => {
   return (
     <div style={{ padding: "20px" }}>
       <h2>Theater Seat Selection</h2>
-      <div style={{width: '800px', height: "700px"}}>
+      <div>
         <TheaterSeatSelect
           config={config}
           bookedSeats={bookedSeats}
@@ -48,6 +48,8 @@ const App: React.FC = () => {
           reservedSeats={reservedSeats}
           onSelect={handleSelect}
           onUnselect={handleUnselect}
+          maxSelectedSeats={5}
+          autoSeatExpansion={true}
           // customStyles={[
           //   {
           //     rowGap: "12px",
