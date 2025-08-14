@@ -2,9 +2,11 @@ import React from "react";
 import { TheaterSeatSelect } from "./components/TheaterSeatSelect/TheaterSeatSelect.tsx";
 import type { Seat, SeatConfig } from "./components/TheaterSeatSelect/types.ts";
 import data from "./bus_layout.ts";
+import seatPriceMap from "./seat_price_map.ts";
 import SeatLayoutDesigner from "./components/SeatLayoutDesigner/SeatLayoutDesigner.tsx";
 import type { BusConfig } from "./components/BusSeatSelect/types.ts";
 import BusSeatSelect from "./components/BusSeatSelect/BusSeatSelect.tsx";
+import SeatConfigGenerator from "./components/SeatLayoutDesigner/BusLayoutDesigner.tsx";
 
 // const generateSeats = (): Record<string, Seat[]> => {
 //   const rows = ["A", "B", "C", "D", "E", "F", "G","H","I","J","K","L","M"];
@@ -47,6 +49,7 @@ const App: React.FC = () => {
           config={config}
           bookedByFemaleSeats={bookedForFemaleSeats}
           bookedByMaleSeats={bookedForMaleSeats}
+          seatPriceMap={seatPriceMap}
           availableForFemaleSeats={["LB1", "LB3", "LB4"]}
           availableForMaleSeats={["LB7", "LB9", "LB10"]}
           onSelect={handleSelect}
@@ -66,10 +69,14 @@ const App: React.FC = () => {
               headerStyles: {
                 fontSize: "16px",
                 fontWeight: 600,
-                color: "#ffffffff",
-                textTransform: "uppercase",
+                color:"black",
                 // marginBottom: "8px",
                 padding: "8px 0",
+              },
+              seatPriceStyles:{
+                padding: "4px 0px", 
+                marginBottom:"10px",
+                fontSize:"12px"
               },
               seatStyles: {
                 width: "36px",
@@ -113,47 +120,52 @@ const App: React.FC = () => {
                 border: "2px solid #004085",
               },
             },
-            {
-              rowGap: "12px",
-              columnGap: "16px",
-              headerStyles: {
-                fontSize: "16px",
-                fontWeight: "bold",
-                color: "#333",
-                padding: "8px 0",
-                textAlign: "center",
-              },
-              seatStyles: {
-                width: "36px",
-                height: "36px",
-                borderRadius: "4px",
-                border: "1px solid #ccc",
-                display: "inline-flex",
-                justifyContent: "center",
-                alignItems: "center",
-                fontSize: "12px",
-              },
-              availableStyles: {
-                // backgroundColor: "#d4edda",
-                backgroundImage: "url('https://img.icons8.com/?size=40&id=53746&format=png')",
-                color: "#155724",
-              },
-              bookedStyles: {
-                backgroundColor: "#f8d7da",
-                color: "#721c24",
-                cursor: "not-allowed",
-              },
-              selectedStyles: {
-                backgroundColor: "#cce5ff",
-                color: "#004085",
-                border: "2px solid #004085",
-              },
-            },
+            // {
+            //   rowGap: "12px",
+            //   columnGap: "16px",
+            //   headerStyles: {
+            //     fontSize: "16px",
+            //     fontWeight: "bold",
+            //     color: "#333",
+            //     padding: "8px 0",
+            //     textAlign: "center",
+            //   },
+            //   seatStyles: {
+            //     width: "36px",
+            //     height: "36px",
+            //     borderRadius: "4px",
+            //     border: "1px solid #ccc",
+            //     display: "inline-flex",
+            //     justifyContent: "center",
+            //     alignItems: "center",
+            //     fontSize: "12px",
+            //   },
+            //   seatPriceStyles:{
+            //     padding: "4px 0px", 
+            //     marginBottom:"10px",
+            //     fontSize:"12px"
+            //   },
+            //   availableStyles: {
+            //     // backgroundColor: "#d4edda",
+            //     backgroundImage: "url('https://img.icons8.com/?size=40&id=53746&format=png')",
+            //     color: "#155724",
+            //   },
+            //   bookedStyles: {
+            //     backgroundColor: "#f8d7da",
+            //     color: "#721c24",
+            //     cursor: "not-allowed",
+            //   },
+            //   selectedStyles: {
+            //     backgroundColor: "#cce5ff",
+            //     color: "#004085",
+            //     border: "2px solid #004085",
+            //   },
+            // },
           ]
         }
         />
       </div>
-      <SeatLayoutDesigner />
+      <SeatConfigGenerator />
     </div>
   );
 };

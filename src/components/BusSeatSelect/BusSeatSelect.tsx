@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import type { BusConfig, Column, CustomStyles, Seat, Section } from "./types";
 import "./styles.css";
+import { useElementTotalSize } from "./utils";
+
 
 type Props = {
   config: BusConfig;
@@ -17,6 +19,7 @@ type Props = {
   showSelectedSeatLabel?: boolean;
   CustomLegendComponent?: React.ComponentType;
   showDefaultLegend?: boolean;
+  seatPriceMap?: Record<string, number>;
   legendConfig?: {
     bookedSeatText?: string;
     bookedByFemaleSeatText?: string;
@@ -54,9 +57,13 @@ const BusSeatSelect = (props: Props) => {
     CustomLegendComponent,
     showDefaultLegend = true,
     legendConfig = {},
+    seatPriceMap={}
   } = props;
 
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
+  const boxRef = useRef(null);
+  const {  height } = useElementTotalSize(boxRef);
+
 
     const renderDefaultLegend = () => {
     return (
@@ -208,6 +215,7 @@ const BusSeatSelect = (props: Props) => {
                 bookedByMaleStyles = {},
                 bookedByFemaleStyles = {},
                 selectedStyles = {},
+                seatPriceStyles={}
               } = currentSectionStyle;
   
               const statusStyles: Record<string, React.CSSProperties> = {
@@ -247,7 +255,7 @@ const BusSeatSelect = (props: Props) => {
                                       key={`blank-${column.id}-${seat.id}`}
                                         className={`blankSeat ${seat.type}`}
                                         style={{
-                                          height: seatStyles?.height ? (seat.type === "sleeper" ?  `calc(${seatStyles.height} + ${seatStyles.height} + ${rowGap})` : seatStyles.height) : (seat.type === "sleeper" ? `calc(64px + ${rowGap})` :"32px"),
+                                          height: seatStyles?.height ? (seat.type === "sleeper" ?  `calc(${seatStyles.height} +  ${height}px +  ${height}px  + ${seatStyles.height} + ${rowGap})` : seatStyles.height) : (seat.type === "sleeper" ? `calc(64px + ${rowGap})` :"32px"),
                                           width: seatStyles?.width || "32px",
                                         }}
                                       />
@@ -263,7 +271,7 @@ const BusSeatSelect = (props: Props) => {
                                       className={`seat ${status} ${seat.type}`}
                                       style={{
                                         ...statusStyles[status],
-                                        height: seatStyles?.height ? (seat.type === "sleeper" ?  `calc(${seatStyles.height} + ${seatStyles.height} + ${rowGap})` : seatStyles.height) : (seat.type === "sleeper" ? `calc(64px + ${rowGap})` :"32px"),
+                                        height: seatStyles?.height ? (seat.type === "sleeper" ?  `calc(${seatStyles.height} + ${height}px  +  ${seatStyles.height} + ${rowGap})` : seatStyles.height) : (seat.type === "sleeper" ? `calc(64px + ${rowGap})` :"32px"),
                                         pointerEvents: [
                                           SEAT_STATUS.BOOKED,
                                             SEAT_STATUS.BOOKED_BY_FEMALE,
@@ -280,19 +288,18 @@ const BusSeatSelect = (props: Props) => {
                                         ? seat.id
                                         : null}
                                     </div>
-                                   {/* <span>{"$445"}</span>  */}
+                                   <span ref={boxRef} style={seatPriceStyles}>
+                                   {seatPriceMap[seat.id]? seatPriceMap[seat.id]?.toLocaleString("en-IN", {
+                                    style: "currency",
+                                    currency: "INR",
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 2
+                                  }) : null
+                                }
+                                  </span> 
                                     </div>
                                   );
                                 })}
-                                {/* add one blank seat for better spacing
-                                <div
-                                  key={`last-blank-${sectionId}`}
-                                  className="blankSeat"
-                                  style={{
-                                    height: seatStyles?.height || "32px",
-                                    width: seatStyles?.width || "32px",
-                                  }}
-                                /> */}
                               </div>
                           )
                         )

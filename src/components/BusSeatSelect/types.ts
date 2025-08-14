@@ -30,6 +30,7 @@ export type SectionStyle = {
   bookedByMaleStyles?: React.CSSProperties;
   bookedByFemaleStyles?: React.CSSProperties;
   selectedStyles?: React.CSSProperties;
+  seatPriceStyles?: React.CSSProperties;
 };
 
 export type CustomStyles = SectionStyle[];

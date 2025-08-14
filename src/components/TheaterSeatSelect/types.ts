@@ -10,7 +10,6 @@ export type SeatMap = Partial<Record<string, SeatRow>>;
 
 export type SeatSection = {
   title?: string;
-  price?: number;
   seats: SeatMap;
 };
 
