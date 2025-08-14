@@ -45,111 +45,112 @@ const App: React.FC = () => {
       <div>
         <BusSeatSelect
           config={config}
-          bookedForFemaleSeats={bookedForFemaleSeats}
-          bookedForMaleSeats={bookedForMaleSeats}
+          bookedByFemaleSeats={bookedForFemaleSeats}
+          bookedByMaleSeats={bookedForMaleSeats}
+          availableForFemaleSeats={["LB1", "LB3", "LB4"]}
+          availableForMaleSeats={["LB7", "LB9", "LB10"]}
           onSelect={handleSelect}
           onUnselect={handleUnselect}
           maxSelectedSeats={5}
+          legendConfig={{
+          bookedByMaleSeatText: "Booked by Male",
+          bookedByFemaleSeatText: "Booked by Female",
+          availableForMaleSeatText: "Available For Male",
+          availableForFemaleSeatText: "Available for Female"
+          }}
           // autoSeatExpansion={true}
-          // customStyles={[
-          //   {
-          //     rowGap: "12px",
-          //     columnGap: "16px",
-          //     headerStyles: {
-          //       fontSize: "18px",
-          //       fontWeight: 600,
-          //       color: "#ffffffff",
-          //       textTransform: "uppercase",
-          //       marginBottom: "8px",
-          //       padding: "4px 0",
-          //     },
-          //     seatStyles: {
-          //       width: "36px",
-          //       height: "36px",
-          //       borderRadius: "6px",
-          //       // backgroundColor: "#f9f9f9",
-          //       border: "1px solid #cccccc",
-          //       fontSize: "14px",
-          //       fontWeight: "bold",
-          //       display: "flex",
-          //       alignItems: "center",
-          //       justifyContent: "center",
-          //     },
-          //     availableStyles: {
-          //       // backgroundColor: "#d4fcd4",
-          //       // color: "#155724",
-          //       border: "1px solid #a4d7a4",
-          //       backgroundImage : "url('https://img.icons8.com/?size=48&id=rI1co8lOfrTW&format=png')",
-          //     },
-          //     bookedStyles: {
-          //       backgroundColor: "#f8d7da",
-          //       color: "#721c24",
-          //       border: "1px solid #f5c6cb",
-          //     },
-          //     disabledStyles: {
-          //       backgroundColor: "#e0e0e0",
-          //       color: "#9e9e9e",
-          //       border: "1px dashed #bdbdbd",
-          //       cursor: "not-allowed",
-          //     },
-          //     reservedStyles: {
-          //       backgroundColor: "#fff3cd",
-          //       color: "#856404",
-          //       border: "1px solid #ffeeba",
-          //     },
-          //     selectedStyles: {
-          //       backgroundColor: "#cce5ff",
-          //       color: "#004085",
-          //       border: "2px solid #004085",
-          //     },
-          //   },
-          //   {
-          //     rowGap: "8px",
-          //     columnGap: "12px",
-          //     headerStyles: {
-          //       fontSize: "16px",
-          //       fontWeight: "bold",
-          //       color: "#333",
-          //       padding: "8px 0",
-          //       textAlign: "center",
-          //     },
-          //     seatStyles: {
-          //       width: "30px",
-          //       height: "30px",
-          //       borderRadius: "4px",
-          //       border: "1px solid #ccc",
-          //       display: "inline-flex",
-          //       justifyContent: "center",
-          //       alignItems: "center",
-          //       fontSize: "12px",
-          //     },
-          //     availableStyles: {
-          //       // backgroundColor: "#d4edda",
-          //       backgroundImage: "url('https://img.icons8.com/?size=40&id=53746&format=png')",
-          //       color: "#155724",
-          //     },
-          //     bookedStyles: {
-          //       backgroundColor: "#f8d7da",
-          //       color: "#721c24",
-          //       cursor: "not-allowed",
-          //     },
-          //     disabledStyles: {
-          //       backgroundColor: "#e2e3e5",
-          //       color: "#6c757d",
-          //       cursor: "not-allowed",
-          //       opacity: 0.6,
-          //     },
-          //     reservedStyles: {
-          //       backgroundColor: "#fff3cd",
-          //       color: "#856404",
-          //     },
-          //     selectedStyles: {
-          //       backgroundColor: "#cce5ff",
-          //       color: "#004085",
-          //       border: "2px solid #004085",
-          //     },
-          //   },
-          // ]}
+          customStyles={[
+            {
+              rowGap: "12px",
+              columnGap: "16px",
+              headerStyles: {
+                fontSize: "16px",
+                fontWeight: 600,
+                color: "#ffffffff",
+                textTransform: "uppercase",
+                // marginBottom: "8px",
+                padding: "8px 0",
+              },
+              seatStyles: {
+                width: "36px",
+                height: "36px",
+                borderRadius: "6px",
+                // backgroundColor: "#f9f9f9",
+                border: "1px solid #cccccc",
+                fontSize: "14px",
+                fontWeight: "bold",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              },
+              availableForMaleStyles: {
+                // backgroundColor: "#d4fcd4",
+                backgroundColor: "#155724",
+                border: "1px solid #a4d7a4",
+                // backgroundImage : "url('https://img.icons8.com/?size=48&id=rI1co8lOfrTW&format=png')",
+              },
+              availableForFemaleStyles: {
+                // backgroundColor: "#d4fcd4",
+                backgroundColor: "#45ce65ff",
+                // color: "#155724",
+                border: "1px solid #a4d7a4",
+                // backgroundImage : "url('https://img.icons8.com/?size=48&id=rI1co8lOfrTW&format=png')",
+              },
+              
+              bookedByMaleStyles: {
+                backgroundColor: "#f8d7da",
+                color: "#721c24",
+                border: "1px solid #f5c6cb",
+              },
+              bookedByFemaleStyles: {
+                backgroundColor: "#762027ff",
+                color: "#721c24",
+                border: "1px solid #f5c6cb",
+              },
+              selectedStyles: {
+                backgroundColor: "#cce5ff",
+                color: "#004085",
+                border: "2px solid #004085",
+              },
+            },
+            {
+              rowGap: "12px",
+              columnGap: "16px",
+              headerStyles: {
+                fontSize: "16px",
+                fontWeight: "bold",
+                color: "#333",
+                padding: "8px 0",
+                textAlign: "center",
+              },
+              seatStyles: {
+                width: "36px",
+                height: "36px",
+                borderRadius: "4px",
+                border: "1px solid #ccc",
+                display: "inline-flex",
+                justifyContent: "center",
+                alignItems: "center",
+                fontSize: "12px",
+              },
+              availableStyles: {
+                // backgroundColor: "#d4edda",
+                backgroundImage: "url('https://img.icons8.com/?size=40&id=53746&format=png')",
+                color: "#155724",
+              },
+              bookedStyles: {
+                backgroundColor: "#f8d7da",
+                color: "#721c24",
+                cursor: "not-allowed",
+              },
+              selectedStyles: {
+                backgroundColor: "#cce5ff",
+                color: "#004085",
+                border: "2px solid #004085",
+              },
+            },
+          ]
+        }
         />
       </div>
       <SeatLayoutDesigner />

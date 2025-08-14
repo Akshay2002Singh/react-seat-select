@@ -24,9 +24,11 @@ export type SectionStyle = {
   headerStyles?: React.CSSProperties;
   seatStyles?: React.CSSProperties;
   availableStyles?: React.CSSProperties;
+  availableForMaleStyles?: React.CSSProperties;
+  availableForFemaleStyles?: React.CSSProperties;
   bookedStyles?: React.CSSProperties;
-  disabledStyles?: React.CSSProperties;
-  reservedStyles?: React.CSSProperties;
+  bookedByMaleStyles?: React.CSSProperties;
+  bookedByFemaleStyles?: React.CSSProperties;
   selectedStyles?: React.CSSProperties;
 };
 

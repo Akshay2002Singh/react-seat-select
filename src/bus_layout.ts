@@ -46,12 +46,7 @@ export default {
                 "seats":[
                     {
                         "id":"LB2",
-                        "type":"seater",
-                        "isBlank":false
-                    },
-                     {
-                        "id":"LB5",
-                        "type":"seater",
+                        "type":"sleeper",
                         "isBlank":false
                     },
                      {

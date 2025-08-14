@@ -4,8 +4,11 @@ import "./styles.css";
 
 type Props = {
   config: BusConfig;
-  bookedForFemaleSeats?: string[];
-  bookedForMaleSeats?: string[];
+  bookedSeats?: string[];
+  bookedByFemaleSeats?: string[];
+  bookedByMaleSeats?: string[];
+  availableForFemaleSeats?: string[];
+  availableForMaleSeats?: string[];
   onSelect?: (seat: Seat) => void;
   onUnselect?: (seat: Seat) => void;
   maxSelectedSeats?: number;
@@ -16,23 +19,32 @@ type Props = {
   showDefaultLegend?: boolean;
   legendConfig?: {
     bookedSeatText?: string;
+    bookedByFemaleSeatText?: string;
+    bookedByMaleSeatText?: string;
     selectedSeatText?: string;
     availableSeatText?: string;
+    availableForMaleSeatText?: string;
+    availableForFemaleSeatText?: string;
   };
 };
 
 const SEAT_STATUS: Record<string, string> = {
-  BOOKED_FOR_FEMALE: "BOOKED_FOR_FEMALE",
-  BOOKED_FOR_MALE: "BOOKED_FOR_MALE",
+  BOOKED_BY_FEMALE: "BOOKED_BY_FEMALE",
+  BOOKED_BY_MALE: "BOOKED_BY_MALE",
   SELECTED: "SELECTED",
-  AVAILABLE: "AVAILABLE"
+  AVAILABLE: "AVAILABLE",
+  AVAILABLE_FOR_MALE:"AVAILABLE_FOR_MALE",
+  AVAILABLE_FOR_FEMALE:"AVAILABLE_FOR_FEMALE", 
 };
 
 const BusSeatSelect = (props: Props) => {
   const {
     config = {},
-    bookedForFemaleSeats = [],
-    bookedForMaleSeats = [],
+    bookedSeats = [],
+    bookedByFemaleSeats = [],
+    bookedByMaleSeats = [],
+    availableForFemaleSeats = [],
+    availableForMaleSeats = [],
     onSelect = () => {},
     onUnselect = () => {},
     maxSelectedSeats = null,
@@ -46,18 +58,101 @@ const BusSeatSelect = (props: Props) => {
 
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
 
+    const renderDefaultLegend = () => {
+    return (
+      <div className="legend-container">
+        {(customStyles && customStyles.length > 0 ? customStyles : [{}])?.map(
+          (style, index) => (
+            <div className="legend-row" key={index}>
+              {legendConfig?.availableSeatText ? (
+                <div className="legend-item">
+                  <div
+                    className={`seat ${SEAT_STATUS.AVAILABLE}`}
+                    style={{ ...style?.seatStyles, ...style?.availableStyles }}
+                  />
+                  <span>{legendConfig?.availableSeatText}</span>
+                </div>
+              ) : null}
+              {legendConfig?.availableForMaleSeatText ? (
+                <div className="legend-item">
+                  <div
+                    className={`seat ${SEAT_STATUS.AVAILABLE_FOR_MALE}`}
+                    style={{ ...style?.seatStyles, ...style?.availableStyles,...style?.availableForMaleStyles }}
+                  />
+                  <span>{legendConfig?.availableForMaleSeatText}</span>
+                </div>
+              ) : null}
+              {legendConfig?.availableForFemaleSeatText ? (
+                <div className="legend-item">
+                  <div
+                    className={`seat ${SEAT_STATUS.AVAILABLE_FOR_FEMALE}`}
+                    style={{ ...style?.seatStyles, ...style?.availableStyles,...style?.availableForFemaleStyles }}
+                  />
+                  <span>{legendConfig?.availableForFemaleSeatText}</span>
+                </div>
+              ) : null}
+              {legendConfig?.bookedSeatText ? (
+                <div className="legend-item">
+                  <div
+                    className={`seat ${SEAT_STATUS.BOOKED}`}
+                    style={{ ...style?.seatStyles, ...style?.bookedStyles }}
+                  />
+                  <span>{legendConfig?.bookedSeatText}</span>
+                </div>
+              ) : null}
+              {legendConfig?.bookedByMaleSeatText ? (
+                <div className="legend-item">
+                  <div
+                    className={`seat ${SEAT_STATUS.BOOKED_BY_MALE}`}
+                    style={{ ...style?.seatStyles,...style?.bookedStyles, ...style?.bookedByMaleStyles }}
+                  />
+                  <span>{legendConfig?.bookedByMaleSeatText}</span>
+                </div>
+              ) : null}
+               {legendConfig?.bookedByFemaleSeatText ? (
+                <div className="legend-item">
+                  <div
+                    className={`seat ${SEAT_STATUS.BOOKED_BY_FEMALE}`}
+                    style={{ ...style?.seatStyles,...style?.bookedStyles, ...style?.bookedByFemaleStyles }}
+                  />
+                  <span>{legendConfig?.bookedByFemaleSeatText}</span>
+                </div>
+              ) : null}
+              {legendConfig?.selectedSeatText ? (
+                <div className="legend-item">
+                  <div
+                    className={`seat ${SEAT_STATUS.SELECTED}`}
+                    style={{ ...style?.seatStyles, ...style.selectedStyles }}
+                  />
+                  <span>{legendConfig?.selectedSeatText}</span>
+                </div>
+              ) : null}
+            </div>
+          )
+        )}
+      </div>
+    );
+  };
+
+
   const getSeatStatus = (seatId: string) => {
-    if (bookedForFemaleSeats?.includes(seatId))
-      return SEAT_STATUS.BOOKED_FOR_FEMALE;
-    if (bookedForMaleSeats?.includes(seatId))
-      return SEAT_STATUS.BOOKED_FOR_MALE;
+    if (bookedByFemaleSeats?.includes(seatId))
+      return SEAT_STATUS.BOOKED_BY_FEMALE;
+    if (bookedByMaleSeats?.includes(seatId))
+      return SEAT_STATUS.BOOKED_BY_MALE;
+    if(bookedSeats?.includes(seatId))
+      return SEAT_STATUS.BOOKED;
     if (selectedSeats?.includes(seatId)) return SEAT_STATUS.SELECTED;
+    if(availableForFemaleSeats?.includes(seatId))
+      return SEAT_STATUS.AVAILABLE_FOR_FEMALE;
+    if(availableForMaleSeats?.includes(seatId))
+      return SEAT_STATUS.AVAILABLE_FOR_MALE;
     return SEAT_STATUS.AVAILABLE;
   };
 
   
   const shouldShowSeatLabel = (seatId: string) => {
-    if ((bookedForFemaleSeats?.includes(seatId) || bookedForMaleSeats?.includes(seatId)) && showBookedSeatLabel) return true;
+    if ((bookedByFemaleSeats?.includes(seatId) || bookedByMaleSeats?.includes(seatId)) && showBookedSeatLabel) return true;
    
     else if (selectedSeats?.includes(seatId) && showSelectedSeatLabel)
       return true;
@@ -66,8 +161,8 @@ const BusSeatSelect = (props: Props) => {
   };
 
     const isSeatUnavailable = (seat: Seat) =>
-      bookedForFemaleSeats?.includes(seat.id) ||
-      bookedForMaleSeats?.includes(seat.id);
+      bookedByFemaleSeats?.includes(seat.id) ||
+      bookedByMaleSeats?.includes(seat.id);
 
     const handleSeatClick = (
       clickedSeat: Seat,
@@ -107,18 +202,22 @@ const BusSeatSelect = (props: Props) => {
                 headerStyles = {},
                 seatStyles = {},
                 availableStyles = {},
+                availableForMaleStyles = {},
+                availableForFemaleStyles = {},
                 bookedStyles = {},
-                disabledStyles = {},
-                reservedStyles = {},
+                bookedByMaleStyles = {},
+                bookedByFemaleStyles = {},
                 selectedStyles = {},
               } = currentSectionStyle;
   
               const statusStyles: Record<string, React.CSSProperties> = {
                 [SEAT_STATUS.SELECTED]: { ...seatStyles, ...selectedStyles },
-                [SEAT_STATUS.DISABLED]: { ...seatStyles, ...disabledStyles },
-                [SEAT_STATUS.BOOKED]: { ...seatStyles, ...bookedStyles },
-                [SEAT_STATUS.RESERVED]: { ...seatStyles, ...reservedStyles },
                 [SEAT_STATUS.AVAILABLE]: { ...seatStyles, ...availableStyles },
+                [SEAT_STATUS.BOOKED]: { ...seatStyles, ...bookedStyles },
+                [SEAT_STATUS.BOOKED_BY_MALE]: { ...seatStyles,...bookedStyles, ...bookedByMaleStyles },
+                [SEAT_STATUS.BOOKED_BY_FEMALE]: { ...seatStyles,...bookedStyles, ...bookedByFemaleStyles },
+                [SEAT_STATUS.AVAILABLE_FOR_MALE]: { ...seatStyles,...availableStyles, ...availableForMaleStyles },
+                [SEAT_STATUS.AVAILABLE_FOR_FEMALE]: { ...seatStyles,...availableStyles, ...availableForFemaleStyles },
               };
 
   
@@ -141,15 +240,14 @@ const BusSeatSelect = (props: Props) => {
                               key={column.id}
                               style={{ gap: rowGap }}
                             >
-                          
-                                {column.seats?.map((seat) => {
-                                  if (seat?.isBlank) {
-                                    return (
-                                      <div
-                                        key={`blank-${column.id}-${seat.id}`}
+                              {column.seats?.map((seat) => {
+                                if (seat?.isBlank) {
+                                  return (
+                                    <div
+                                      key={`blank-${column.id}-${seat.id}`}
                                         className={`blankSeat ${seat.type}`}
                                         style={{
-                                          height: seatStyles?.height || seat.type === "sleeper" ? `calc(64px + ${rowGap})` :"32px",
+                                          height: seatStyles?.height ? (seat.type === "sleeper" ?  `calc(${seatStyles.height} + ${seatStyles.height} + ${rowGap})` : seatStyles.height) : (seat.type === "sleeper" ? `calc(64px + ${rowGap})` :"32px"),
                                           width: seatStyles?.width || "32px",
                                         }}
                                       />
@@ -159,15 +257,17 @@ const BusSeatSelect = (props: Props) => {
                                   const status = getSeatStatus(seat.id);
   
                                   return (
+                                    <div style={{"display": "flex", "flexDirection": "column"}} key={seat.id}>
                                     <div
                                       key={seat.id}
                                       className={`seat ${status} ${seat.type}`}
                                       style={{
-                                        height: seat.type === "sleeper" ? `calc(64px + ${rowGap})` : "32px",
                                         ...statusStyles[status],
+                                        height: seatStyles?.height ? (seat.type === "sleeper" ?  `calc(${seatStyles.height} + ${seatStyles.height} + ${rowGap})` : seatStyles.height) : (seat.type === "sleeper" ? `calc(64px + ${rowGap})` :"32px"),
                                         pointerEvents: [
-                                            SEAT_STATUS.BOOKED_FOR_FEMALE,
-                                            SEAT_STATUS.BOOKED_FOR_MALE,
+                                          SEAT_STATUS.BOOKED,
+                                            SEAT_STATUS.BOOKED_BY_FEMALE,
+                                            SEAT_STATUS.BOOKED_BY_MALE,
                                         ].includes(status)
                                           ? "none"
                                           : "auto",
@@ -179,6 +279,8 @@ const BusSeatSelect = (props: Props) => {
                                       {shouldShowSeatLabel(seat?.id)
                                         ? seat.id
                                         : null}
+                                    </div>
+                                   {/* <span>{"$445"}</span>  */}
                                     </div>
                                   );
                                 })}
@@ -202,6 +304,13 @@ const BusSeatSelect = (props: Props) => {
             
           </div>
         </div>
+        {CustomLegendComponent ? (
+        <div className="screen-container">
+          <CustomLegendComponent />
+        </div>
+      ) : showDefaultLegend ? (
+        renderDefaultLegend()
+      ) : null}
         </div>
 };
 
