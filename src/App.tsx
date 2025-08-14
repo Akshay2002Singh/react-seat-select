@@ -1,8 +1,10 @@
 import React from "react";
-import { TheaterSeatSelect } from "./components/theater-seat-select/TheaterSeatSelect";
-import type { Seat, SeatConfig } from "./components/theater-seat-select/types";
-import data from "./layout.ts";
+import { TheaterSeatSelect } from "./components/TheaterSeatSelect/TheaterSeatSelect.tsx";
+import type { Seat, SeatConfig } from "./components/TheaterSeatSelect/types.ts";
+import data from "./bus_layout.ts";
 import SeatLayoutDesigner from "./components/SeatLayoutDesigner/SeatLayoutDesigner.tsx";
+import type { BusConfig } from "./components/BusSeatSelect/types.ts";
+import BusSeatSelect from "./components/BusSeatSelect/BusSeatSelect.tsx";
 
 // const generateSeats = (): Record<string, Seat[]> => {
 //   const rows = ["A", "B", "C", "D", "E", "F", "G","H","I","J","K","L","M"];
@@ -23,11 +25,11 @@ import SeatLayoutDesigner from "./components/SeatLayoutDesigner/SeatLayoutDesign
 
 const App: React.FC = () => {
   // const seats = generateSeats();
-  const config: SeatConfig = data;
+  const config: BusConfig = data;
 
-  const bookedSeats = ["A2", "B5"];
-  const disabledSeats = ["A3", "C7","A3","A4","A5","A6","A7","A8","A9","A10","A11","A12","A13","A14","A15","A16","A17","A18"];
-  const reservedSeats = ["D1", "D2"];
+  const bookedForFemaleSeats = ["LB2", "LB5"];
+  // const disabledSeats = ["A3", "C7","A3","A4","A5","A6","A7","A8","A9","A10","A11","A12","A13","A14","A15","A16","A17","A18"];
+  const bookedForMaleSeats = ["LB6", "LB8"];
 
   const handleSelect = (seat: Seat) => {
     console.log("Seat selected:", seat);
@@ -41,15 +43,14 @@ const App: React.FC = () => {
     <div style={{ padding: "20px" }}>
       <h2>Theater Seat Selection</h2>
       <div>
-        <TheaterSeatSelect
+        <BusSeatSelect
           config={config}
-          bookedSeats={bookedSeats}
-          disabledSeats={disabledSeats}
-          reservedSeats={reservedSeats}
+          bookedForFemaleSeats={bookedForFemaleSeats}
+          bookedForMaleSeats={bookedForMaleSeats}
           onSelect={handleSelect}
           onUnselect={handleUnselect}
           maxSelectedSeats={5}
-          autoSeatExpansion={true}
+          // autoSeatExpansion={true}
           // customStyles={[
           //   {
           //     rowGap: "12px",

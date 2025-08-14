@@ -40,6 +40,10 @@
   gap: 6px;
 }
 
+.seat-column {
+display:flex;
+}
+
 .seat-group {
   display: flex;
   margin: auto;

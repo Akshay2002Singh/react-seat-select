@@ -1,0 +1,159 @@
+.bus-seat-selection-wrapper * {
+  box-sizing: border-box;
+}
+
+.bus-seat-selection-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.bus-seat-selection-container{
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.bus-seat-selection {
+  display: flex;
+}
+
+.seat-section-header {
+  display: flex;
+  justify-content: center;
+  margin: 10px 5px;
+  font-weight: bold;
+  font-size: 24px;
+  color: #cecece;
+}
+
+.seat-grid {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: center;
+}
+
+.seat-row {
+  display: flex;
+  gap: 6px;
+}
+.seat-column{
+  display: flex;
+  flex-direction: column;
+}
+
+
+.blankSeat {
+  width: 32px;
+  height: 32px;
+  background-color: transparent;
+}
+
+.seat {
+
+  font-size: 14px;
+  color: black;
+  /* border: 1px solid #ccc; */
+  border-radius: 4px;
+  background-color: #eee;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+  user-select: none;
+  -webkit-user-select: none;
+  /* For Safari */
+  -ms-user-select: none;
+  /* For IE/Edge */
+}
+
+
+.seater{
+  width: 32px;
+  height: 32px;
+}
+
+.sleeper{
+  width: 32px;
+  height: 64px;
+}
+
+
+/* Status Colors */
+.AVAILABLE {
+  background-color: #e0f7fa;
+}
+
+.SELECTED {
+  background-color: #4caf50;
+  color: black;
+}
+
+.BOOKED_FOR_FEMALE {
+  background-color: #f44336;
+  color: black;
+  cursor: not-allowed;
+}
+
+.BOOKED_FOR_MALE {
+  background-color: #f44336;
+  color: black;
+  cursor: not-allowed;
+}
+
+.DISABLED {
+  background-color: #9e9e9e;
+  color: black;
+  cursor: not-allowed;
+}
+
+.RESERVED {
+  background-color: #ff9800;
+  color: black;
+  cursor: not-allowed;
+}
+
+.screen-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.legend-container {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+}
+
+.legend-row {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.legend-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-item>div {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  width: 24px !important;
+  height: 24px !important;
+}
