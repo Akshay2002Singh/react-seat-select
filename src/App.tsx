@@ -1,9 +1,9 @@
 import React from "react";
-import { TheaterSeatSelect } from "./components/TheaterSeatSelect/TheaterSeatSelect.tsx";
-import type { Seat, SeatConfig } from "./components/TheaterSeatSelect/types.ts";
+// import { TheaterSeatSelect } from "./components/TheaterSeatSelect/TheaterSeatSelect.tsx";
+import type { Seat } from "./components/TheaterSeatSelect/types.ts";
 import data from "./bus_layout.ts";
 import seatPriceMap from "./seat_price_map.ts";
-import SeatLayoutDesigner from "./components/SeatLayoutDesigner/SeatLayoutDesigner.tsx";
+// import SeatLayoutDesigner from "./components/SeatLayoutDesigner/SeatLayoutDesigner.tsx";
 import type { BusConfig } from "./components/BusSeatSelect/types.ts";
 import BusSeatSelect from "./components/BusSeatSelect/BusSeatSelect.tsx";
 import SeatConfigGenerator from "./components/SeatLayoutDesigner/BusLayoutDesigner.tsx";
@@ -27,7 +27,7 @@ import SeatConfigGenerator from "./components/SeatLayoutDesigner/BusLayoutDesign
 
 const App: React.FC = () => {
   // const seats = generateSeats();
-  const config: BusConfig = data;
+  const config = data;
 
   const bookedForFemaleSeats = ["LB2", "LB5"];
   // const disabledSeats = ["A3", "C7","A3","A4","A5","A6","A7","A8","A9","A10","A11","A12","A13","A14","A15","A16","A17","A18"];
@@ -46,7 +46,7 @@ const App: React.FC = () => {
       <h2>Theater Seat Selection</h2>
       <div>
         <BusSeatSelect
-          config={config}
+          config={config as BusConfig}
           bookedByFemaleSeats={bookedForFemaleSeats}
           bookedByMaleSeats={bookedForMaleSeats}
           seatPriceMap={seatPriceMap}

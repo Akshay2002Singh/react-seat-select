@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import type { BusConfig, Column, CustomStyles, Seat, Section } from "./types";
+import type { BusConfig, CustomStyles, Seat } from "./types";
 import "./styles.css";
 import { useElementTotalSize } from "./utils";
 
@@ -197,7 +197,7 @@ const BusSeatSelect = (props: Props) => {
   return <div className="bus-seat-selection-wrapper">
         <div className="bus-seat-selection-container">
           <div className="bus-seat-selection" style={{gap:"10px"}}>
-            {Object.entries(config)?.map(([sectionId, section], index) => {
+            {Object.entries(config)?.map(([_, section], index) => {
               const currentSectionStyle =
                 customStyles?.[index] ??
                 customStyles[customStyles.length - 1] ??
@@ -251,14 +251,18 @@ const BusSeatSelect = (props: Props) => {
                               {column.seats?.map((seat) => {
                                 if (seat?.isBlank) {
                                   return (
+                                    <div style={{"display": "flex", "flexDirection": "column"}} key={seat.id}>
                                     <div
                                       key={`blank-${column.id}-${seat.id}`}
                                         className={`blankSeat ${seat.type}`}
                                         style={{
-                                          height: seatStyles?.height ? (seat.type === "sleeper" ?  `calc(${seatStyles.height} +  ${height}px +  ${height}px  + ${seatStyles.height} + ${rowGap})` : seatStyles.height) : (seat.type === "sleeper" ? `calc(64px + ${rowGap})` :"32px"),
+                                          height: seatStyles?.height ? (seat.type === "sleeper" ?  `calc(${seatStyles.height} +  ${height}px  + ${seatStyles.height} + ${rowGap})` : seatStyles.height) : (seat.type === "sleeper" ? `calc(64px + ${rowGap})` :"32px"),
                                           width: seatStyles?.width || "32px",
                                         }}
                                       />
+                                      <span ref={boxRef} style={{...seatPriceStyles,visibility:"hidden"}}>"no"
+                                  </span> 
+                                    </div>
                                     );
                                   }
   

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export function useElementTotalSize(ref) {
+export function useElementTotalSize(ref:any) {
   const [size, setSize] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
