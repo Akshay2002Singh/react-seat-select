@@ -87,6 +87,25 @@ export const TheaterSeatSelect: React.FC<Props> = ({
     disabledSeats?.includes(seat.id) ||
     reservedSeats?.includes(seat.id);
 
+  function getSeatsByIds(ids: string[]): Seat[] {
+    const result: Seat[] = [];
+
+    const idSet = new Set(ids);
+
+    for (const section of config) {
+      for (const rowKey in section.seats) {
+        const row = section.seats[rowKey] || [];
+        for (const seat of row) {
+          if (seat.id && idSet.has(seat.id)) {
+            result.push(seat);
+          }
+        }
+      }
+    }
+
+    return result;
+  }
+
   const handleSeatClick = (
     clickedSeat: Seat,
     rowLabel: string,
@@ -100,92 +119,95 @@ export const TheaterSeatSelect: React.FC<Props> = ({
       setSelectedSeats(updated);
       onUnselect(clickedSeat);
       return;
-    }
-    else if(autoSeatExpansion && maxSelectedSeats){
-      if(selectedSeats.length == maxSelectedSeats || selectedSeats.length == 0){
-const requiredSeats = maxSelectedSeats;
-      const clickedIndex = rowSeats.findIndex(
-        (seat: Seat) => seat.id === clickedSeat.id
-      );
-      if (clickedIndex === -1) return;
-
-      const trySelect = (indexes: number[]): Seat[] => {
-        const result: Seat[] = [];
-        for (const i of indexes) {
-          const seat = rowSeats[i];
-          if (seat && !seat.isBlank && !isSeatUnavailable(seat)) {
-            result.push(seat);
-          } else {
-            break;
-          }
+    } else if (autoSeatExpansion && maxSelectedSeats) {
+      if (
+        selectedSeats.length == maxSelectedSeats ||
+        selectedSeats.length == 0
+      ) {
+        if(selectedSeats.length === maxSelectedSeats){
+          // call callback for unSelect seats
+          getSeatsByIds(selectedSeats)?.forEach(seat => onUnselect(seat)); 
         }
-        return result;
-      };
+        const requiredSeats = maxSelectedSeats;
+        const clickedIndex = rowSeats.findIndex(
+          (seat: Seat) => seat.id === clickedSeat.id
+        );
+        if (clickedIndex === -1) return;
 
-      // 1. Try right side only
-      const rightIndexes = Array.from(
-        { length: requiredSeats - 1 },
-        (_, i) => clickedIndex + i + 1
-      );
-      const rightSeats = trySelect(rightIndexes);
+        const trySelect = (indexes: number[]): Seat[] => {
+          const result: Seat[] = [];
+          for (const i of indexes) {
+            const seat = rowSeats[i];
+            if (seat && !seat.isBlank && !isSeatUnavailable(seat)) {
+              result.push(seat);
+            } else {
+              break;
+            }
+          }
+          return result;
+        };
 
-      if (rightSeats.length === requiredSeats-1) {
-        const newSelection = [clickedSeat.id,...rightSeats.map((s) => s.id)];
-        setSelectedSeats(newSelection);
-        rightSeats.forEach((seat) => onSelect(seat));
-        return;
-      }
+        // 1. Try right side only
+        const rightIndexes = Array.from(
+          { length: requiredSeats - 1 },
+          (_, i) => clickedIndex + i + 1
+        );
+        const rightSeats = trySelect(rightIndexes);
 
-      // 2. Try left side only
-      const leftIndexes = Array.from(
-        { length: requiredSeats - 1 },
-        (_, i) => clickedIndex - i - 1
-      );
-      const leftSeats = trySelect(leftIndexes);
+        if (rightSeats.length === requiredSeats - 1) {
+          const newSelection = [clickedSeat.id, ...rightSeats.map((s) => s.id)];
+          setSelectedSeats(newSelection);
+          onSelect(clickedSeat);
+          rightSeats.forEach((seat) => onSelect(seat));
+          return;
+        }
 
-      if (leftSeats.length === requiredSeats-1) {
-        const newSelection = [...leftSeats.map((s) => s.id), clickedSeat.id];
-        setSelectedSeats(newSelection);
-        leftSeats.forEach((seat) => onSelect(seat));
-        return;
-      }
+        // 2. Try left side only
+        const leftIndexes = Array.from(
+          { length: requiredSeats - 1 },
+          (_, i) => clickedIndex - i - 1
+        );
+        const leftSeats = trySelect(leftIndexes);
 
-      let combinedSeats = [...leftSeats, clickedSeat, ...rightSeats];
+        if (leftSeats.length === requiredSeats - 1) {
+          const newSelection = [...leftSeats.map((s) => s.id), clickedSeat.id];
+          setSelectedSeats(newSelection);
+          onSelect(clickedSeat);
+          leftSeats.forEach((seat) => onSelect(seat));
+          return;
+        }
 
-      combinedSeats = combinedSeats.slice(-maxSelectedSeats)
+        let combinedSeats = [...leftSeats, clickedSeat, ...rightSeats];
 
-      
+        combinedSeats = combinedSeats.slice(-maxSelectedSeats);
+
         const newSelection = [...combinedSeats.map((s) => s.id)];
         setSelectedSeats(newSelection);
         combinedSeats.forEach((seat) => onSelect(seat));
+      } else {
+        if (selectedSeats.length == maxSelectedSeats) {
+          setSelectedSeats([clickedSeat.id]);
+          return;
+        }
+        const newSelection = [...selectedSeats, clickedSeat.id];
+        setSelectedSeats(newSelection);
+        onSelect(clickedSeat);
       }
-      else{
-         if(selectedSeats.length==maxSelectedSeats){
-
+    } else if (!autoSeatExpansion && maxSelectedSeats) {
+      if (selectedSeats.length == maxSelectedSeats) {
+        getSeatsByIds(selectedSeats)?.forEach(seat => onUnselect(seat)); 
         setSelectedSeats([clickedSeat.id]);
+        onSelect(clickedSeat);
         return;
       }
       const newSelection = [...selectedSeats, clickedSeat.id];
       setSelectedSeats(newSelection);
       onSelect(clickedSeat);
-      }
-    }
-    else if(!autoSeatExpansion && maxSelectedSeats){
-  if(selectedSeats.length==maxSelectedSeats){
-
-        setSelectedSeats([clickedSeat.id]);
-        return;
-      }
+    } else {
       const newSelection = [...selectedSeats, clickedSeat.id];
       setSelectedSeats(newSelection);
       onSelect(clickedSeat);
     }
-    else{
-const newSelection = [...selectedSeats, clickedSeat.id];
-      setSelectedSeats(newSelection);
-      onSelect(clickedSeat);
-    }
-
   };
 
   const getSeatStatus = (seatId: string) => {
