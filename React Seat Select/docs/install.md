@@ -12,7 +12,7 @@ This page shows how you can **display JSX code** and also **render live JSX outp
 
 ## Code Block (just shown)
 
-```tsx
+```tsx live noedit
 function Counter() {
   const [count, setCount] = useState(0);
   return (
@@ -22,7 +22,7 @@ function Counter() {
   );
 }
 ```
-<Counter />
+<!-- <Counter />
 
 export function Counter() {
 const [count, setCount] = useState(0);
@@ -42,4 +42,4 @@ onClick={() => setCount(count + 1)}
 Count: {count}
 </button>
 );
-}
+} -->
