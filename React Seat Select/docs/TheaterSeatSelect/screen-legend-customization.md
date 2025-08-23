@@ -49,8 +49,8 @@ const cinemaConfig = [
 ];
 
 const screenConfig = {
-  screenVariant: 1,
-  width: 80,
+  screenVariant: 4,
+  width: 250,
   color: "#000",
   screenText: "CINEMA SCREEN"
 };

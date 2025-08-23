@@ -5,9 +5,6 @@ sidebar_label: Introduction
 sidebar_position: 1
 ---
 
-<!-- import ThreaterSeatSelectIntroduction from "@site/src/examples/TheaterSeatSelect/ThreaterSeatSelectIntroduction"; -->
-<!-- import { TheaterSeatSelect } from "../../../src/components/TheaterSeatSelect/TheaterSeatSelect"; -->
-
 
 # 🎭 TheaterSeatSelect Introduction
 
@@ -103,4 +100,3 @@ function Example() {
 }
 ```
 
-<!-- <ThreaterSeatSelectIntroduction/> -->

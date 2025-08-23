@@ -5,7 +5,6 @@ sidebar_label: Getting Started
 sidebar_position: 2
 ---
 
-import TheaterSeatSelectGettingStarted from "@site/src/examples/TheaterSeatSelect/TheaterSeatSelectGettingStarted";
 
 # 🚀 Getting Started with TheaterSeatSelect
 
@@ -65,7 +64,7 @@ export type SeatConfig = SeatSection[];
 
 Here’s a working example with a small layout:
 
-```tsx
+```tsx live scope={{TheaterSeatSelect}}
 function Example() {
   const config = [
     {
@@ -98,7 +97,6 @@ function Example() {
 }
 ```
 
-<TheaterSeatSelectGettingStarted />
 
 ✅ You now have a working TheaterSeatSelect with your first config!
 In the next section, we’ll explore props and customizations.
