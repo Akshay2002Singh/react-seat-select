@@ -2,6 +2,7 @@
 id: theater-seat-select-introduction
 title: 🎭 Introduction
 sidebar_label: Introduction
+sidebar_position: 1
 ---
 
 <!-- import ThreaterSeatSelectIntroduction from "@site/src/examples/TheaterSeatSelect/ThreaterSeatSelectIntroduction"; -->

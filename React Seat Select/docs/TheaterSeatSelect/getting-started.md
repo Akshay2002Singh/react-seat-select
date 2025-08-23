@@ -2,6 +2,7 @@
 id: theater-seat-getting-started
 title: 🚀 Getting Started
 sidebar_label: Getting Started
+sidebar_position: 2
 ---
 
 import TheaterSeatSelectGettingStarted from "@site/src/examples/TheaterSeatSelect/TheaterSeatSelectGettingStarted";
