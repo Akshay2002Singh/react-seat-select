@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, type ReactNode } from "react";
 import type { BusConfig, CustomStyles, Seat } from "./types";
 import "./styles.css";
 import { useElementTotalSize } from "./utils";
@@ -14,6 +14,7 @@ type Props = {
   onUnselect?: (seat: Seat) => void;
   maxSelectedSeats?: number;
   customSectionWrapperStyle?: React.CSSProperties;
+  SectionHeader?: React.ComponentType  | null;
   customStyles?: CustomStyles;
   showBookedSeatLabel?: boolean;
   showSelectedSeatLabel?: boolean;
@@ -53,6 +54,7 @@ export const BusSeatSelect = (props: Props) => {
     onUnselect = () => {},
     maxSelectedSeats = null,
     customSectionWrapperStyle = {},
+    SectionHeader = null,
     customStyles = [],
     showBookedSeatLabel = false,
     showSelectedSeatLabel = false,
@@ -226,7 +228,7 @@ export const BusSeatSelect = (props: Props) => {
             const {
               rowGap = "10px",
               columnGap = "6px",
-              containerStyle = {},
+              sectionStyle = {},
               headerStyles = {},
               seatStyles = {},
               availableStyles = {},
@@ -266,7 +268,8 @@ export const BusSeatSelect = (props: Props) => {
             };
             // sections of bus 
             return (
-              <div key={index} style={{...containerStyle}}>
+              <div key={index} style={{...sectionStyle}}>
+                {SectionHeader && <SectionHeader/>}
                 {section?.title && (
                   <div
                     className="busSeatSelect-section-header"
