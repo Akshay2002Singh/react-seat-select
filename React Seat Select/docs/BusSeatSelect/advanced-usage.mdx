@@ -1,0 +1,135 @@
+---
+id: bus-seat-advanced
+title: 🚌 Advanced Usage
+sidebar_label: Advanced Usage
+sidebar_position: 7
+---
+
+# 🚌 Advanced Usage
+
+Here’s a realistic **bus seat layout** example using `BusSeatSelect` with column-based configuration.  
+It represents a **lower deck** layout with an **aisle** and supports different seat states.
+
+---
+
+## Example Layout
+
+```tsx live scope={{BusSeatSelect}}
+function BusAdvancedExample() {
+  const config = {
+    lowerDeck: {
+      title: "Lower Deck",
+      columns: [
+        {
+          id: "col1",
+          seats: [
+            { id: "L1", type: "seater", isBlank: false },
+            { id: "L2", type: "seater", isBlank: false },
+            { id: "L3", type: "seater", isBlank: false },
+            { id: "L4", type: "seater", isBlank: false },
+          ],
+        },
+        {
+          id: "col2",
+          seats: [
+            { id: "L5", type: "seater", isBlank: false },
+            { id: "L6", type: "seater", isBlank: false },
+            { id: "L7", type: "seater", isBlank: false },
+            { id: "L8", type: "seater", isBlank: false },
+          ],
+        },
+        {
+          id: "col3",
+          seats: [
+            { id: "BL1", type: "seater", isBlank: true },
+            { id: "BL2", type: "seater", isBlank: true },
+            { id: "BL3", type: "seater", isBlank: true },
+            { id: "BL4", type: "seater", isBlank: true },
+          ],
+        },
+        {
+          id: "col4",
+          seats: [
+            { id: "L9", type: "seater", isBlank: false },
+            { id: "L10", type: "seater", isBlank: false },
+            { id: "L11", type: "seater", isBlank: false },
+            { id: "L12", type: "seater", isBlank: false },
+          ],
+        },
+      ],
+    },
+  };
+
+  const [selectedSeats, setSelectedSeats] = React.useState<string[]>([]);
+  const bookedSeats = ["L2", "L7"];
+  const bookedByMaleSeats = ["L5"];
+  const bookedByFemaleSeats = ["L6"];
+  const availableForMaleSeats = ["L10"];
+  const availableForFemaleSeats = ["L12"];
+
+  const handleSelect = (seat) => setSelectedSeats((prev) => [...prev, seat.id]);
+  const handleUnselect = (seat) =>
+    setSelectedSeats((prev) => prev.filter((s) => s !== seat.id));
+
+  const customStyles = [
+    {
+      rowGap: "10px",
+      columnGap: "12px",
+      headerStyles: { fontSize: "16px", fontWeight: "600", color: "#333" },
+      seatStyles: {
+        width: "40px",
+        height: "40px",
+        borderRadius: "6px",
+        border: "1px solid #ccc",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      },
+      availableStyles: { backgroundColor: "#28a745", color: "#fff" },
+      bookedStyles: { backgroundColor: "#dc3545", color: "#fff" },
+      bookedByMaleStyles: { backgroundColor: "#1565c0", color: "#fff" },
+      bookedByFemaleStyles: { backgroundColor: "#d81b60", color: "#fff" },
+      selectedStyles: { backgroundColor: "#007bff", color: "#fff" },
+    },
+  ];
+
+  const legendConfig = {
+    bookedSeatText: "Booked",
+    bookedByMaleSeatText: "Booked by Male",
+    bookedByFemaleSeatText: "Booked by Female",
+    selectedSeatText: "Your Selection",
+    availableSeatText: "Available",
+    availableForMaleSeatText: "Available (Males)",
+    availableForFemaleSeatText: "Available (Females)",
+  };
+
+  return (
+    <div
+      style={{
+        width: "800px",
+        height: "720px",
+        overflow: "auto",
+      }}
+    >
+      <BusSeatSelect
+        config={config}
+        bookedSeats={bookedSeats}
+        bookedByMaleSeats={bookedByMaleSeats}
+        bookedByFemaleSeats={bookedByFemaleSeats}
+        availableForMaleSeats={availableForMaleSeats}
+        availableForFemaleSeats={availableForFemaleSeats}
+        onSelect={handleSelect}
+        onUnselect={handleUnselect}
+        customStyles={customStyles}
+        maxSelectedSeats={4}
+        showBookedSeatLabel={true}
+        showSelectedSeatLabel={true}
+        legendConfig={legendConfig}
+      />
+      <p style={{ marginTop: "1rem", fontSize: "14px" }}>
+        🎟 <strong>Selected Seats:</strong> {selectedSeats.join(", ") || "None"}
+      </p>
+    </div>
+  );
+}
+```

@@ -1,0 +1,247 @@
+---
+id: theater-seat-advanced
+title: 🎭 Advanced Usage
+sidebar_label: Advanced Usage
+sidebar_position: 7
+---
+
+import React, { useState } from "react";
+import { TheaterSeatSelect } from "../../../src/components/TheaterSeatSelect/TheaterSeatSelect";
+
+# 🎭 Advanced Usage
+
+In this section, let’s build a **multi-section theater layout** with **custom styling**.
+
+We will use:
+
+- Two sections: **Balcony** + **Ground Floor**
+- `onSelect` and `onUnselect` to update selected seats
+- `customStyles` to fully design the look of seats
+
+---
+
+## Multi-Section Config
+
+```tsx
+const config = [
+  {
+    title: "Balcony",
+    seats: {
+      A: [
+        { id: "A1", label: "A1" },
+        { id: "A2", label: "A2" },
+        { id: "A3", label: "A3" },
+      ],
+      B: [
+        { id: "B1", label: "B1" },
+        { id: "B2", label: "B2" },
+        { id: "B3", label: "B3" },
+      ],
+    },
+  },
+  {
+    title: "Ground Floor",
+    seats: {
+      C: [
+        { id: "C1", label: "C1" },
+        { id: "C2", label: "C2" },
+        { id: "C3", label: "C3" },
+      ],
+      D: [
+        { id: "D1", label: "D1" },
+        { id: "D2", label: "D2" },
+        { id: "D3", label: "D3" },
+      ],
+    },
+  },
+];
+```
+
+## Full Example with Styling
+
+```tsx live scope={{TheaterSeatSelect}}
+function AdvancedExample() {
+  // Seat configuration for multiple sections
+  const config = [
+    {
+      title: "Balcony",  // Section title
+      seats: {
+        A: [
+          { id: "A1", label: "A1" },
+          { id: "A2", label: "A2" },
+          { id: "A3", label: "A3" },
+        ],
+        B: [
+          { id: "B1", label: "B1" },
+          { id: "B2", label: "B2" },
+          { id: "B3", label: "B3" },
+        ],
+      },
+    },
+    {
+      title: "Ground Floor",  // Another section title
+      seats: {
+        C: [
+          { id: "C1", label: "C1" },
+          { id: "C2", label: "C2" },
+          { id: "C3", label: "C3" },
+        ],
+        D: [
+          { id: "D1", label: "D1" },
+          { id: "D2", label: "D2" },
+          { id: "D3", label: "D3" },
+        ],
+      },
+    },
+  ];
+
+// Seat SVG (can use png or network image)
+  const seat1 = `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'><rect x='16' y='8' width='32' height='28' rx='6' fill='none' stroke='black' stroke-width='4'/><rect x='14' y='32' width='36' height='14' rx='4' fill='none' stroke='black' stroke-width='4'/><rect x='8' y='20' width='6' height='28' rx='2' fill='none' stroke='black' stroke-width='3'/><rect x='50' y='20' width='6' height='28' rx='2' fill='none' stroke='black' stroke-width='3'/><rect x='18' y='46' width='6' height='10' rx='1' fill='none' stroke='black' stroke-width='3'/><rect x='40' y='46' width='6' height='10' rx='1' fill='none' stroke='black' stroke-width='3'/></svg>")`;
+
+  const seat2 = `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64' fill='none'><rect x='18' y='10' width='28' height='18' rx='4' stroke='black' stroke-width='4' fill='none'/><rect x='16' y='30' width='32' height='10' rx='3' stroke='black' stroke-width='4' fill='none'/><path d='M16 30 v12 q0 6 6 6' stroke='black' stroke-width='4' fill='none'/><path d='M48 30 v12 q0 6 -6 6' stroke='black' stroke-width='4' fill='none'/><line x1='24' y1='46' x2='40' y2='46' stroke='black' stroke-width='4'/></svg>")`;
+
+  // State to track selected seats
+  const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
+  // Example statuses
+  const bookedSeats = ["B2", "C1"];
+  const disabledSeats = ["D3"];
+  const reservedSeats = ["A3"];
+
+  // Event handlers
+  const handleSelect = (seat) => setSelectedSeats((prev) => [...prev, seat.id]);
+
+  const handleUnselect = (seat) =>
+    setSelectedSeats((prev) => prev.filter((s) => s !== seat.id));
+
+  return (
+    <div
+      style={{ padding: "1rem", background: "#1e1e2f", borderRadius: "12px" }}
+    >
+      {/* Seat Selection Component */}
+      <TheaterSeatSelect
+        config={config}
+        bookedSeats={bookedSeats}
+        disabledSeats={disabledSeats}
+        reservedSeats={reservedSeats}
+        onSelect={handleSelect}
+        onUnselect={handleUnselect}
+        customStyles={[
+          // Seat Selection Component
+          {
+            rowGap: "12px",
+            columnGap: "16px",
+            headerStyles: {
+              fontSize: "18px",
+              fontWeight: 600,
+              color: "#ffffff",
+              textTransform: "uppercase",
+              marginBottom: "8px",
+              padding: "4px 0",
+            },
+            seatStyles: {
+              width: "36px",
+              height: "36px",
+              borderRadius: "6px",
+              border: "1px solid #cccccc",
+              fontSize: "14px",
+              fontWeight: "bold",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            },
+            availableStyles: {
+              backgroundImage: seat1,
+              backgroundColor: "#28a745",
+              color: "#000000ff",
+              border: "2px solid #000000ff",
+            },
+            bookedStyles: {
+              backgroundImage: seat1,
+              backgroundColor: "#dc3545",
+              color: "#000000ff",
+              border: "2px solid #000000ff",
+            },
+            disabledStyles: {
+              backgroundImage: seat1,
+              backgroundColor: "#6c757d",
+              color: "#000000ff",
+              border: "2px solid #000000ff",
+              cursor: "not-allowed",
+            },
+            reservedStyles: {
+              backgroundImage: seat1,
+              backgroundColor: "#ffc107",
+              color: "#000000ff",
+              border: "2px solid #000000ff",
+            },
+            selectedStyles: {
+              // backgroundImage: seat1,
+              backgroundColor: "#007bff",
+              color: "#000000ff",
+              border: "2px solid #000000ff",
+            },
+          },
+          // Section 2 style
+          {
+            rowGap: "8px",
+            columnGap: "12px",
+            headerStyles: {
+              fontSize: "16px",
+              fontWeight: "bold",
+              color: "#ffffff",
+              padding: "8px 0",
+              textAlign: "center",
+            },
+            seatStyles: {
+              width: "30px",
+              height: "30px",
+              borderRadius: "4px",
+              border: "1px solid #ccc",
+              display: "inline-flex",
+              justifyContent: "center",
+              alignItems: "center",
+              fontSize: "12px",
+            },
+            availableStyles: {
+              backgroundImage: seat2,
+              backgroundColor: "#28a745",
+              color: "#000000ff",
+              border: "2px solid #000000ff",
+            },
+            bookedStyles: {
+              backgroundImage: seat2,
+              backgroundColor: "#dc3545",
+              color: "#000000ff",
+              border: "2px solid #000000ff",
+            },
+            disabledStyles: {
+              backgroundImage: seat2,
+              backgroundColor: "#6c757d",
+              color: "#000000ff",
+              border: "2px solid #000000ff",
+              cursor: "not-allowed",
+            },
+            reservedStyles: {
+              backgroundImage: seat2,
+              backgroundColor: "#ffc107",
+              color: "#000000ff",
+              border: "2px solid #000000ff",
+            },
+            selectedStyles: {
+              // backgroundImage: seat2,
+              backgroundColor: "#007bff",
+              color: "#000000ff",
+              border: "2px solid #000000ff",
+            },
+          },
+        ]}
+      />
+
+      {/* Show selected seats */}
+      <p style={{ marginTop: "1rem", color: "#fff" }}>
+        🎟 <strong>Selected Seats:</strong> {selectedSeats.join(", ") || "None"}
+      </p>
+    </div>
+  );
+}
+```

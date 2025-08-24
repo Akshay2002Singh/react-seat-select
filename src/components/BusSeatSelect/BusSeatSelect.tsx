@@ -40,7 +40,7 @@ const SEAT_STATUS: Record<string, string> = {
   AVAILABLE_FOR_FEMALE:"AVAILABLE_FOR_FEMALE", 
 };
 
-const BusSeatSelect = (props: Props) => {
+export const BusSeatSelect = (props: Props) => {
   const {
     config = {},
     bookedSeats = [],
@@ -324,5 +324,3 @@ const BusSeatSelect = (props: Props) => {
       ) : null}
         </div>
 };
-
-export default BusSeatSelect;
