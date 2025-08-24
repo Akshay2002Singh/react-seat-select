@@ -92,19 +92,32 @@
   background-color: #e0f7fa;
 }
 
+.busSeatSelect-AVAILABLE_FOR_MALE {
+  background-color: #4aa2eb;
+}
+
+.busSeatSelect-AVAILABLE_FOR_FEMALE {
+  background-color: #d73d71;
+}
+
 .busSeatSelect-SELECTED {
   background-color: #4caf50;
   color: black;
 }
 
-.busSeatSelect-BOOKED_FOR_FEMALE {
-  background-color: #f44336;
+.busSeatSelect-BOOKED {
+  background-color: #9E9E9E;
+  color: black;
+}
+
+.busSeatSelect-BOOKED_BY_FEMALE {
+  background-color: #AD1457;
   color: black;
   cursor: not-allowed;
 }
 
-.busSeatSelect-BOOKED_FOR_MALE {
-  background-color: #f44336;
+.busSeatSelect-BOOKED_BY_MALE {
+  background-color: #1565C0;
   color: black;
   cursor: not-allowed;
 }
@@ -114,13 +127,6 @@
   color: black;
   cursor: not-allowed;
 }
-
-.busSeatSelect-RESERVED {
-  background-color: #ff9800;
-  color: black;
-  cursor: not-allowed;
-}
-
 
 .busSeatSelect-legend-container {
   display: flex;
@@ -133,7 +139,9 @@
 
 .busSeatSelect-legend-row {
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
+  justify-content: center;
   gap: 16px;
 }
 

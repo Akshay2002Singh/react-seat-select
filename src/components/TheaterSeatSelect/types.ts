@@ -32,6 +32,7 @@ export type CustomStyles = SectionStyle[];
 export type screenConfig = {
   screenVariant: number;
   width: number;
-  color?: string;
+  screenColor?: string;
+  textColor?: string;
   screenText?: string;
 };
