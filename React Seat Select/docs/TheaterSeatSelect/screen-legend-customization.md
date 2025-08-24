@@ -1,7 +1,7 @@
 ---
 id: screen-legend-customization
 title: 🖥️ Screen & Legend Customization
-sidebar_label: Screen & Legend
+sidebar_label: Screen & Legend Customization
 sidebar_position: 6
 ---
 

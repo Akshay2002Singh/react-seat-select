@@ -1,7 +1,7 @@
 ---
 id: theater-seat-select-props
 title: 📖 Props & API Reference
-sidebar_label: Props & API
+sidebar_label: Props & API Reference
 sidebar_position: 4
 ---
 
@@ -38,7 +38,7 @@ const config = [
 <TheaterSeatSelect config={config} />;
 ```
 
-## 2. `bookedSeats`
+### 2. `bookedSeats`
 
 **Type:** `string[]`  
 **Default:** `[]`
@@ -169,6 +169,8 @@ Automatically selects adjacent seats when a user selects one, up to the `maxSele
 
 Customizes layout and appearance of seats and sections.
 
+`Note: If the customStyles array size is smaller than the number of sections, the last style object in the array will be applied to all remaining sections automatically.  `
+
 ```tsx
 const customStyles = [
   {
@@ -286,7 +288,21 @@ const MyScreen = () => <div style={{ textAlign: "center" }}>🎥 Custom Screen</
 />
 ```
 
-### 15. `CustomLegendComponent`
+### 15. `showDefaultLegend`
+
+**Type:** `boolean`  
+**Default:** `true`
+
+**Example:**
+
+```tsx
+<TheaterSeatSelect
+  config={config}
+  showDefaultLegend={false}
+/>
+```
+
+### 16. `CustomLegendComponent`
 
 **Type:** `React.ComponentType`  
 **Default:** `undefined`
@@ -302,19 +318,6 @@ const MyLegend = () => <div>Legend: 🟢 Available 🔴 Booked</div>;
 />
 ```
 
-### 16. `showDefaultLegend`
-
-**Type:** `boolean`  
-**Default:** `true`
-
-**Example:**
-
-```tsx
-<TheaterSeatSelect
-  config={config}
-  showDefaultLegend={false}
-/>
-```
 
 ### 17. `legendConfig`
 

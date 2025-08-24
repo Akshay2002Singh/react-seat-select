@@ -1,7 +1,7 @@
 ---
 id: theater-seat-select-customization
 title: 🎨 Customization & Styling
-sidebar_label: Customization
+sidebar_label: Customization & Styling
 sidebar_position: 5
 ---
 
@@ -17,6 +17,9 @@ You can also replace built-in UI parts like the **screen** and **legend** with y
 The `customStyles` prop accepts an **array of objects**, where **each object corresponds to one section** in your `SeatConfig`.
 
 This means you can give **different looks** to each section (e.g., VIP seats gold-colored, Balcony seats blue-colored).
+
+`Note: If the customStyles array size is smaller than the number of sections, the last style object in the array will be applied to all remaining sections automatically.  `
+
 
 ### 🛠 Properties of `SectionStyle`
 
