@@ -1,25 +1,25 @@
-.bus-seat-selection-wrapper * {
+.busSeatSelect-wrapper * {
   box-sizing: border-box;
 }
 
-.bus-seat-selection-wrapper {
+.busSeatSelect-wrapper {
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
 }
 
-.bus-seat-selection-container{
+.busSeatSelect-container{
   width: 100%;
   height: 100%;
   overflow: auto;
 }
 
-.bus-seat-selection {
+.busSeatSelect {
   display: flex;
 }
 
-.seat-section-header {
+.busSeatSelect-section-header {
   display: flex;
   justify-content: center;
   margin: 10px 5px;
@@ -27,30 +27,30 @@
   font-size: 24px;
 }
 
-.seat-grid {
+.busSeatSelect-seat-grid {
   display: flex;
   flex-direction: row;
   gap: 10px;
   justify-content: center;
 }
 
-.seat-row {
+.busSeatSelect-seat-row {
   display: flex;
   gap: 6px;
 }
-.seat-column{
+.busSeatSelect-seat-column{
   display: flex;
   flex-direction: column;
 }
 
 
-.blankSeat {
+.busSeatSelect-blankSeat {
   width: 32px;
   height: 32px;
   background-color: transparent;
 }
 
-.seat {
+.busSeatSelect-seat {
 
   font-size: 14px;
   color: black;
@@ -76,58 +76,53 @@
 }
 
 
-.seater{
+.busSeatSelect-seater{
   width: 32px;
   height: 32px;
 }
 
-.sleeper{
+.busSeatSelect-sleeper{
   width: 32px;
   height: 64px;
 }
 
 
 /* Status Colors */
-.AVAILABLE {
+.busSeatSelect-AVAILABLE {
   background-color: #e0f7fa;
 }
 
-.SELECTED {
+.busSeatSelect-SELECTED {
   background-color: #4caf50;
   color: black;
 }
 
-.BOOKED_FOR_FEMALE {
+.busSeatSelect-BOOKED_FOR_FEMALE {
   background-color: #f44336;
   color: black;
   cursor: not-allowed;
 }
 
-.BOOKED_FOR_MALE {
+.busSeatSelect-BOOKED_FOR_MALE {
   background-color: #f44336;
   color: black;
   cursor: not-allowed;
 }
 
-.DISABLED {
+.busSeatSelect-DISABLED {
   background-color: #9e9e9e;
   color: black;
   cursor: not-allowed;
 }
 
-.RESERVED {
+.busSeatSelect-RESERVED {
   background-color: #ff9800;
   color: black;
   cursor: not-allowed;
 }
 
-.screen-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
 
-.legend-container {
+.busSeatSelect-legend-container {
   display: flex;
   flex-direction: column;
   padding: 16px 20px;
@@ -136,20 +131,20 @@
   gap: 18px;
 }
 
-.legend-row {
+.busSeatSelect-legend-row {
   display: flex;
   flex-direction: row;
   gap: 16px;
 }
 
-.legend-item {
+.busSeatSelect-legend-item {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 8px;
 }
 
-.legend-item>div {
+.busSeatSelect-legend-item>div {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
