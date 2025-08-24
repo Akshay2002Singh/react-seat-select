@@ -13,6 +13,7 @@ type Props = {
   onSelect?: (seat: Seat) => void;
   onUnselect?: (seat: Seat) => void;
   maxSelectedSeats?: number;
+  customSectionWrapperStyle?: React.CSSProperties;
   customStyles?: CustomStyles;
   showBookedSeatLabel?: boolean;
   showSelectedSeatLabel?: boolean;
@@ -51,6 +52,7 @@ export const BusSeatSelect = (props: Props) => {
     onSelect = () => {},
     onUnselect = () => {},
     maxSelectedSeats = null,
+    customSectionWrapperStyle = {},
     customStyles = [],
     showBookedSeatLabel = false,
     showSelectedSeatLabel = false,
@@ -214,7 +216,7 @@ export const BusSeatSelect = (props: Props) => {
   return (
     <div className="busSeatSelect-wrapper">
       <div className="busSeatSelect-container">
-        <div className="busSeatSelect" style={{ gap: "10px" }}>
+        <div className="busSeatSelect" style={{ gap: "10px", ...customSectionWrapperStyle }}>
           {Object.entries(config)?.map(([_, section], index) => {
             const currentSectionStyle =
               customStyles?.[index] ??
@@ -224,6 +226,7 @@ export const BusSeatSelect = (props: Props) => {
             const {
               rowGap = "10px",
               columnGap = "6px",
+              containerStyle = {},
               headerStyles = {},
               seatStyles = {},
               availableStyles = {},
@@ -261,9 +264,9 @@ export const BusSeatSelect = (props: Props) => {
                 ...availableForFemaleStyles,
               },
             };
-
+            // sections of bus 
             return (
-              <div key={index}>
+              <div key={index} style={{...containerStyle}}>
                 {section?.title && (
                   <div
                     className="busSeatSelect-section-header"
