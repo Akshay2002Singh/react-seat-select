@@ -16,14 +16,14 @@ It supports gender-based booking, seat price mapping, and custom legends.
 
 ### 1. `config` (required)  
 **Type:** `BusConfig`  
-**Default:** `{}`  
+**Default:** `[]`  
 
 Defines the bus seat layout configuration.
 
 **Example:**
 ```tsx
-const config = {
-  lowerDeck: {
+const config = [
+  {
     title: "Lower Deck",
     columns: [
       {
@@ -42,7 +42,7 @@ const config = {
       }
     ]
   }
-};
+];
 
 <BusSeatSelect config={config} />;
 ```
@@ -192,9 +192,57 @@ const customStyles = [
 />
 ```
 
+### 11. `customSectionWrapperStyle`
+**Type:** `React.CSSProperties`
+**Default:** `{}`
+
+Customize the wrapper around each section, such as spacing, alignment, or container styling.
+
+```tsx
+<BusSeatSelect
+  config={config}
+  customSectionWrapperStyle={{
+    gap: "60px", // adds spacing between seat sections
+    backgroundColor: "#f9f9f9",
+    padding: "20px"
+  }}
+/>
+```
+
+### 12. `SectionHeader`
+
+**Type:** `() => JSX.Element`
+**Default:** `undefined`
+
+Render a custom header above each section. Useful for adding labels, icons, or styled titles.
+
+```tsx
+<BusSeatSelect
+  config={config}
+  SectionHeader={() => (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "8px 16px",
+        borderBottom: "1px solid #ccc",
+        fontWeight: "bold",
+        fontSize: "16px",
+        background: "#222",
+        color: "#fff"
+      }}
+    >
+      <span>Driver Section</span>
+      <div style={{ fontSize: "32px" }}>☮</div>
+    </div>
+  )}
+/>
+```
+
 ---
 
-### 11. `showBookedSeatLabel`  
+### 13. `showBookedSeatLabel`  
 **Type:** `boolean`  
 **Default:** `false`  
 
@@ -202,7 +250,7 @@ Whether to display seat labels for booked seats.
 
 ---
 
-### 12. `showSelectedSeatLabel`  
+### 14. `showSelectedSeatLabel`  
 **Type:** `boolean`  
 **Default:** `false`  
 
@@ -210,7 +258,7 @@ Whether to display labels for selected seats.
 
 ---
 
-### 13. `seatPriceMap`  
+### 15. `seatPriceMap`  
 **Type:** `Record<string, number>`  
 **Default:** `{}`  
 
@@ -225,7 +273,7 @@ Maps seat IDs to their prices.
 
 ---
 
-### 14. `CustomLegendComponent`  
+### 16. `CustomLegendComponent`  
 **Type:** `React.ComponentType`  
 **Default:** `undefined`  
 
@@ -244,7 +292,7 @@ const MyLegend = () => (
 
 ---
 
-### 15. `showDefaultLegend`  
+### 17. `showDefaultLegend`  
 **Type:** `boolean`  
 **Default:** `true`  
 
@@ -252,7 +300,7 @@ Show/hide the default legend.
 
 ---
 
-### 16. `legendConfig`  
+### 18. `legendConfig`  
 **Type:**  
 
 ```ts

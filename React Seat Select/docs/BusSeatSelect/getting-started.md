@@ -45,14 +45,14 @@ export interface Section {
   columns: Column[];
 }
 
-export type BusConfig = Record<string, Section>;
+export type BusConfig = Section[];
 ```
 
 ### ✅ Minimal Example Config
 
 ```tsx
-const busConfig: BusConfig = {
-  lowerDeck: {
+const busConfig: BusConfig = [
+    {
     title: "Lower Deck",
     columns: [
       {
@@ -71,7 +71,7 @@ const busConfig: BusConfig = {
       },
     ],
   },
-};
+];
 ```
 
 ## 🔑 Step 3 — Render the Component
@@ -80,8 +80,8 @@ Here’s a working example with a simple 2x2 bus layout:
 
 ```tsx live
 function Example() {
-  const busConfig = {
-    lowerDeck: {
+  const busConfig = [
+      {
       title: "Lower Deck",
       columns: [
         {
@@ -126,7 +126,7 @@ function Example() {
         },
       ],
     },
-  };
+  ];
 
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
 

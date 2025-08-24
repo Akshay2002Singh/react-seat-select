@@ -29,8 +29,8 @@ Here’s the **minimal setup** to get started with a 1+2 style bus layout:
 
 ```tsx live
 function Example() {
-  const busConfig = {
-    lowerDeck: {
+  const busConfig = [
+    {
       title: "Lower Deck",
       columns: [
         {
@@ -67,7 +67,25 @@ function Example() {
         },
       ],
     },
-  };
+  ];
+
+  const seatPriceMap = {
+  // First column (₹500 each)
+  L1: 500,
+  L2: 500,
+  L3: 500,
+
+  // Third column (₹550 each)
+  L4: 550,
+  L5: 550,
+  L6: 550,
+
+  // Fourth column (₹600 each)
+  L7: 600,
+  L8: 600,
+  L9: 600,
+};
+
 
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
 
@@ -81,6 +99,7 @@ function Example() {
         }
         maxSelectedSeats={3}
         bookedSeats={[]}
+        seatPriceMap={seatPriceMap}
       />
       <p style={{ marginTop: "20px" }}>
         <strong>Selected Seats:</strong> {selectedSeats.join(", ") || "None"}

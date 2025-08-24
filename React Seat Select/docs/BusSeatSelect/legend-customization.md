@@ -1,7 +1,7 @@
 ---
 id: bus-legend-customization
 title: 🚌 Legend Customization
-sidebar_label: Legend
+sidebar_label: Legend Customization
 sidebar_position: 6
 ---
 
@@ -32,8 +32,8 @@ It works together with `customStyles` (which handles the colors/styles of seats)
 
 ```tsx live scope={{BusSeatSelect}}
 function Example() {
-  const busConfig = {
-    lowerDeck: {
+  const busConfig = [
+    {
       title: "Lower Deck",
       columns: [
         {
@@ -57,10 +57,7 @@ function Example() {
         {
           id: "col3",
           seats: [
-            { id: "BL1", type: "seater", isBlank: true },
-            { id: "BL2", type: "seater", isBlank: true },
-            { id: "BL3", type: "seater", isBlank: true },
-            { id: "BL4", type: "seater", isBlank: true },
+            { id: "gap", type: "seater", isBlank: true },
           ],
         },
         {
@@ -72,7 +69,7 @@ function Example() {
         },
       ],
     },
-  };
+  ];
 
   const customStyles = [
     {
@@ -84,20 +81,19 @@ function Example() {
         borderRadius: "6px",
       },
       selectedStyles: { backgroundColor: "#4caf50", color: "#fff" },
-      bookedStyles: { backgroundColor: "#9e9e9e", color: "#fff" },
-      maleBookedStyles: { backgroundColor: "#1565c0", color: "#fff" },
-      femaleBookedStyles: { backgroundColor: "#d81b60", color: "#fff" },
+      availableForMaleStyles: { backgroundColor: "#578ac5ff", color: "#fff" },
+      availableForFemaleStyles: { backgroundColor: "#c6678aff", color: "#fff" },
+      bookedByMaleStyles: { backgroundColor: "#1565c0", color: "#fff" },
+      bookedByFemaleStyles: { backgroundColor: "#d81b60", color: "#fff" },
     },
   ];
 
   const legendConfig = {
-    bookedSeatText: "Booked",
     bookedByMaleSeatText: "Booked by Male",
     bookedByFemaleSeatText: "Booked by Female",
-    selectedSeatText: "Your Selection",
-    availableSeatText: "Available",
-    availableForMaleSeatText: "Available (Males)",
-    availableForFemaleSeatText: "Available (Females)",
+    // selectedSeatText: "Your Selection",
+    availableForMaleSeatText: "Available For Male",
+    availableForFemaleSeatText: "Available For Female",
   };
 
   return (
@@ -108,9 +104,8 @@ function Example() {
     >
       <BusSeatSelect
         config={busConfig}
-        bookedSeats={["A1", "B2"]}
-        bookedByMaleSeats={["A2"]}
-        bookedByFemaleSeats={["B3"]}
+        bookedByMaleSeats={["L1"]}
+        bookedByFemaleSeats={["L6"]}
         customStyles={customStyles}
         legendConfig={legendConfig}
       />
