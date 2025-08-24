@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 // import { TheaterSeatSelect } from "./components/TheaterSeatSelect/TheaterSeatSelect.tsx";
 import type { Seat } from "./components/TheaterSeatSelect/types.ts";
 import data from "./bus_layout.ts";
 import seatPriceMap from "./seat_price_map.ts";
 // import SeatLayoutDesigner from "./components/SeatLayoutDesigner/SeatLayoutDesigner.tsx";
 import type { BusConfig } from "./components/BusSeatSelect/types.ts";
-import SeatConfigGenerator from "./components/SeatLayoutDesigner/BusLayoutDesigner.tsx";
+import SeatConfigGenerator from "./components/BusLayoutDesigner/BusLayoutDesigner.tsx";
 import { BusSeatSelect } from "./components/BusSeatSelect/BusSeatSelect.tsx";
+import { TheaterSeatSelect } from "./components/TheaterSeatSelect/TheaterSeatSelect.tsx";
+import { TheaterSeatLayoutDesigner } from "./components/TheaterSeatLayoutDesigner/TheaterSeatLayoutDesigner.tsx";
 
 // const generateSeats = (): Record<string, Seat[]> => {
 //   const rows = ["A", "B", "C", "D", "E", "F", "G","H","I","J","K","L","M"];
@@ -24,6 +26,76 @@ import { BusSeatSelect } from "./components/BusSeatSelect/BusSeatSelect.tsx";
 
 //   return seats;
 // };
+
+function TheaterExample() {
+  const config = [
+  {
+    title: "Section A",
+    seats: {
+      A: [
+        { id: "A1", label: "A1" },
+        { id: "A2", label: "A2" },
+        { id: "A3", label: "A3" },
+        { id: "A4", label: "A4" },
+        { id: "A5", label: "A5" }
+      ],
+      B: [
+        { id: "B1", label: "B1" },
+        { id: "B2", label: "B2" },
+        { id: "B3", label: "B3" },
+        { id: "B4", label: "B4" },
+        { id: "B5", label: "B5" }
+      ],
+      C: [
+        { id: "C1", label: "C1" },
+        { id: "C2", label: "C2" },
+        { id: "C3", label: "C3" },
+        { id: "C4", label: "C4" },
+        { id: "C5", label: "C5" }
+      ]
+    }
+  },
+  {
+    title: "Section B",
+    seats: {
+      D: [
+        { id: "D1", label: "D1" },
+        { id: "D2", label: "D2" },
+        { id: "D3", label: "D3" },
+        { id: "D4", label: "D4" },
+        { id: "D5", label: "D5" },
+        { id: "D6", label: "D6" }
+      ],
+      E: [
+        { id: "E1", label: "E1" },
+        { id: "E2", label: "E2" },
+        { id: "E3", label: "E3" },
+        { id: "E4", label: "E4" },
+        { id: "E5", label: "E5" },
+        { id: "E6", label: "E6" }
+      ]
+    }
+  }
+];
+
+  const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
+
+  return (
+    <div>
+      <TheaterSeatSelect
+        config={config}
+        onSelect={(seat) => setSelectedSeats((prev) => [...prev, seat.id])}
+        onUnselect={(seat) =>
+          setSelectedSeats((prev) => prev.filter((s) => s !== seat.id))
+        }
+        maxSelectedSeats={3}
+      />
+      <p style={{ marginTop: "1rem" }}>
+        <strong>Selected Seats:</strong> {selectedSeats.join(", ") || "None"}
+      </p>
+    </div>
+  );
+}
 
 const App: React.FC = () => {
   // const seats = generateSeats();
@@ -44,7 +116,9 @@ const App: React.FC = () => {
   return (
     <div style={{ padding: "20px" }}>
       <h2>Theater Seat Selection</h2>
-      <div>
+      <TheaterExample/>
+      <TheaterSeatLayoutDesigner/>
+      {/* <div>
         <BusSeatSelect
           config={config as BusConfig}
           bookedByFemaleSeats={bookedForFemaleSeats}
@@ -200,8 +274,8 @@ const App: React.FC = () => {
             // },
           ]}
         />
-      </div>
-      <SeatConfigGenerator />
+      </div> */}
+      {/* <SeatConfigGenerator /> */}
     </div>
   );
 };
