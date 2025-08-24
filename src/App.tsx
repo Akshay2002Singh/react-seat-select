@@ -56,27 +56,64 @@ const App: React.FC = () => {
           onUnselect={handleUnselect}
           maxSelectedSeats={5}
           legendConfig={{
-          bookedByMaleSeatText: "Booked by Male",
-          bookedByFemaleSeatText: "Booked by Female",
-          availableForMaleSeatText: "Available For Male",
-          availableForFemaleSeatText: "Available for Female"
+            bookedByMaleSeatText: "Booked by Male",
+            bookedByFemaleSeatText: "Booked by Female",
+            availableForMaleSeatText: "Available For Male",
+            availableForFemaleSeatText: "Available for Female",
+          }}
+          customSectionWrapperStyle={{
+            gap: "60px",
+          }}
+          SectionHeader={() => {
+            return (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: "8px 16px",
+                  borderBottom: "1px solid #ccc",
+                  fontWeight: "bold",
+                  fontSize: "16px",
+                }}
+              >
+                <span></span>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#fff",
+                    fontSize: "48px",
+                  }}
+                >
+                   ☮
+                </div>
+              </div>
+            );
           }}
           // autoSeatExpansion={true}
           customStyles={[
             {
               rowGap: "12px",
               columnGap: "16px",
+              sectionStyle: {
+                border: "1px solid white",
+                padding: "4px 12px",
+                borderTopLeftRadius: "22px",
+                borderTopRightRadius: "22px",
+              },
               headerStyles: {
                 fontSize: "16px",
                 fontWeight: 600,
-                color:"black",
+                color: "black",
                 // marginBottom: "8px",
                 padding: "8px 0",
               },
-              seatPriceStyles:{
-                padding: "4px 0px", 
-                marginBottom:"10px",
-                fontSize:"12px"
+              seatPriceStyles: {
+                padding: "4px 0px",
+                marginBottom: "10px",
+                fontSize: "12px",
               },
               seatStyles: {
                 width: "36px",
@@ -103,7 +140,7 @@ const App: React.FC = () => {
                 border: "1px solid #a4d7a4",
                 // backgroundImage : "url('https://img.icons8.com/?size=48&id=rI1co8lOfrTW&format=png')",
               },
-              
+
               bookedByMaleStyles: {
                 backgroundColor: "#f8d7da",
                 color: "#721c24",
@@ -141,7 +178,7 @@ const App: React.FC = () => {
             //     fontSize: "12px",
             //   },
             //   seatPriceStyles:{
-            //     padding: "4px 0px", 
+            //     padding: "4px 0px",
             //     marginBottom:"10px",
             //     fontSize:"12px"
             //   },
@@ -161,8 +198,7 @@ const App: React.FC = () => {
             //     border: "2px solid #004085",
             //   },
             // },
-          ]
-        }
+          ]}
         />
       </div>
       <SeatConfigGenerator />

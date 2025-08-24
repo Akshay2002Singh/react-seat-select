@@ -21,7 +21,7 @@ export type BusConfig = Record<string, Section>;
 export type SectionStyle = {
   rowGap?: string;
   columnGap?: string;
-  containerStyle?: React.CSSProperties;
+  sectionStyle?: React.CSSProperties;
   headerStyles?: React.CSSProperties;
   seatStyles?: React.CSSProperties;
   availableStyles?: React.CSSProperties;
