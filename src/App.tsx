@@ -5,8 +5,8 @@ import data from "./bus_layout.ts";
 import seatPriceMap from "./seat_price_map.ts";
 // import SeatLayoutDesigner from "./components/SeatLayoutDesigner/SeatLayoutDesigner.tsx";
 import type { BusConfig } from "./components/BusSeatSelect/types.ts";
-import BusSeatSelect from "./components/BusSeatSelect/BusSeatSelect.tsx";
 import SeatConfigGenerator from "./components/SeatLayoutDesigner/BusLayoutDesigner.tsx";
+import { BusSeatSelect } from "./components/BusSeatSelect/BusSeatSelect.tsx";
 
 // const generateSeats = (): Record<string, Seat[]> => {
 //   const rows = ["A", "B", "C", "D", "E", "F", "G","H","I","J","K","L","M"];
