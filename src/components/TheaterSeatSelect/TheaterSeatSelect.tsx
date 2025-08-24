@@ -67,7 +67,7 @@ export const TheaterSeatSelect: React.FC<Props> = ({
   screenConfig = {
     screenVariant: 3,
     width: 600,
-    color: "$fff",
+    screenColor: "#fff",
   },
   CustomScreenComponent,
   CustomLegendComponent,
