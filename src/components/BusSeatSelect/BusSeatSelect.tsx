@@ -308,7 +308,7 @@ export const BusSeatSelect = (props: Props) => {
                                           ? `calc(${seatStyles.height} +  ${height}px  + ${seatStyles.height} + ${rowGap})`
                                           : seatStyles.height
                                         : seat.type === "sleeper"
-                                        ? `calc(64px + ${rowGap})`
+                                        ? `calc(64px + ${height}px + ${rowGap})`
                                         : "32px",
                                       width: seatStyles?.width || "32px",
                                     }}
@@ -348,7 +348,7 @@ export const BusSeatSelect = (props: Props) => {
                                         ? `calc(${seatStyles.height} + ${height}px  +  ${seatStyles.height} + ${rowGap})`
                                         : seatStyles.height
                                       : seat.type === "sleeper"
-                                      ? `calc(64px + ${rowGap})`
+                                      ? `calc(64px + ${height}px + ${rowGap})`
                                       : "32px",
                                     pointerEvents: [
                                       SEAT_STATUS.BOOKED,
