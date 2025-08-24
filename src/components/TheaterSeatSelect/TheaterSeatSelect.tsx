@@ -233,50 +233,50 @@ export const TheaterSeatSelect: React.FC<Props> = ({
 
   const renderDefaultLegend = () => {
     return (
-      <div className="legend-container">
+      <div className="theaterSeatSelect-legend-container">
         {(customStyles && customStyles.length > 0 ? customStyles : [{}])?.map(
           (style, index) => (
-            <div className="legend-row" key={index}>
+            <div className="theaterSeatSelect-legend-row" key={index}>
               {legendConfig?.availableSeatText ? (
-                <div className="legend-item">
+                <div className="theaterSeatSelect-legend-item">
                   <div
-                    className={`seat ${SEAT_STATUS.AVAILABLE}`}
+                    className={`theaterSeatSelect-seat theaterSeatSelect-${SEAT_STATUS.AVAILABLE}`}
                     style={{ ...style?.seatStyles, ...style?.availableStyles }}
                   />
                   <span>{legendConfig?.availableSeatText}</span>
                 </div>
               ) : null}
               {legendConfig?.bookedSeatText ? (
-                <div className="legend-item">
+                <div className="theaterSeatSelect-legend-item">
                   <div
-                    className={`seat ${SEAT_STATUS.BOOKED}`}
+                    className={`theaterSeatSelect-seat theaterSeatSelect-${SEAT_STATUS.BOOKED}`}
                     style={{ ...style?.seatStyles, ...style.bookedStyles }}
                   />
                   <span>{legendConfig?.bookedSeatText}</span>
                 </div>
               ) : null}
               {legendConfig?.disabledSeatText ? (
-                <div className="legend-item">
+                <div className="theaterSeatSelect-legend-item">
                   <div
-                    className={`seat ${SEAT_STATUS.DISABLED}`}
+                    className={`theaterSeatSelect-seat theaterSeatSelect-${SEAT_STATUS.DISABLED}`}
                     style={{ ...style?.seatStyles, ...style.disabledStyles }}
                   />
                   <span>{legendConfig?.disabledSeatText}</span>
                 </div>
               ) : null}
               {legendConfig?.reservedSeatText ? (
-                <div className="legend-item">
+                <div className="theaterSeatSelect-legend-item">
                   <div
-                    className={`seat ${SEAT_STATUS.RESERVED}`}
+                    className={`theaterSeatSelect-seat theaterSeatSelect-${SEAT_STATUS.RESERVED}`}
                     style={{ ...style?.seatStyles, ...style.reservedStyles }}
                   />
                   <span>{legendConfig?.reservedSeatText}</span>
                 </div>
               ) : null}
               {legendConfig?.selectedSeatText ? (
-                <div className="legend-item">
+                <div className="theaterSeatSelect-legend-item">
                   <div
-                    className={`seat ${SEAT_STATUS.SELECTED}`}
+                    className={`theaterSeatSelect-seat theaterSeatSelect-${SEAT_STATUS.SELECTED}`}
                     style={{ ...style?.seatStyles, ...style.selectedStyles }}
                   />
                   <span>{legendConfig?.selectedSeatText}</span>
@@ -290,9 +290,9 @@ export const TheaterSeatSelect: React.FC<Props> = ({
   };
 
   return (
-    <div className="threater-seat-selection-wrapper">
-      <div className="threater-seat-selection-container">
-        <div className="threater-seat-selection">
+    <div className="theaterSeatSelect-wrapper">
+      <div className="theaterSeatSelect-container">
+        <div className="theaterSeatSelect">
           {config?.map((section, index) => {
             const currentSectionStyle =
               customStyles?.[index] ??
@@ -323,18 +323,18 @@ export const TheaterSeatSelect: React.FC<Props> = ({
               <div key={index}>
                 {section?.title && (
                   <div
-                    className="seat-section-header"
+                    className="theaterSeatSelect-section-header"
                     style={{ ...headerStyles }}
                   >
                     {section.title}
                   </div>
                 )}
-                <div className="seat-grid" style={{ gap: rowGap }}>
+                <div className="theaterSeatSelect-seat-grid" style={{ gap: rowGap }}>
                   {section?.seats
                     ? Object.entries(section.seats).map(
                         ([rowLabel, rowSeats]) => (
                           <div
-                            className="seat-row"
+                            className="theaterSeatSelect-seat-row"
                             key={rowLabel}
                             style={{ gap: columnGap }}
                           >
@@ -353,7 +353,7 @@ export const TheaterSeatSelect: React.FC<Props> = ({
                               </span>
                             )}
                             <div
-                              className="seat-group"
+                              className="theaterSeatSelect-seat-group"
                               style={{ gap: columnGap }}
                             >
                               {rowSeats?.map((seat) => {
@@ -361,7 +361,7 @@ export const TheaterSeatSelect: React.FC<Props> = ({
                                   return (
                                     <div
                                       key={`blank-${rowLabel}-${seat.id}`}
-                                      className="blankSeat"
+                                      className="theaterSeatSelect-blankSeat"
                                       style={{
                                         height: seatStyles?.height || "32px",
                                         width: seatStyles?.width || "32px",
@@ -375,7 +375,7 @@ export const TheaterSeatSelect: React.FC<Props> = ({
                                 return (
                                   <div
                                     key={seat.id}
-                                    className={`seat ${status}`}
+                                    className={`theaterSeatSelect-seat theaterSeatSelect-${status}`}
                                     style={{
                                       ...statusStyles[status],
                                       pointerEvents: [
@@ -399,7 +399,7 @@ export const TheaterSeatSelect: React.FC<Props> = ({
                               {/* add one blank seat for better spacing */}
                               <div
                                 key={`last-blank-${rowLabel}`}
-                                className="blankSeat"
+                                className="theaterSeatSelect-blankSeat"
                                 style={{
                                   height: seatStyles?.height || "32px",
                                   width: seatStyles?.width || "32px",
@@ -415,19 +415,19 @@ export const TheaterSeatSelect: React.FC<Props> = ({
             );
           })}
           {CustomScreenComponent ? (
-            <div className="screen-container">
+            <div className="theaterSeatSelect-screen-container">
               <CustomScreenComponent />
             </div>
           ) : showDefaultScreen ? (
             <div
-              className="screen-container"
+              className="theaterSeatSelect-screen-container"
               dangerouslySetInnerHTML={{ __html: getScreenSVG(screenConfig) }}
             ></div>
           ) : null}
         </div>
       </div>
       {CustomLegendComponent ? (
-        <div className="screen-container">
+        <div className="theaterSeatSelect-legend-container">
           <CustomLegendComponent />
         </div>
       ) : showDefaultLegend ? (

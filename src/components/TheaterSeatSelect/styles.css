@@ -1,25 +1,25 @@
-.threater-seat-selection-wrapper * {
+.theaterSeatSelect-wrapper * {
   box-sizing: border-box;
 }
 
-.threater-seat-selection-wrapper{
+.theaterSeatSelect-wrapper{
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
 }
 
-.threater-seat-selection-container{
+.theaterSeatSelect-container{
   width: 100%;
   height: 100%;
   overflow: auto;
 }
 
-.threater-seat-selection {
+.theaterSeatSelect {
   display: table;
 }
 
-.seat-section-header {
+.theaterSeatSelect-section-header {
   display: flex;
   justify-content: center;
   margin: 10px 5px;
@@ -28,34 +28,34 @@
   color: #cecece;
 }
 
-.seat-grid {
+.theaterSeatSelect-seat-grid {
   display: flex;
   flex-direction: column;
   gap: 10px;
   justify-content: center;
 }
 
-.seat-row {
+.theaterSeatSelect-seat-row {
   display: flex;
   gap: 6px;
 }
 
-.seat-column {
+.theaterSeatSelect-seat-column {
 display:flex;
 }
 
-.seat-group {
+.theaterSeatSelect-seat-group {
   display: flex;
   margin: auto;
 }
 
-.blankSeat {
+.theaterSeatSelect-blankSeat {
   width: 32px;
   height: 32px;
   background-color: transparent;
 }
 
-.seat {
+.theaterSeatSelect-seat {
   width: 32px;
   height: 32px;
   font-size: 14px;
@@ -83,40 +83,40 @@ display:flex;
 
 
 /* Status Colors */
-.AVAILABLE {
+.theaterSeatSelect-AVAILABLE {
   background-color: #e0f7fa;
 }
 
-.SELECTED {
+.theaterSeatSelect-SELECTED {
   background-color: #4caf50;
   color: black;
 }
 
-.BOOKED {
+.theaterSeatSelect-BOOKED {
   background-color: #f44336;
   color: black;
   cursor: not-allowed;
 }
 
-.DISABLED {
+.theaterSeatSelect-DISABLED {
   background-color: #9e9e9e;
   color: black;
   cursor: not-allowed;
 }
 
-.RESERVED {
+.theaterSeatSelect-RESERVED {
   background-color: #ff9800;
   color: black;
   cursor: not-allowed;
 }
 
-.screen-container {
+.theaterSeatSelect-screen-container {
   display: flex;
   flex-direction: row;
   justify-content: center;
 }
 
-.legend-container {
+.theaterSeatSelect-legend-container {
   display: flex;
   flex-direction: column;
   padding: 16px 20px;
@@ -125,20 +125,20 @@ display:flex;
   gap: 18px;
 }
 
-.legend-row {
+.theaterSeatSelect-legend-row {
   display: flex;
   flex-direction: row;
   gap: 16px;
 }
 
-.legend-item {
+.theaterSeatSelect-legend-item {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 8px;
 }
 
-.legend-item>div {
+.theaterSeatSelect-legend-item>div {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;

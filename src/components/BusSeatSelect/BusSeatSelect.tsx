@@ -67,68 +67,68 @@ const BusSeatSelect = (props: Props) => {
 
     const renderDefaultLegend = () => {
     return (
-      <div className="legend-container">
+      <div className="busSeatSelect-legend-container">
         {(customStyles && customStyles.length > 0 ? customStyles : [{}])?.map(
           (style, index) => (
-            <div className="legend-row" key={index}>
+            <div className="busSeatSelect-legend-row" key={index}>
               {legendConfig?.availableSeatText ? (
-                <div className="legend-item">
+                <div className="busSeatSelect-legend-item">
                   <div
-                    className={`seat ${SEAT_STATUS.AVAILABLE}`}
+                    className={`busSeatSelect-seat busSeatSelect-${SEAT_STATUS.AVAILABLE}`}
                     style={{ ...style?.seatStyles, ...style?.availableStyles }}
                   />
                   <span>{legendConfig?.availableSeatText}</span>
                 </div>
               ) : null}
               {legendConfig?.availableForMaleSeatText ? (
-                <div className="legend-item">
+                <div className="busSeatSelect-legend-item">
                   <div
-                    className={`seat ${SEAT_STATUS.AVAILABLE_FOR_MALE}`}
+                    className={`busSeatSelect-seat busSeatSelect-${SEAT_STATUS.AVAILABLE_FOR_MALE}`}
                     style={{ ...style?.seatStyles, ...style?.availableStyles,...style?.availableForMaleStyles }}
                   />
                   <span>{legendConfig?.availableForMaleSeatText}</span>
                 </div>
               ) : null}
               {legendConfig?.availableForFemaleSeatText ? (
-                <div className="legend-item">
+                <div className="busSeatSelect-legend-item">
                   <div
-                    className={`seat ${SEAT_STATUS.AVAILABLE_FOR_FEMALE}`}
+                    className={`busSeatSelect-seat busSeatSelect-${SEAT_STATUS.AVAILABLE_FOR_FEMALE}`}
                     style={{ ...style?.seatStyles, ...style?.availableStyles,...style?.availableForFemaleStyles }}
                   />
                   <span>{legendConfig?.availableForFemaleSeatText}</span>
                 </div>
               ) : null}
               {legendConfig?.bookedSeatText ? (
-                <div className="legend-item">
+                <div className="busSeatSelect-legend-item">
                   <div
-                    className={`seat ${SEAT_STATUS.BOOKED}`}
+                    className={`busSeatSelect-seat busSeatSelect-${SEAT_STATUS.BOOKED}`}
                     style={{ ...style?.seatStyles, ...style?.bookedStyles }}
                   />
                   <span>{legendConfig?.bookedSeatText}</span>
                 </div>
               ) : null}
               {legendConfig?.bookedByMaleSeatText ? (
-                <div className="legend-item">
+                <div className="busSeatSelect-legend-item">
                   <div
-                    className={`seat ${SEAT_STATUS.BOOKED_BY_MALE}`}
+                    className={`busSeatSelect-seat busSeatSelect-${SEAT_STATUS.BOOKED_BY_MALE}`}
                     style={{ ...style?.seatStyles,...style?.bookedStyles, ...style?.bookedByMaleStyles }}
                   />
                   <span>{legendConfig?.bookedByMaleSeatText}</span>
                 </div>
               ) : null}
                {legendConfig?.bookedByFemaleSeatText ? (
-                <div className="legend-item">
+                <div className="busSeatSelect-legend-item">
                   <div
-                    className={`seat ${SEAT_STATUS.BOOKED_BY_FEMALE}`}
+                    className={`busSeatSelect-seat busSeatSelect-${SEAT_STATUS.BOOKED_BY_FEMALE}`}
                     style={{ ...style?.seatStyles,...style?.bookedStyles, ...style?.bookedByFemaleStyles }}
                   />
                   <span>{legendConfig?.bookedByFemaleSeatText}</span>
                 </div>
               ) : null}
               {legendConfig?.selectedSeatText ? (
-                <div className="legend-item">
+                <div className="busSeatSelect-legend-item">
                   <div
-                    className={`seat ${SEAT_STATUS.SELECTED}`}
+                    className={`busSeatSelect-seat busSeatSelect-${SEAT_STATUS.SELECTED}`}
                     style={{ ...style?.seatStyles, ...style.selectedStyles }}
                   />
                   <span>{legendConfig?.selectedSeatText}</span>
@@ -194,9 +194,9 @@ const BusSeatSelect = (props: Props) => {
       }
     }
 
-  return <div className="bus-seat-selection-wrapper">
-        <div className="bus-seat-selection-container">
-          <div className="bus-seat-selection" style={{gap:"10px"}}>
+  return <div className="busSeatSelect-wrapper">
+        <div className="busSeatSelect-container">
+          <div className="busSeatSelect" style={{gap:"10px"}}>
             {Object.entries(config)?.map(([_, section], index) => {
               const currentSectionStyle =
                 customStyles?.[index] ??
@@ -233,18 +233,18 @@ const BusSeatSelect = (props: Props) => {
                 <div key={index}>
                   {section?.title && (
                     <div
-                      className="seat-section-header"
+                      className="busSeatSelect-section-header"
                       style={{ ...headerStyles }}
                     >
                       {section.title}
                     </div>
                   )}
-                  <div className="seat-grid" style={{ gap: columnGap }}>
+                  <div className="busSeatSelect-seat-grid" style={{ gap: columnGap }}>
                     {section?.columns
                       ? section.columns.map(
                           (column) => (
                             <div
-                              className="seat-column"
+                              className="busSeatSelect-seat-column"
                               key={column.id}
                               style={{ gap: rowGap }}
                             >
@@ -254,7 +254,7 @@ const BusSeatSelect = (props: Props) => {
                                     <div style={{"display": "flex", "flexDirection": "column"}} key={seat.id}>
                                     <div
                                       key={`blank-${column.id}-${seat.id}`}
-                                        className={`blankSeat ${seat.type}`}
+                                        className={`busSeatSelect-blankSeat busSeatSelect-${seat.type}`}
                                         style={{
                                           height: seatStyles?.height ? (seat.type === "sleeper" ?  `calc(${seatStyles.height} +  ${height}px  + ${seatStyles.height} + ${rowGap})` : seatStyles.height) : (seat.type === "sleeper" ? `calc(64px + ${rowGap})` :"32px"),
                                           width: seatStyles?.width || "32px",
@@ -272,7 +272,7 @@ const BusSeatSelect = (props: Props) => {
                                     <div style={{"display": "flex", "flexDirection": "column"}} key={seat.id}>
                                     <div
                                       key={seat.id}
-                                      className={`seat ${status} ${seat.type}`}
+                                      className={`busSeatSelect-seat busSeatSelect-${status} busSeatSelect-${seat.type}`}
                                       style={{
                                         ...statusStyles[status],
                                         height: seatStyles?.height ? (seat.type === "sleeper" ?  `calc(${seatStyles.height} + ${height}px  +  ${seatStyles.height} + ${rowGap})` : seatStyles.height) : (seat.type === "sleeper" ? `calc(64px + ${rowGap})` :"32px"),
@@ -316,7 +316,7 @@ const BusSeatSelect = (props: Props) => {
           </div>
         </div>
         {CustomLegendComponent ? (
-        <div className="screen-container">
+        <div className="busSeatSelect-legend-container">
           <CustomLegendComponent />
         </div>
       ) : showDefaultLegend ? (
