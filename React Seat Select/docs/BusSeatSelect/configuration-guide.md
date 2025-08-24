@@ -6,6 +6,7 @@ sidebar_position: 3
 ---
 
 <!-- import BusSeatSelectConfiguration from "@site/src/examples/BusSeatSelect/BusSeatSelectConfiguration"; -->
+
 import { BusSeatSelect } from "../../../src/components/BusSeatSelect/BusSeatSelect";
 
 # ⚙️ Configuration Guide
@@ -20,67 +21,164 @@ It’s the **heart** of `BusSeatSelect`, allowing you to customize **columns, ro
 The `config` prop is an **object of bus sections** (e.g., `lowerDeck`, `upperDeck`).  
 Each section includes:
 
-- `title` → Section name (e.g., Lower Deck, Upper Deck).  
-- `columns` → Array of **columns** of seats.  
+- `title` → Section name (e.g., Lower Deck, Upper Deck).
+- `columns` → Array of **columns** of seats.
 - Each column has:
-  - `id` → unique identifier for the column.  
-  - `seats` → array of seats in that column.  
+  - `id` → unique identifier for the column.
+  - `seats` → array of seats in that column.
 - Each seat is an object with:
-  - `id` → unique identifier for the seat.  
-  - `type` → `"seater"` or `"sleeper"`.  
+  - `id` → unique identifier for the seat.
+  - `type` → `"seater"` or `"sleeper"`.
   - `isBlank` → optional, makes the seat invisible (used for spacing).
 
 ---
 
-## 🚌 Example Layout
+## 🚌 Example Layout 1: Only Seater Seats
 
 ```tsx live scope={{BusSeatSelect}}
-function Example() {
-  const config = {
+function ExampleSeaterOnly() {
+  const busConfig = {
     lowerDeck: {
       title: "Lower Deck",
       columns: [
         {
           id: "col1",
           seats: [
-            { id: "L1", type: "seater", isBlank: false },
-            { id: "L2", type: "seater", isBlank: false },
-            { id: "L3", type: "seater", isBlank: false },
-            { id: "L4", type: "seater", isBlank: false }
-          ]
+            { id: "S1", type: "seater", isBlank: false },
+            { id: "S2", type: "seater", isBlank: false },
+            { id: "S3", type: "seater", isBlank: false },
+            { id: "S4", type: "seater", isBlank: false },
+          ],
         },
         {
           id: "col2",
           seats: [
-            { id: "L5", type: "seater", isBlank: false },
-            { id: "L6", type: "seater", isBlank: false },
-            { id: "L7", type: "seater", isBlank: false },
-            { id: "L8", type: "seater", isBlank: false }
-          ]
+            { id: "S5", type: "seater", isBlank: false },
+            { id: "S6", type: "seater", isBlank: false },
+            { id: "S7", type: "seater", isBlank: false },
+            { id: "S8", type: "seater", isBlank: false },
+          ],
+        },
+        {
+          id: "colgap",
+          seats: [{ id: "gap1", type: "seater", isBlank: true }],
         },
         {
           id: "col3",
           seats: [
-            { id: "BL1", type: "seater", isBlank: true },
-            { id: "BL2", type: "seater", isBlank: true },
-            { id: "BL3", type: "seater", isBlank: true },
-            { id: "BL4", type: "seater", isBlank: true }
-          ]
+            { id: "S9", type: "seater", isBlank: false },
+            { id: "S10", type: "seater", isBlank: false },
+            { id: "S11", type: "seater", isBlank: false },
+            { id: "S12", type: "seater", isBlank: false },
+          ],
         },
         {
           id: "col4",
           seats: [
-            { id: "L9", type: "seater", isBlank: false },
-            { id: "L10", type: "seater", isBlank: false },
-            { id: "L11", type: "seater", isBlank: false },
-            { id: "L12", type: "seater", isBlank: false }
-          ]
-        }
-      ]
-    }
+            { id: "S13", type: "seater", isBlank: false },
+            { id: "S14", type: "seater", isBlank: false },
+            { id: "S15", type: "seater", isBlank: false },
+            { id: "S16", type: "seater", isBlank: false },
+          ],
+        },
+      ],
+    },
   };
 
-  return <BusSeatSelect config={config} />;
+  return <BusSeatSelect config={busConfig} bookedSeats={["S2", "S10"]} />;
+}
+```
+
+## 🚌 Example Layout 2: Only Sleeper Seats (2+2 Layout)
+
+```tsx live scope={{BusSeatSelect}}
+function ExampleSleeperOnly() {
+  const busConfig = {
+    lowerDeck: {
+      title: "Lower Deck",
+      columns: [
+        {
+          id: "col1",
+          seats: [
+            { id: "SL1", type: "sleeper", isBlank: false },
+            { id: "SL2", type: "sleeper", isBlank: false },
+          ],
+        },
+        {
+          id: "col2",
+          seats: [
+            { id: "SL3", type: "sleeper", isBlank: false },
+            { id: "SL4", type: "sleeper", isBlank: false },
+          ],
+        },
+        {
+          id: "colgap",
+          seats: [{ id: "gap1", type: "seater", isBlank: true }],
+        },
+        {
+          id: "col3",
+          seats: [
+            { id: "SL5", type: "sleeper", isBlank: false },
+            { id: "SL6", type: "sleeper", isBlank: false },
+          ],
+        },
+        {
+          id: "col4",
+          seats: [
+            { id: "SL7", type: "sleeper", isBlank: false },
+            { id: "SL8", type: "sleeper", isBlank: false },
+          ],
+        },
+      ],
+    },
+  };
+
+  return <BusSeatSelect config={busConfig} bookedSeats={["SL3", "SL6"]} />;
+}
+```
+
+## 🚌 Example Layout 3: Mixed (Seater + Sleeper Seats)
+
+```tsx live scope={{BusSeatSelect}}
+function ExampleMixedSeats() {
+  const busConfig = {
+    lowerDeck: {
+      title: "Lower Deck",
+      columns: [
+        {
+          id: "col1",
+          seats: [
+            { id: "M1", type: "seater", isBlank: false },
+            { id: "M2", type: "seater", isBlank: false },
+            { id: "M3", type: "seater", isBlank: false },
+            { id: "M4", type: "seater", isBlank: false },
+          ],
+        },
+        {
+          id: "col2",
+          seats: [
+            { id: "M5", type: "seater", isBlank: false },
+            { id: "M6", type: "seater", isBlank: false },
+            { id: "M7", type: "seater", isBlank: false },
+            { id: "M8", type: "seater", isBlank: false },
+          ],
+        },
+        {
+          id: "colgap",
+          seats: [{ id: "gap1", type: "seater", isBlank: true }],
+        },
+        {
+          id: "col3",
+          seats: [
+            { id: "MS1", type: "sleeper", isBlank: false },
+            { id: "MS2", type: "sleeper", isBlank: false },
+          ],
+        }
+      ],
+    },
+  };
+
+  return <BusSeatSelect config={busConfig} bookedSeats={["M2", "MS2"]} />;
 }
 ```
 
@@ -124,8 +222,8 @@ import busConfig from "./busConfig.json";
 
 ## ✅ Best Practices
 
-- Always provide a **unique `id`** for each seat.  
-- Use `type` to differentiate between **seaters** and **sleepers**.  
-- Use `isBlank: true` to maintain **aisle spacing** inside the layout.  
-- Group seats into **decks** (`lowerDeck`, `upperDeck`) for readability.  
-- Store large configurations in **JSON files** or fetch them via API.  
+- Always provide a **unique `id`** for each seat.
+- Use `type` to differentiate between **seaters** and **sleepers**.
+- Use `isBlank: true` to maintain **aisle spacing** inside the layout.
+- Group seats into **decks** (`lowerDeck`, `upperDeck`) for readability.
+- Store large configurations in **JSON files** or fetch them via API.

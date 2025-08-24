@@ -21,7 +21,8 @@ The `screenConfig` prop allows you to define how the **screen** is displayed.
 export type screenConfig = {
   screenVariant: number; // Which screen design to render
   width: number;         // Width of the screen in px or %
-  color?: string;        // Background color of the screen
+  screenColor?: string;        // Background color of the screen
+  textColor?:string;
   screenText?: string;   // Label displayed on the screen
 };
 ```
@@ -51,7 +52,8 @@ const cinemaConfig = [
 const screenConfig = {
   screenVariant: 4,
   width: 250,
-  color: "#000",
+  screenColor: "#000",
+  textColor:"#fff",
   screenText: "CINEMA SCREEN"
 };
 

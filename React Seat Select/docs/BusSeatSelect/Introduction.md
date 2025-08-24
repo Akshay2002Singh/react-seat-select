@@ -2,7 +2,7 @@
 id: bus-seat-select-introduction
 title: 🚍 Introduction
 sidebar_label: Introduction
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 # 🚍 BusSeatSelect Introduction

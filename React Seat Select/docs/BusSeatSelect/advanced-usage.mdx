@@ -85,11 +85,13 @@ function BusAdvancedExample() {
         alignItems: "center",
         justifyContent: "center",
       },
-      availableStyles: { backgroundColor: "#28a745", color: "#fff" },
-      bookedStyles: { backgroundColor: "#dc3545", color: "#fff" },
-      bookedByMaleStyles: { backgroundColor: "#1565c0", color: "#fff" },
-      bookedByFemaleStyles: { backgroundColor: "#d81b60", color: "#fff" },
-      selectedStyles: { backgroundColor: "#007bff", color: "#fff" },
+      availableStyles: { backgroundColor: "#e8f5e9", border: "1px solid #4caf50" },
+      bookedStyles: { backgroundColor: "#9e9e9e", color: "#fff" },
+      bookedByFemaleStyles: { backgroundColor: "#f48fb1", color: "#fff" },
+      bookedByMaleStyles: { backgroundColor: "#64b5f6", color: "#fff" },
+      availableForFemaleStyles: { backgroundColor: "#fce4ec", border: "1px dashed #ec407a" },
+      availableForMaleStyles: { backgroundColor: "#e3f2fd", border: "1px dashed #42a5f5" },
+      selectedStyles: { backgroundColor: "#4caf50", color: "#fff" }
     },
   ];
 
@@ -104,13 +106,7 @@ function BusAdvancedExample() {
   };
 
   return (
-    <div
-      style={{
-        width: "800px",
-        height: "720px",
-        overflow: "auto",
-      }}
-    >
+    <div>
       <BusSeatSelect
         config={config}
         bookedSeats={bookedSeats}

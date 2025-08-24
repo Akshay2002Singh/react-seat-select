@@ -66,10 +66,8 @@ function Example() {
         {
           id: "col4",
           seats: [
-            { id: "L9", type: "seater", isBlank: false },
-            { id: "L10", type: "seater", isBlank: false },
-            { id: "L11", type: "seater", isBlank: false },
-            { id: "L12", type: "seater", isBlank: false },
+            { id: "L9", type: "sleeper", isBlank: false },
+            { id: "L10", type: "sleeper", isBlank: false },
           ],
         },
       ],

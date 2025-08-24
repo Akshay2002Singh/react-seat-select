@@ -230,10 +230,13 @@ Show or hide the built-in theater screen SVG above the seats.
 {
   screenVariant: number;
   width: number;
-  color?: string;
+  screenColor?: string;
+  textColor?: string;
   screenText?: string;
 }
 ```
+
+`Note: Screen variant value is between 1-6 `
 
 **Default:**
 
@@ -241,21 +244,10 @@ Show or hide the built-in theater screen SVG above the seats.
 {
   screenVariant: 3,
   width: 600,
-  color: "#fff",
+  screenColor: "#fff",
+  textColor:"#000",
   screenText: "SCREEN"
 }
-```
-
-```tsx
-<TheaterSeatSelect
-  config={config}
-  screenConfig={{
-    screenVariant: 2,
-    width: 500,
-    color: "#ccc",
-    screenText: "IMAX SCREEN"
-  }}
-/>
 ```
 
 **Example:**
@@ -266,7 +258,8 @@ Show or hide the built-in theater screen SVG above the seats.
   screenConfig={{
     screenVariant: 2,
     width: 500,
-    color: "#ccc",
+    screenColor: "#fff",
+    textColor:"#000",
     screenText: "IMAX SCREEN"
   }}
 />
