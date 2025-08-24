@@ -35,6 +35,7 @@ const SEAT_STATUS: Record<string, string> = {
   BOOKED_BY_MALE: "BOOKED_BY_MALE",
   SELECTED: "SELECTED",
   AVAILABLE: "AVAILABLE",
+  BOOKED: "BOOKED",
   AVAILABLE_FOR_MALE: "AVAILABLE_FOR_MALE",
   AVAILABLE_FOR_FEMALE: "AVAILABLE_FOR_FEMALE",
 };
@@ -55,7 +56,15 @@ export const BusSeatSelect = (props: Props) => {
     showSelectedSeatLabel = false,
     CustomLegendComponent,
     showDefaultLegend = true,
-    legendConfig = {},
+    legendConfig = {
+      bookedSeatText: "Booked",
+      bookedByFemaleSeatText: "Booked (Female)",
+      bookedByMaleSeatText: "Booked (Male)",
+      selectedSeatText: "Selected",
+      availableSeatText: "Available",
+      availableForMaleSeatText: "Available (Male)",
+      availableForFemaleSeatText: "Available (Female)",
+    },
     seatPriceMap = {},
   } = props;
 
