@@ -7,12 +7,12 @@ export interface Seat {
 }
 
 export interface Column {
-    id: string;
+  id: string;
   seats: Seat[];
 }
 
 export interface Section {
-    title?: string;
+  title?: string;
   columns: Column[];
 }
 
@@ -21,6 +21,7 @@ export type BusConfig = Record<string, Section>;
 export type SectionStyle = {
   rowGap?: string;
   columnGap?: string;
+  containerStyle?: React.CSSProperties;
   headerStyles?: React.CSSProperties;
   seatStyles?: React.CSSProperties;
   availableStyles?: React.CSSProperties;
