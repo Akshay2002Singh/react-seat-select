@@ -1,5 +1,5 @@
-export default {
-    "LB":{
+export default [
+    {
         "title":"Lower Berth",
         "columns":[
             {
@@ -140,7 +140,7 @@ export default {
             }
         ]
     },
-     "UB":{
+    {
         "title":"Upper Berth",
         "columns":[
             {
@@ -285,5 +285,5 @@ export default {
                 ]
             }
         ]
-    },
-}
+    }
+]

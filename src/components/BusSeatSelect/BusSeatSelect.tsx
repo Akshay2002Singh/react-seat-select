@@ -1,4 +1,4 @@
-import React, { useRef, useState, type ReactNode } from "react";
+import React, { useRef, useState } from "react";
 import type { BusConfig, CustomStyles, Seat } from "./types";
 import "./styles.css";
 import { useElementTotalSize } from "./utils";
@@ -44,7 +44,7 @@ const SEAT_STATUS: Record<string, string> = {
 
 export const BusSeatSelect = (props: Props) => {
   const {
-    config = {},
+    config = [],
     bookedSeats = [],
     bookedByFemaleSeats = [],
     bookedByMaleSeats = [],
@@ -219,7 +219,7 @@ export const BusSeatSelect = (props: Props) => {
     <div className="busSeatSelect-wrapper">
       <div className="busSeatSelect-container">
         <div className="busSeatSelect" style={{ gap: "10px", ...customSectionWrapperStyle }}>
-          {Object.entries(config)?.map(([_, section], index) => {
+          {config?.map((section, index) => {
             const currentSectionStyle =
               customStyles?.[index] ??
               customStyles[customStyles.length - 1] ??

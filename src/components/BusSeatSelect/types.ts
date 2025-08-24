@@ -16,7 +16,7 @@ export interface Section {
   columns: Column[];
 }
 
-export type BusConfig = Record<string, Section>;
+export type BusConfig = Section[];
 
 export type SectionStyle = {
   rowGap?: string;
