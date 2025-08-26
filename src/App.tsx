@@ -117,7 +117,33 @@ const App: React.FC = () => {
     <div style={{ padding: "20px" }}>
       {/* <h2>Theater Seat Selection</h2> */}
       {/* <TheaterExample/> */}
-      <TheaterSeatLayoutDesigner/>
+      <TheaterSeatLayoutDesigner
+        customStyles={{
+          wrapper: { display: "flex", gap: "16px" },
+          sectionBox: {
+            border: "2px solid #993939ff",
+            borderRadius: "8px",
+            padding: "12px",
+          },
+          controlButton:{fontSize:"18px", fontWeight:"bold"},
+          seat: {
+            width: "32px",
+            height: "32px",
+            background: "#20487dff",
+            margin: "4px",
+            textAlign: "center",
+            lineHeight: "32px",
+            cursor: "pointer",
+          },
+          inspectorHeader:{fontSize:"40px"},
+          inspectorPlaceholder:{fontSize:"24px", color:"gray"},
+          inspectorLabel:{fontSize:"18px", fontWeight:"bold"},
+          inspectorInput:{width:"200px", height:"20px", cursor:"pointer"},
+          blankSeat: { background: "transparent" },
+          selectedSeat: { background: "#fbbf24", fontWeight: "bold" },
+          rowLabel: { color:"red",backgroundColor:"yellow", fontWeight: "bold", marginRight: "8px" },
+        }}
+      />
       <h2>Bus Seat Selection</h2>
       <div>
         <BusSeatSelect
@@ -162,7 +188,7 @@ const App: React.FC = () => {
                     fontSize: "48px",
                   }}
                 >
-                   ☮
+                  ☮
                 </div>
               </div>
             );

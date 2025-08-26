@@ -173,7 +173,7 @@
 }
 
 .theaterSeatLayoutDesigner-blankSeat {
-  background-color: transparent !important;
+  background-color: transparent;
   border: 1px dashed #e5e5e5;
 }
 

@@ -2,28 +2,52 @@ import { useState, useEffect } from "react";
 import type { SeatSection } from "../TheaterSeatSelect/types";
 import "./styles.css";
 
+interface CustomStyles {
+  wrapper?: React.CSSProperties;
+  sectionBox?: React.CSSProperties;
+  sectionHeader?: React.CSSProperties;
+  controlsBox?: React.CSSProperties;
+  controlButton?: React.CSSProperties;
+  seatGrid?: React.CSSProperties;
+  row?: React.CSSProperties;
+  rowLabel?: React.CSSProperties;
+  seatGroup?: React.CSSProperties;
+  seat?: React.CSSProperties;
+  blankSeat?: React.CSSProperties;
+  selectedSeat?: React.CSSProperties;
+  inspectorBox?: React.CSSProperties;
+  inspectorPlaceholder?:React.CSSProperties
+  inspectorHeader?: React.CSSProperties;
+  inspectorLabel?: React.CSSProperties;
+  inspectorInput?: React.CSSProperties;
+}
+
+interface TheaterSeatLayoutDesignerProps {
+  config?: SeatSection[];
+  onChange?: (config: SeatSection[]) => void;
+  customStyles?: CustomStyles;
+}
+
 type InspectorTarget =
   | { type: "section"; secIndex: number }
   | { type: "row"; secIndex: number; rowLabel: string }
   | { type: "seat"; secIndex: number; rowLabel: string; seatIndex: number }
   | null;
 
-interface TheaterSeatLayoutDesignerProps {
-  layout?: SeatSection[]; // initial layout
-  onChange?: (layout: SeatSection[]) => void;
-}
-
 export const TheaterSeatLayoutDesigner = ({
-  layout,
+  config,
   onChange,
+  customStyles = {},
 }: TheaterSeatLayoutDesignerProps) => {
-  const [sections, setSections] = useState<SeatSection[]>(layout || [createEmptySection()]);
+  const [sections, setSections] = useState<SeatSection[]>(
+    config || [createEmptySection()]
+  );
   const [selected, setSelected] = useState<InspectorTarget>(null);
 
-  // Sync prop → state when layout changes externally
+  // Sync prop → state when config changes externally
   useEffect(() => {
-    if (layout) setSections(layout);
-  }, [layout]);
+    if (config) setSections(config);
+  }, [config]);
 
   // Helper to update + propagate change
   const updateSections = (next: SeatSection[]) => {
@@ -42,7 +66,10 @@ export const TheaterSeatLayoutDesigner = ({
   }
 
   const addSection = () => {
-    updateSections([...sections, createEmptySection(`Section ${sections.length + 1}`)]);
+    updateSections([
+      ...sections,
+      createEmptySection(`Section ${sections.length + 1}`),
+    ]);
   };
 
   const removeSection = (index: number) => {
@@ -62,7 +89,7 @@ export const TheaterSeatLayoutDesigner = ({
     const cols = updated[secIndex].seats[rowKeys[0] as string]?.length ?? 1;
     updated[secIndex].seats[nextRow] = Array.from({ length: cols }, (_, i) => ({
       id: `${nextRow}${i + 1}`,
-      label: `${nextRow}${i + 1}`
+      label: `${nextRow}${i + 1}`,
     }));
     updateSections(updated);
   };
@@ -77,7 +104,10 @@ export const TheaterSeatLayoutDesigner = ({
   const addColumn = (secIndex: number) => {
     const updated = [...sections];
     Object.entries(updated[secIndex].seats).forEach(([rowLabel, row]) => {
-      row?.push({ id: `${rowLabel}${row.length + 1}`, label: `${rowLabel}${row.length + 1}` });
+      row?.push({
+        id: `${rowLabel}${row.length + 1}`,
+        label: `${rowLabel}${row.length + 1}`,
+      });
     });
     updateSections(updated);
   };
@@ -97,7 +127,11 @@ export const TheaterSeatLayoutDesigner = ({
     updateSections(updated);
   };
 
-  const updateRowLabel = (secIndex: number, oldLabel: string, newLabel: string) => {
+  const updateRowLabel = (
+    secIndex: number,
+    oldLabel: string,
+    newLabel: string
+  ) => {
     const updated = [...sections];
     const section = updated[secIndex];
     if (!newLabel || section.seats[newLabel]) return;
@@ -127,7 +161,9 @@ export const TheaterSeatLayoutDesigner = ({
 
   // --- Export to JSON ---
   const exportToJSON = () => {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(sections, null, 2));
+    const dataStr =
+      "data:text/json;charset=utf-8," +
+      encodeURIComponent(JSON.stringify(sections, null, 2));
     const downloadAnchorNode = document.createElement("a");
     downloadAnchorNode.setAttribute("href", dataStr);
     downloadAnchorNode.setAttribute("download", "seat-layout.json");
@@ -137,12 +173,22 @@ export const TheaterSeatLayoutDesigner = ({
   };
 
   return (
-    <div className="theaterSeatLayoutDesigner-designer-wrapper">
+    <div
+      className="theaterSeatLayoutDesigner-designer-wrapper"
+      style={customStyles.wrapper}
+    >
       <div className="theaterSeatLayoutDesigner-designer-canvas">
         {sections.map((section, secIndex) => (
-          <div key={secIndex} className="theaterSeatLayoutDesigner-section-box">
+          <div
+            key={secIndex}
+            className="theaterSeatLayoutDesigner-section-box"
+            style={customStyles.sectionBox}
+          >
             {/* Section Header */}
-            <div className="theaterSeatLayoutDesigner-section-header">
+            <div
+              className="theaterSeatLayoutDesigner-section-header"
+              style={customStyles.sectionHeader}
+            >
               <span
                 className="theaterSeatLayoutDesigner-clickable-text"
                 onClick={() => setSelected({ type: "section", secIndex })}
@@ -152,15 +198,25 @@ export const TheaterSeatLayoutDesigner = ({
             </div>
 
             {/* Controls */}
-            <div className="theaterSeatLayoutDesigner-controls">
-              <button onClick={() => addRow(secIndex)}>+ Row</button>
-              <button onClick={() => addColumn(secIndex)}>+ Column</button>
-              <button onClick={() => removeRow(secIndex, Object.keys(section.seats).slice(-1)[0])}>
+            <div
+              className="theaterSeatLayoutDesigner-controls"
+              style={customStyles.controlsBox}
+            >
+              <button style={customStyles?.controlButton} onClick={() => addRow(secIndex)}>+ Row</button>
+              <button style={customStyles?.controlButton} onClick={() => addColumn(secIndex)}>+ Column</button>
+              <button style={customStyles?.controlButton}
+                onClick={() =>
+                  removeRow(secIndex, Object.keys(section.seats).slice(-1)[0])
+                }
+              >
                 Delete Last Row
               </button>
-              <button onClick={() => removeColumn(secIndex)}>Delete Last Column</button>
+              <button style={customStyles?.controlButton} onClick={() => removeColumn(secIndex)}>
+                Delete Last Column
+              </button>
               <button
                 className="theaterSeatLayoutDesigner-delete-section-btn"
+                style={customStyles?.controlButton}
                 onClick={() => removeSection(secIndex)}
               >
                 Delete Section
@@ -168,23 +224,44 @@ export const TheaterSeatLayoutDesigner = ({
             </div>
 
             {/* Seat Grid */}
-            <div className="theaterSeatLayoutDesigner-seat-grid">
+            <div
+              className="theaterSeatLayoutDesigner-seat-grid"
+              style={customStyles.seatGrid}
+            >
               {Object.entries(section.seats).map(([rowLabel, row]) => (
-                <div className="theaterSeatLayoutDesigner-seat-row" key={rowLabel}>
+                <div
+                  className="theaterSeatLayoutDesigner-seat-row"
+                  key={rowLabel}
+                  style={customStyles.row}
+                >
                   {/* Row Label */}
                   <div
                     className="theaterSeatLayoutDesigner-row-label"
-                    onClick={() => setSelected({ type: "row", secIndex, rowLabel })}
+                    onClick={() =>
+                      setSelected({ type: "row", secIndex, rowLabel })
+                    }
+                    style={customStyles.rowLabel}
                   >
                     <span>{rowLabel}</span>
                   </div>
 
                   {/* Seats */}
-                  <div className="theaterSeatLayoutDesigner-seat-group">
+                  <div
+                    className="theaterSeatLayoutDesigner-seat-group"
+                    style={customStyles.seatGroup}
+                  >
                     {row?.map((seat, colIndex) => (
                       <div
                         key={seat.id}
-                        className={`theaterSeatLayoutDesigner-seat theaterSeatLayoutDesigner-${seat.isBlank ? "blankSeat" : "AVAILABLE"}`}
+                        className={`theaterSeatLayoutDesigner-seat theaterSeatLayoutDesigner-${
+                          seat.isBlank ? "blankSeat" : "AVAILABLE"
+                        }`}
+                        style={{
+                          ...customStyles.seat,
+                          ...(selected?.type === "seat" && selected?.rowLabel === rowLabel && selected?.seatIndex === colIndex && selected?.secIndex === secIndex ? customStyles.selectedSeat : {}),
+                          ...(seat.isBlank ? customStyles.blankSeat : {}),
+
+                        }}
                         onClick={() =>
                           setSelected({
                             type: "seat",
@@ -205,71 +282,107 @@ export const TheaterSeatLayoutDesigner = ({
         ))}
 
         <div className="theaterSeatLayoutDesigner-bottom-btn-container">
-        <div className="theaterSeatLayoutDesigner-add-section-box">
-          <button onClick={addSection}>+ Add Section</button>
-        </div>
-        <div className="theaterSeatLayoutDesigner-add-section-box">
-          <button onClick={exportToJSON}>Export to JSON</button>
-        </div>
+          <div className="theaterSeatLayoutDesigner-add-section-box">
+            <button onClick={addSection}>+ Add Section</button>
+          </div>
+          <div className="theaterSeatLayoutDesigner-add-section-box">
+            <button onClick={exportToJSON}>Export to JSON</button>
+          </div>
         </div>
       </div>
 
       {/* Inspector */}
-      <div className="theaterSeatLayoutDesigner-inspector">
-        <h3>Inspector</h3>
-        {!selected && <p>Select a section title, row label, or seat</p>}
+      <div className="theaterSeatLayoutDesigner-inspector" style={customStyles?.inspectorBox}>
+        <h3 style={customStyles?.inspectorHeader}>Inspector</h3>
+        {!selected && <p style={customStyles?.inspectorPlaceholder}>Select a section title, row label, or seat</p>}
 
         {selected?.type === "section" && (
           <div>
-            <label>Section Title</label>
+            <label style={customStyles?.inspectorLabel}>Section Title</label>
             <input
               value={sections[selected.secIndex].title}
-              onChange={(e) => updateSectionTitle(selected.secIndex, e.target.value)}
+              onChange={(e) =>
+                updateSectionTitle(selected.secIndex, e.target.value)
+              }
+              style={customStyles?.inspectorInput}
             />
           </div>
         )}
 
         {selected?.type === "row" && (
           <div>
-            <label>Row label</label>
+            <label style={customStyles?.inspectorLabel}>Row label</label>
             <input
               value={selected.rowLabel}
-              onChange={(e) => updateRowLabel(selected.secIndex, selected.rowLabel, e.target.value)}
+              onChange={(e) =>
+                updateRowLabel(
+                  selected.secIndex,
+                  selected.rowLabel,
+                  e.target.value
+                )
+              }
+              style={customStyles?.inspectorInput}
             />
           </div>
         )}
 
         {selected?.type === "seat" && (
           <div>
-            <label>Seat ID:</label>
+            <label style={customStyles?.inspectorLabel}>Seat ID:</label>
             <input
               value={
-                sections[selected.secIndex].seats[selected.rowLabel]?.[selected.seatIndex].id
+                sections[selected.secIndex].seats[selected.rowLabel]?.[
+                  selected.seatIndex
+                ].id
               }
               onChange={(e) =>
-                updateSeat(selected.secIndex, selected.rowLabel, selected.seatIndex, "id", e.target.value)
+                updateSeat(
+                  selected.secIndex,
+                  selected.rowLabel,
+                  selected.seatIndex,
+                  "id",
+                  e.target.value
+                )
               }
+              style={customStyles?.inspectorInput}
             />
-            <label>Seat Label:</label>
+            <label style={customStyles?.inspectorLabel}>Seat Label:</label>
             <input
               value={
-                sections[selected.secIndex].seats[selected.rowLabel]?.[selected.seatIndex].label || ""
+                sections[selected.secIndex].seats[selected.rowLabel]?.[
+                  selected.seatIndex
+                ].label || ""
               }
               onChange={(e) =>
-                updateSeat(selected.secIndex, selected.rowLabel, selected.seatIndex, "label", e.target.value)
+                updateSeat(
+                  selected.secIndex,
+                  selected.rowLabel,
+                  selected.seatIndex,
+                  "label",
+                  e.target.value
+                )
               }
+              style={customStyles?.inspectorInput}
             />
             <label className="theaterSeatLayoutDesigner-checkbox-label">
               <input
                 type="checkbox"
                 checked={
-                  sections[selected.secIndex].seats[selected.rowLabel]?.[selected.seatIndex].isBlank || false
+                  sections[selected.secIndex].seats[selected.rowLabel]?.[
+                    selected.seatIndex
+                  ].isBlank || false
                 }
                 onChange={(e) =>
-                  updateSeat(selected.secIndex, selected.rowLabel, selected.seatIndex, "isBlank", e.target.checked)
+                  updateSeat(
+                    selected.secIndex,
+                    selected.rowLabel,
+                    selected.seatIndex,
+                    "isBlank",
+                    e.target.checked
+                  )
                 }
               />
-              <span>Is Blank</span>
+              <span style={customStyles?.inspectorLabel}>Is Blank</span>
             </label>
           </div>
         )}
