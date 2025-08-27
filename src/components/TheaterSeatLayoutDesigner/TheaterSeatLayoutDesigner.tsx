@@ -31,7 +31,12 @@ interface TheaterSeatLayoutDesignerProps {
 
 type InspectorTarget =
   | { type: "section"; secIndex: number }
-  | { type: "row"; secIndex: number; rowLabel: string }
+  | {
+      type: "row";
+      secIndex: number;
+      rowLabel: string;
+      inspectorDisplayLabelValue: string;
+    }
   | { type: "seat"; secIndex: number; rowLabel: string; seatIndex: number }
   | null;
 
@@ -84,30 +89,30 @@ export const TheaterSeatLayoutDesigner = ({
   };
 
   const randomTwoChars = () => {
-  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  return (
-    letters[Math.floor(Math.random() * letters.length)] + letters[Math.floor(Math.random() * letters.length)]
-  );
-};
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    return (
+      letters[Math.floor(Math.random() * letters.length)] + letters[Math.floor(Math.random() * letters.length)]
+    );
+  };
 
   const generateNextRowId = (rowKeys: string[]): string => {
-  if (rowKeys.length === 0) return "A";
-  // take last row key
-  const lastKey = rowKeys[rowKeys.length - 1];
-  let nextKey: string;
-  // case: single char like A, B, C
-  if (lastKey.length === 1 && /[A-Z]/.test(lastKey)) {
-    nextKey = String.fromCharCode(lastKey.charCodeAt(0) + 1);
-  } else {
-    // otherwise, fallback
-    nextKey = randomTwoChars();
-  }
-  // ensure unique
-  while (rowKeys.includes(nextKey)) {
-    nextKey = randomTwoChars();
-  }
-  return nextKey;
-};
+    if (rowKeys.length === 0) return "A";
+    // take last row key
+    const lastKey = rowKeys[rowKeys.length - 1];
+    let nextKey: string;
+    // case: single char like A, B, C
+    if (lastKey.length === 1 && /[A-Z]/.test(lastKey)) {
+      nextKey = String.fromCharCode(lastKey.charCodeAt(0) + 1);
+    } else {
+      // otherwise, fallback
+      nextKey = randomTwoChars();
+    }
+    // ensure unique
+    while (rowKeys.includes(nextKey)) {
+      nextKey = randomTwoChars();
+    }
+    return nextKey;
+  };
 
   // --- Row + Seat ---
   const addRow = (secIndex: number) => {
@@ -181,7 +186,12 @@ export const TheaterSeatLayoutDesigner = ({
     }
     section.seats = newSeats;
     updateSections(updated);
-    setSelected({ type: "row", secIndex, rowLabel: newLabel });
+    setSelected({
+      type: "row",
+      secIndex,
+      rowLabel: newLabel,
+      inspectorDisplayLabelValue: newLabel,
+    });
   };
 
   const updateSeat = (
@@ -295,7 +305,12 @@ export const TheaterSeatLayoutDesigner = ({
                   <div
                     className="theaterSeatLayoutDesigner-row-label"
                     onClick={() =>
-                      setSelected({ type: "row", secIndex, rowLabel })
+                      setSelected({
+                        type: "row",
+                        secIndex,
+                        rowLabel,
+                        inspectorDisplayLabelValue: rowLabel,
+                      })
                     }
                     style={customStyles.rowLabel}
                   >
@@ -385,14 +400,29 @@ export const TheaterSeatLayoutDesigner = ({
           <div>
             <label style={customStyles?.inspectorLabel}>Row label</label>
             <input
-              value={selected.rowLabel}
-              onChange={(e) =>
-                updateRowLabel(
-                  selected.secIndex,
-                  selected.rowLabel,
-                  e.target.value
-                )
-              }
+              value={selected.inspectorDisplayLabelValue}
+              onChange={(e) => {
+                const newLabel = e.target.value.trim();
+                if (
+                  newLabel &&
+                  newLabel !== selected.rowLabel &&
+                  !sections[selected.secIndex].seats[newLabel]
+                ) {
+                  updateRowLabel(
+                    selected.secIndex,
+                    selected.rowLabel,
+                    e.target.value
+                  );
+                } else {
+                  setSelected((prev) => {
+                    if (!prev || prev.type !== "row") return prev; // only rows have editable label
+                    return {
+                      ...prev,
+                      inspectorDisplayLabelValue: e.target.value,
+                    };
+                  });
+                }
+              }}
               style={customStyles?.inspectorInput}
             />
           </div>
