@@ -141,7 +141,7 @@
 }
 
 /* Column actions */
-.busSeatLayoutDesigner-colActions {
+.busSeatLayoutDesigner-controls {
   display: flex;
   gap: 6px;
   margin-top: 10px;
@@ -190,15 +190,11 @@
   flex-shrink: 0;
 }
 
-.busSeatLayoutDesigner-empty {
+.busSeatLayoutDesigner-placeholder {
   color: var(--muted);
   margin-top: 6px;
 }
 
-.busSeatLayoutDesigner-subtle {
-  color: var(--muted);
-  margin-top: 4px;
-}
 
 .busSeatLayoutDesigner-form {
   display: flex;

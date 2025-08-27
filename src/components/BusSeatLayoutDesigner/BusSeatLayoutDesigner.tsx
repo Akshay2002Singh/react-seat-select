@@ -1,10 +1,54 @@
 import { useState } from "react";
-import type { Seat, Section } from "../BusSeatSelect/types";
+import type { BusConfig, Seat, Section } from "../BusSeatSelect/types";
 import "./styles.css";
 
 type Sections = Record<string, Section>;
 
-export const BusSeatLayoutDesigner = () => {
+interface CustomStyles {
+  root?: React.CSSProperties;
+  workspace?: React.CSSProperties;
+  canvas?: React.CSSProperties;
+
+  section?: React.CSSProperties;
+  sectionHeader?: React.CSSProperties;
+  sectionTitle?: React.CSSProperties;
+  deleteSectionBtn?: React.CSSProperties;
+
+  columns?: React.CSSProperties;
+  column?: React.CSSProperties;
+
+  seats?: React.CSSProperties;
+  seat?: React.CSSProperties;
+  seaterSeat?: React.CSSProperties;
+  sleeperSeat?: React.CSSProperties;
+  blankSeat?: React.CSSProperties;
+  selectedSeat?: React.CSSProperties;
+
+  controls?: React.CSSProperties;
+  controlsActionButton?: React.CSSProperties;
+  addColumnCard?: React.CSSProperties;
+  bottomActions?: React.CSSProperties;
+
+  // Inspector panel
+  inspector?: React.CSSProperties;
+  inspectorHeading?: React.CSSProperties;
+  inspectorForm?: React.CSSProperties;
+  inspectorLabel?: React.CSSProperties;
+  inspectorInput?: React.CSSProperties;
+  inspectorPlaceholder?: React.CSSProperties;
+}
+
+interface BusSeatLayoutDesignerProps {
+  config?: BusConfig;
+  onChange?: (config: BusConfig) => void;
+  customStyles?: CustomStyles;
+}
+
+export const BusSeatLayoutDesigner = ({
+  config,
+  onChange,
+  customStyles = {},
+}: BusSeatLayoutDesignerProps) => {
   const [sections, setSections] = useState<Sections>({});
   const [selected, setSelected] = useState<{
     type: "seat" | "column" | "section";
@@ -49,8 +93,8 @@ export const BusSeatLayoutDesigner = () => {
 
   // ---- seats
   const addSeat = (
-      secKey: string,
-      colIndex: number,
+    secKey: string,
+    colIndex: number,
     type: "seater" | "sleeper"
   ) =>
     setSections((p) => {
@@ -104,21 +148,36 @@ export const BusSeatLayoutDesigner = () => {
   };
 
   return (
-    <div className="busSeatLayoutDesigner-root">
-      <div className="busSeatLayoutDesigner-workspace">
+    <div className="busSeatLayoutDesigner-root" style={customStyles?.root}>
+      <div
+        className="busSeatLayoutDesigner-workspace"
+        style={customStyles?.workspace}
+      >
         {/* canvas */}
-        <div className="busSeatLayoutDesigner-canvas">
+        <div
+          className="busSeatLayoutDesigner-canvas"
+          style={customStyles?.canvas}
+        >
           {Object.entries(sections).map(([secKey, section]) => (
-            <section key={secKey} className="busSeatLayoutDesigner-section">
+            <section
+              key={secKey}
+              className="busSeatLayoutDesigner-section"
+              style={customStyles?.section}
+              onClick={() => setSelected({ type: "section", secKey })}
+            >
               <header
                 className="busSeatLayoutDesigner-sectionHeader"
-                onClick={() => setSelected({ type: "section", secKey })}
+                style={customStyles?.sectionHeader}
               >
-                <span className="busSeatLayoutDesigner-sectionTitleDisplay">
+                <span
+                  className="busSeatLayoutDesigner-sectionTitleDisplay"
+                  style={customStyles?.sectionTitle}
+                >
                   {section.title}
                 </span>
                 <button
                   className="busSeatLayoutDesigner-delete-section-btn"
+                  style={customStyles?.deleteSectionBtn}
                   onClick={() => removeSection(secKey)}
                   title="Remove section"
                 >
@@ -126,11 +185,20 @@ export const BusSeatLayoutDesigner = () => {
                 </button>
               </header>
 
-              <div className="busSeatLayoutDesigner-columns">
+              <div
+                className="busSeatLayoutDesigner-columns"
+                style={customStyles?.columns}
+              >
                 {section.columns.map((col, colIndex) => (
-                  <div className="busSeatLayoutDesigner-column" key={col.id}>
-
-                    <div className="busSeatLayoutDesigner-seats">
+                  <div
+                    className="busSeatLayoutDesigner-column"
+                    style={customStyles?.column}
+                    key={col.id}
+                  >
+                    <div
+                      className="busSeatLayoutDesigner-seats"
+                      style={customStyles?.seats}
+                    >
                       {col.seats.map((seat, seatIndex) => {
                         const cls = [
                           "busSeatLayoutDesigner-seat",
@@ -139,10 +207,27 @@ export const BusSeatLayoutDesigner = () => {
                         ]
                           .filter(Boolean)
                           .join(" ");
+                        const isSelected =
+                          selected?.type === "seat" &&
+                          selected.secKey === secKey &&
+                          selected.colIndex === colIndex &&
+                          selected.seatIndex === seatIndex;
+
                         return (
                           <div
                             key={seatIndex}
                             className={cls}
+                            style={{
+                              ...customStyles.seat,
+                              ...(seat.type === "seater"
+                                ? customStyles.seaterSeat
+                                : {}),
+                              ...(seat.type === "sleeper"
+                                ? customStyles.sleeperSeat
+                                : {}),
+                              ...(seat.isBlank ? customStyles.blankSeat : {}),
+                              ...(isSelected ? customStyles.selectedSeat : {}),
+                            }}
                             onClick={() =>
                               setSelected({
                                 type: "seat",
@@ -163,29 +248,39 @@ export const BusSeatLayoutDesigner = () => {
                       })}
                     </div>
 
-                    <div className="busSeatLayoutDesigner-colActions">
+                    <div
+                      className="busSeatLayoutDesigner-controls"
+                      style={customStyles.controls}
+                    >
                       <button
                         className="busSeatLayoutDesigner-btn busSeatLayoutDesigner-btn--tiny"
+                        style={customStyles.controlsActionButton}
                         onClick={() => addSeat(secKey, colIndex, "seater")}
                       >
                         + Seater
                       </button>
                       <button
                         className="busSeatLayoutDesigner-btn busSeatLayoutDesigner-btn--tiny"
+                        style={customStyles.controlsActionButton}
                         onClick={() => addSeat(secKey, colIndex, "sleeper")}
                       >
                         + Sleeper
                       </button>
                     </div>
-                    <div className="busSeatLayoutDesigner-colActions">
+                    <div
+                      className="busSeatLayoutDesigner-controls"
+                      style={customStyles.controls}
+                    >
                       <button
                         className="busSeatLayoutDesigner-btn busSeatLayoutDesigner-btn--tiny"
+                        style={customStyles.controlsActionButton}
                         onClick={() => removeColumn(secKey, colIndex)}
                       >
                         Remove Column
                       </button>
                       <button
                         className="busSeatLayoutDesigner-btn busSeatLayoutDesigner-btn--tiny"
+                        style={customStyles.controlsActionButton}
                         onClick={() => removeLastSeat(secKey, colIndex)}
                       >
                         Remove Last Seat
@@ -198,6 +293,7 @@ export const BusSeatLayoutDesigner = () => {
                   className="busSeatLayoutDesigner-addColumnCard"
                   onClick={() => addColumn(secKey)}
                   title="Add column"
+                  style={customStyles.addColumnCard}
                 >
                   + Column
                 </button>
@@ -206,24 +302,33 @@ export const BusSeatLayoutDesigner = () => {
           ))}
 
           {/* bottom global actions */}
-          <div className="busSeatLayoutDesigner-bottomActions">
-            <button
-              className="busSeatLayoutDesigner-btn"
-              onClick={addSection}
-            >
+          <div
+            className="busSeatLayoutDesigner-bottomActions"
+            style={customStyles?.bottomActions}
+          >
+            <button className="busSeatLayoutDesigner-btn" onClick={addSection}>
               + Add Section
             </button>
-            <button className="busSeatLayoutDesigner-btn" onClick={exportToJSON}>
+            <button
+              className="busSeatLayoutDesigner-btn"
+              onClick={exportToJSON}
+            >
               Export JSON
             </button>
           </div>
         </div>
 
         {/* inspector */}
-        <aside className="busSeatLayoutDesigner-inspector">
-          <h3>Inspector</h3>
+        <aside
+          className="busSeatLayoutDesigner-inspector"
+          style={customStyles?.inspector}
+        >
+          <h3 style={customStyles?.inspectorHeading}>Inspector</h3>
           {!selected && (
-            <div className="busSeatLayoutDesigner-empty">
+            <div
+              className="busSeatLayoutDesigner-placeholder"
+              style={customStyles?.inspectorPlaceholder}
+            >
               Select a section title or seat
             </div>
           )}
@@ -234,10 +339,10 @@ export const BusSeatLayoutDesigner = () => {
               const seat =
                 s.columns[selected.colIndex!].seats[selected.seatIndex!];
               return (
-                <div className="busSeatLayoutDesigner-form">
-                  <label>
-                    Seat ID
+                <div className="busSeatLayoutDesigner-form" style={customStyles?.inspectorForm}>
+                    <label style={customStyles?.inspectorLabel}>Seat ID</label>
                     <input
+                      style={customStyles?.inspectorInput}
                       value={seat.id}
                       onChange={(e) =>
                         updateSeat(
@@ -249,10 +354,9 @@ export const BusSeatLayoutDesigner = () => {
                         )
                       }
                     />
-                  </label>
-                  <label>
-                    Type
+                    <label style={customStyles?.inspectorLabel}>Type</label>
                     <select
+                      style={customStyles?.inspectorInput}
                       value={seat.type}
                       onChange={(e) =>
                         updateSeat(
@@ -267,9 +371,10 @@ export const BusSeatLayoutDesigner = () => {
                       <option value="seater">Seater</option>
                       <option value="sleeper">Sleeper</option>
                     </select>
-                  </label>
-                  <label className="busSeatLayoutDesigner-checkbox">
-                    <input
+
+                    <label
+                      className="busSeatLayoutDesigner-checkbox">
+                      <input
                       type="checkbox"
                       checked={seat.isBlank}
                       onChange={(e) =>
@@ -282,29 +387,24 @@ export const BusSeatLayoutDesigner = () => {
                         )
                       }
                     />
-                    <span>Is Blank</span>
-                  </label>
+                    <span style={customStyles?.inspectorLabel}>Is Blank</span>
+                    </label>
                 </div>
               );
             })()}
 
-          {selected?.type === "column" && (
-            <div className="busSeatLayoutDesigner-subtle">
-              Editing column:{" "}
-              {sections[selected.secKey].columns[selected.colIndex!].id}
-            </div>
-          )}
           {selected?.type === "section" && (
-            <div className="busSeatLayoutDesigner-form">
-              <label>
+            <div className="busSeatLayoutDesigner-form" style={customStyles?.inspectorForm}>
+              <label style={customStyles?.inspectorLabel}>
                 Section Title
-                <input
+              </label>
+               <input
+                  style={customStyles?.inspectorInput}
                   value={sections[selected.secKey].title}
                   onChange={(e) =>
                     updateSectionTitle(selected.secKey, e.target.value)
                   }
                 />
-              </label>
             </div>
           )}
         </aside>
