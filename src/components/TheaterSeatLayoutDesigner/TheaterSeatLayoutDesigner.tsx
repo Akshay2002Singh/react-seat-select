@@ -83,13 +83,37 @@ export const TheaterSeatLayoutDesigner = ({
     setSelected(null);
   };
 
+  const randomTwoChars = () => {
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  return (
+    letters[Math.floor(Math.random() * letters.length)] + letters[Math.floor(Math.random() * letters.length)]
+  );
+};
+
+  const generateNextRowId = (rowKeys: string[]): string => {
+  if (rowKeys.length === 0) return "A";
+  // take last row key
+  const lastKey = rowKeys[rowKeys.length - 1];
+  let nextKey: string;
+  // case: single char like A, B, C
+  if (lastKey.length === 1 && /[A-Z]/.test(lastKey)) {
+    nextKey = String.fromCharCode(lastKey.charCodeAt(0) + 1);
+  } else {
+    // otherwise, fallback
+    nextKey = randomTwoChars();
+  }
+  // ensure unique
+  while (rowKeys.includes(nextKey)) {
+    nextKey = randomTwoChars();
+  }
+  return nextKey;
+};
+
   // --- Row + Seat ---
   const addRow = (secIndex: number) => {
     const updated = [...sections];
     const rowKeys = Object.keys(updated[secIndex].seats);
-    const nextRow = String.fromCharCode(
-      rowKeys.length > 0 ? rowKeys[rowKeys.length - 1].charCodeAt(0) + 1 : 65
-    );
+    const nextRow = generateNextRowId(rowKeys);
     const cols = updated[secIndex].seats[rowKeys[0] as string]?.length ?? 1;
     updated[secIndex].seats[nextRow] = Array.from({ length: cols }, (_, i) => ({
       id: `${nextRow}${i + 1}`,
@@ -139,11 +163,23 @@ export const TheaterSeatLayoutDesigner = ({
     const updated = [...sections];
     const section = updated[secIndex];
     if (!newLabel || section.seats[newLabel]) return;
-    section.seats[newLabel] = section.seats[oldLabel]?.map((seat) => ({
-      ...seat,
-      id: seat.id.replace(oldLabel, newLabel),
-    }));
-    delete section.seats[oldLabel];
+
+    const orderedRowsSequence = Object.keys(section.seats);
+    const newSeats: Record<string, (typeof section.seats)[string]> = {};
+    for (const label of orderedRowsSequence) {
+      if (label === oldLabel) {
+        // put new label in same position
+        const rowSeats = section.seats[oldLabel];
+        if (!rowSeats) continue; // safeguard
+        newSeats[newLabel] = rowSeats.map((seat) => ({
+          ...seat,
+          id: seat.id,
+        }));
+      } else {
+        newSeats[label] = section.seats[label];
+      }
+    }
+    section.seats = newSeats;
     updateSections(updated);
     setSelected({ type: "row", secIndex, rowLabel: newLabel });
   };
