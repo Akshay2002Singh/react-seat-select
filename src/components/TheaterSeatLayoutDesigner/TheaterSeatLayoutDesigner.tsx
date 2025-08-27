@@ -8,6 +8,7 @@ interface CustomStyles {
   sectionHeader?: React.CSSProperties;
   controlsBox?: React.CSSProperties;
   controlButton?: React.CSSProperties;
+  deleteSectionBtn?: React.CSSProperties;
   seatGrid?: React.CSSProperties;
   row?: React.CSSProperties;
   rowLabel?: React.CSSProperties;
@@ -16,7 +17,7 @@ interface CustomStyles {
   blankSeat?: React.CSSProperties;
   selectedSeat?: React.CSSProperties;
   inspectorBox?: React.CSSProperties;
-  inspectorPlaceholder?:React.CSSProperties
+  inspectorPlaceholder?: React.CSSProperties;
   inspectorHeader?: React.CSSProperties;
   inspectorLabel?: React.CSSProperties;
   inspectorInput?: React.CSSProperties;
@@ -46,7 +47,10 @@ export const TheaterSeatLayoutDesigner = ({
 
   // Sync prop → state when config changes externally
   useEffect(() => {
-    if (config) setSections(config);
+    if (config) {
+      setSections(config);
+      onChange?.(config);
+    }
   }, [config]);
 
   // Helper to update + propagate change
@@ -202,21 +206,38 @@ export const TheaterSeatLayoutDesigner = ({
               className="theaterSeatLayoutDesigner-controls"
               style={customStyles.controlsBox}
             >
-              <button style={customStyles?.controlButton} onClick={() => addRow(secIndex)}>+ Row</button>
-              <button style={customStyles?.controlButton} onClick={() => addColumn(secIndex)}>+ Column</button>
-              <button style={customStyles?.controlButton}
+              <button
+                style={customStyles?.controlButton}
+                onClick={() => addRow(secIndex)}
+              >
+                + Row
+              </button>
+              <button
+                style={customStyles?.controlButton}
+                onClick={() => addColumn(secIndex)}
+              >
+                + Column
+              </button>
+              <button
+                style={customStyles?.controlButton}
                 onClick={() =>
                   removeRow(secIndex, Object.keys(section.seats).slice(-1)[0])
                 }
               >
                 Delete Last Row
               </button>
-              <button style={customStyles?.controlButton} onClick={() => removeColumn(secIndex)}>
+              <button
+                style={customStyles?.controlButton}
+                onClick={() => removeColumn(secIndex)}
+              >
                 Delete Last Column
               </button>
               <button
                 className="theaterSeatLayoutDesigner-delete-section-btn"
-                style={customStyles?.controlButton}
+                style={{
+                  ...customStyles?.controlButton,
+                  ...customStyles?.deleteSectionBtn,
+                }}
                 onClick={() => removeSection(secIndex)}
               >
                 Delete Section
@@ -258,9 +279,13 @@ export const TheaterSeatLayoutDesigner = ({
                         }`}
                         style={{
                           ...customStyles.seat,
-                          ...(selected?.type === "seat" && selected?.rowLabel === rowLabel && selected?.seatIndex === colIndex && selected?.secIndex === secIndex ? customStyles.selectedSeat : {}),
+                          ...(selected?.type === "seat" &&
+                          selected?.rowLabel === rowLabel &&
+                          selected?.seatIndex === colIndex &&
+                          selected?.secIndex === secIndex
+                            ? customStyles.selectedSeat
+                            : {}),
                           ...(seat.isBlank ? customStyles.blankSeat : {}),
-
                         }}
                         onClick={() =>
                           setSelected({
@@ -283,18 +308,29 @@ export const TheaterSeatLayoutDesigner = ({
 
         <div className="theaterSeatLayoutDesigner-bottom-btn-container">
           <div className="theaterSeatLayoutDesigner-add-section-box">
-            <button onClick={addSection}>+ Add Section</button>
+            <button onClick={addSection} style={customStyles?.controlButton}>
+              + Add Section
+            </button>
           </div>
           <div className="theaterSeatLayoutDesigner-add-section-box">
-            <button onClick={exportToJSON}>Export to JSON</button>
+            <button onClick={exportToJSON} style={customStyles?.controlButton}>
+              Export to JSON
+            </button>
           </div>
         </div>
       </div>
 
       {/* Inspector */}
-      <div className="theaterSeatLayoutDesigner-inspector" style={customStyles?.inspectorBox}>
+      <div
+        className="theaterSeatLayoutDesigner-inspector"
+        style={customStyles?.inspectorBox}
+      >
         <h3 style={customStyles?.inspectorHeader}>Inspector</h3>
-        {!selected && <p style={customStyles?.inspectorPlaceholder}>Select a section title, row label, or seat</p>}
+        {!selected && (
+          <p style={customStyles?.inspectorPlaceholder}>
+            Select a section title, row label, or seat
+          </p>
+        )}
 
         {selected?.type === "section" && (
           <div>

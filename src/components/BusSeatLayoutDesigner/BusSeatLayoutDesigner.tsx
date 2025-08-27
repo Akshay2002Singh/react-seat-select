@@ -1,8 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { BusConfig, Seat, Section } from "../BusSeatSelect/types";
 import "./styles.css";
-
-type Sections = Record<string, Section>;
 
 interface CustomStyles {
   root?: React.CSSProperties;
@@ -25,9 +23,8 @@ interface CustomStyles {
   selectedSeat?: React.CSSProperties;
 
   controls?: React.CSSProperties;
-  controlsActionButton?: React.CSSProperties;
+  controlsButton?: React.CSSProperties;
   addColumnCard?: React.CSSProperties;
-  bottomActions?: React.CSSProperties;
 
   // Inspector panel
   inspector?: React.CSSProperties;
@@ -49,91 +46,165 @@ export const BusSeatLayoutDesigner = ({
   onChange,
   customStyles = {},
 }: BusSeatLayoutDesignerProps) => {
-  const [sections, setSections] = useState<Sections>({});
+  const [sections, setSections] = useState<Section[]>(config ?? []);
   const [selected, setSelected] = useState<{
     type: "seat" | "column" | "section";
-    secKey: string;
+    secIndex: number;
     colIndex?: number;
     seatIndex?: number;
   } | null>(null);
 
+  // Sync prop → state when config changes externally
+  useEffect(() => {
+    if (config) {
+      setSections(config);
+      onChange?.(config);
+    }
+  }, [config]);
+
   // ---- sections
   const addSection = () => {
-    const key = `Section${Object.keys(sections).length + 1}`;
-    setSections((prev) => ({ ...prev, [key]: { title: key, columns: [] } }));
+    setSections((prev) => {
+      const next = [...prev, { title: "Section title", columns: [] }];
+      onChange?.(next);
+      return next;
+    });
   };
-  const updateSectionTitle = (key: string, title: string) =>
-    setSections((p) => ({ ...p, [key]: { ...p[key], title } }));
-  const removeSection = (key: string) => {
-    const next = { ...sections };
-    delete next[key];
-    setSections(next);
-    setSelected(null);
+  const updateSectionTitle = (secIndex: number, title: string) => {
+    setSections((prev) => {
+      const next = [...prev];
+      next[secIndex] = { ...next[secIndex], title };
+      onChange?.(next);
+      return next;
+    });
+  };
+
+  const removeSection = (secIndex: number) => {
+    setSections((prev) => {
+      let next = [...prev];
+      next = next.filter((_, i) => i !== secIndex);
+      onChange?.(next);
+      return next;
+    });
   };
 
   // ---- columns
-  const addColumn = (secKey: string) =>
-    setSections((p) => {
-      const id = `col${p[secKey].columns.length + 1}`;
-      return {
-        ...p,
-        [secKey]: {
-          ...p[secKey],
-          columns: [...p[secKey].columns, { id, seats: [] }],
-        },
-      };
-    });
+  const addColumn = (secIndex: number) => {
+    setSections((prev) => {
+      // create copy of sections
+      const next = [...prev];
+      // get section to update
+      const section = next[secIndex];
+      // get columns array of section and create a copy
+      const cols = [...section.columns];
 
-  const removeColumn = (secKey: string, colIndex: number) =>
-    setSections((p) => {
-      const cols = [...p[secKey].columns];
-      cols.splice(colIndex, 1);
-      return { ...p, [secKey]: { ...p[secKey], columns: cols } };
+      if (cols.length > 0) {
+        let lastColId = cols[cols.length - 1].id;
+        cols.push({ id: (Number(lastColId) + 1).toString(), seats: [] });
+      } else {
+        cols.push({ id: (1).toString(), seats: [] });
+      }
+
+      next[secIndex] = { ...section, columns: cols };
+      onChange?.(next);
+      return next;
+    });
+  };
+
+  const removeColumn = (secIndex: number, colIndex: number) =>
+    setSections((prev) => {
+      // create copy of sections
+      const next = [...prev];
+      // get section to update
+      const section = next[secIndex];
+      // get columns array of section
+      const cols = section.columns.filter((_, i) => i !== colIndex);
+
+      next[secIndex] = { ...section, columns: cols };
+      onChange?.(next);
+      return next;
     });
 
   // ---- seats
   const addSeat = (
-    secKey: string,
+    secIndex: number,
     colIndex: number,
     type: "seater" | "sleeper"
-  ) =>
-    setSections((p) => {
-      const cols = p[secKey].columns.map((c, i) =>
-        i === colIndex
-          ? { ...c, seats: [...c.seats, { id: `S${c.seats.length + 1}`, type, isBlank: false }] }
-          : c
-      );
-      return { ...p, [secKey]: { ...p[secKey], columns: cols } };
+  ) => {
+    setSections((prev) => {
+      // create copy of sections
+      const next = [...prev];
+      // get section to update and create a copy
+      const section = { ...next[secIndex] };
+      // get columns array of section and create a copy
+      const cols = [...section.columns];
+      // get specific column and create a copy
+      const col = { ...cols[colIndex], seats: [...cols[colIndex].seats] };
+
+      // push new seat
+      col.seats.push({
+        id: `C${cols[colIndex].id}-S${col.seats.length + 1}`,
+        type,
+        isBlank: false,
+      });
+      cols[colIndex] = col;
+      section.columns = cols;
+      next[secIndex] = section;
+      onChange?.(next);
+      return next;
     });
+  };
 
   const updateSeat = (
-    secKey: string,
+    secIndex: number,
     colIndex: number,
     seatIndex: number,
     field: keyof Seat,
     value: string | boolean
-  ) =>
-    setSections((p) => {
-      const cols = [...p[secKey].columns];
-      (cols[colIndex].seats[seatIndex] as any)[field] = value;
-      return { ...p, [secKey]: { ...p[secKey], columns: cols } };
-    });
+  ) => {
+    setSections((prev) => {
+      // create copy of sections
+      const next = [...prev];
+      // clone the section
+      const section = { ...next[secIndex] };
+      // clone the columns
+      const cols = [...section.columns];
+      // clone the target column
+      const col = { ...cols[colIndex], seats: [...cols[colIndex].seats] };
+      // clone and update the seat
+      const seat = { ...col.seats[seatIndex], [field]: value };
 
-  const removeSeat = (secKey: string, colIndex: number, seatIndex: number) =>
-    setSections((p) => {
-      const cols = [...p[secKey].columns];
-      cols[colIndex].seats.splice(seatIndex, 1);
-      return { ...p, [secKey]: { ...p[secKey], columns: cols } };
+      col.seats[seatIndex] = seat;
+      cols[colIndex] = col;
+      section.columns = cols;
+      next[secIndex] = section;
+      onChange?.(next);
+      return next;
     });
+  };
 
-  const removeLastSeat = (secKey: string, colIndex: number) =>
-    setSections((p) => {
-      const cols = [...p[secKey].columns];
-      if (cols[colIndex].seats.length > 0) {
-        cols[colIndex].seats.pop();
+  const removeLastSeat = (secIndex: number, colIndex: number) => {
+    setSections((prev) => {
+      // create copy of sections
+      const next = [...prev];
+      // clone the section
+      const section = { ...next[secIndex] };
+      // clone the columns
+      const cols = [...section.columns];
+      // clone the target column
+      const col = { ...cols[colIndex], seats: [...cols[colIndex].seats] };
+      // remove last seat if exists
+      if (col.seats.length > 0) {
+        col.seats.pop();
       }
-      return { ...p, [secKey]: { ...p[secKey], columns: cols } };
+      // rebuild
+      cols[colIndex] = col;
+      section.columns = cols;
+      next[secIndex] = section;
+      onChange?.(next);
+      return next;
     });
+  };
 
   // ---- export
   const exportToJSON = () => {
@@ -158,16 +229,16 @@ export const BusSeatLayoutDesigner = ({
           className="busSeatLayoutDesigner-canvas"
           style={customStyles?.canvas}
         >
-          {Object.entries(sections).map(([secKey, section]) => (
+          {sections.map((section, secIndex) => (
             <section
-              key={secKey}
+              key={secIndex}
               className="busSeatLayoutDesigner-section"
               style={customStyles?.section}
-              onClick={() => setSelected({ type: "section", secKey })}
             >
               <header
                 className="busSeatLayoutDesigner-sectionHeader"
                 style={customStyles?.sectionHeader}
+                onClick={() => setSelected({ type: "section", secIndex })}
               >
                 <span
                   className="busSeatLayoutDesigner-sectionTitleDisplay"
@@ -177,8 +248,11 @@ export const BusSeatLayoutDesigner = ({
                 </span>
                 <button
                   className="busSeatLayoutDesigner-delete-section-btn"
-                  style={customStyles?.deleteSectionBtn}
-                  onClick={() => removeSection(secKey)}
+                  style={{
+                    ...customStyles?.controlsButton,
+                    ...customStyles?.deleteSectionBtn,
+                  }}
+                  onClick={() => removeSection(secIndex)}
                   title="Remove section"
                 >
                   Delete Section
@@ -209,7 +283,7 @@ export const BusSeatLayoutDesigner = ({
                           .join(" ");
                         const isSelected =
                           selected?.type === "seat" &&
-                          selected.secKey === secKey &&
+                          selected.secIndex === secIndex &&
                           selected.colIndex === colIndex &&
                           selected.seatIndex === seatIndex;
 
@@ -231,7 +305,7 @@ export const BusSeatLayoutDesigner = ({
                             onClick={() =>
                               setSelected({
                                 type: "seat",
-                                secKey,
+                                secIndex,
                                 colIndex,
                                 seatIndex,
                               })
@@ -254,15 +328,15 @@ export const BusSeatLayoutDesigner = ({
                     >
                       <button
                         className="busSeatLayoutDesigner-btn busSeatLayoutDesigner-btn--tiny"
-                        style={customStyles.controlsActionButton}
-                        onClick={() => addSeat(secKey, colIndex, "seater")}
+                        style={customStyles.controlsButton}
+                        onClick={() => addSeat(secIndex, colIndex, "seater")}
                       >
                         + Seater
                       </button>
                       <button
                         className="busSeatLayoutDesigner-btn busSeatLayoutDesigner-btn--tiny"
-                        style={customStyles.controlsActionButton}
-                        onClick={() => addSeat(secKey, colIndex, "sleeper")}
+                        style={customStyles.controlsButton}
+                        onClick={() => addSeat(secIndex, colIndex, "sleeper")}
                       >
                         + Sleeper
                       </button>
@@ -273,15 +347,15 @@ export const BusSeatLayoutDesigner = ({
                     >
                       <button
                         className="busSeatLayoutDesigner-btn busSeatLayoutDesigner-btn--tiny"
-                        style={customStyles.controlsActionButton}
-                        onClick={() => removeColumn(secKey, colIndex)}
+                        style={customStyles.controlsButton}
+                        onClick={() => removeColumn(secIndex, colIndex)}
                       >
                         Remove Column
                       </button>
                       <button
                         className="busSeatLayoutDesigner-btn busSeatLayoutDesigner-btn--tiny"
-                        style={customStyles.controlsActionButton}
-                        onClick={() => removeLastSeat(secKey, colIndex)}
+                        style={customStyles.controlsButton}
+                        onClick={() => removeLastSeat(secIndex, colIndex)}
                       >
                         Remove Last Seat
                       </button>
@@ -291,7 +365,7 @@ export const BusSeatLayoutDesigner = ({
 
                 <button
                   className="busSeatLayoutDesigner-addColumnCard"
-                  onClick={() => addColumn(secKey)}
+                  onClick={() => addColumn(secIndex)}
                   title="Add column"
                   style={customStyles.addColumnCard}
                 >
@@ -302,16 +376,18 @@ export const BusSeatLayoutDesigner = ({
           ))}
 
           {/* bottom global actions */}
-          <div
-            className="busSeatLayoutDesigner-bottomActions"
-            style={customStyles?.bottomActions}
-          >
-            <button className="busSeatLayoutDesigner-btn" onClick={addSection}>
+          <div className="busSeatLayoutDesigner-bottomActions">
+            <button
+              className="busSeatLayoutDesigner-btn"
+              onClick={addSection}
+              style={customStyles.controlsButton}
+            >
               + Add Section
             </button>
             <button
               className="busSeatLayoutDesigner-btn"
               onClick={exportToJSON}
+              style={customStyles.controlsButton}
             >
               Export JSON
             </button>
@@ -335,51 +411,53 @@ export const BusSeatLayoutDesigner = ({
 
           {selected?.type === "seat" &&
             (() => {
-              const s = sections[selected.secKey];
+              const s = sections[selected.secIndex];
               const seat =
-                s.columns[selected.colIndex!].seats[selected.seatIndex!];
+                s.columns[selected.colIndex!].seats?.[selected.seatIndex!];
               return (
-                <div className="busSeatLayoutDesigner-form" style={customStyles?.inspectorForm}>
-                    <label style={customStyles?.inspectorLabel}>Seat ID</label>
-                    <input
-                      style={customStyles?.inspectorInput}
-                      value={seat.id}
-                      onChange={(e) =>
-                        updateSeat(
-                          selected.secKey,
-                          selected.colIndex!,
-                          selected.seatIndex!,
-                          "id",
-                          e.target.value
-                        )
-                      }
-                    />
-                    <label style={customStyles?.inspectorLabel}>Type</label>
-                    <select
-                      style={customStyles?.inspectorInput}
-                      value={seat.type}
-                      onChange={(e) =>
-                        updateSeat(
-                          selected.secKey,
-                          selected.colIndex!,
-                          selected.seatIndex!,
-                          "type",
-                          e.target.value
-                        )
-                      }
-                    >
-                      <option value="seater">Seater</option>
-                      <option value="sleeper">Sleeper</option>
-                    </select>
+                <div
+                  className="busSeatLayoutDesigner-form"
+                  style={customStyles?.inspectorForm}
+                >
+                  <label style={customStyles?.inspectorLabel}>Seat ID</label>
+                  <input
+                    style={customStyles?.inspectorInput}
+                    value={seat?.id}
+                    onChange={(e) =>
+                      updateSeat(
+                        selected.secIndex,
+                        selected.colIndex!,
+                        selected.seatIndex!,
+                        "id",
+                        e.target.value
+                      )
+                    }
+                  />
+                  <label style={customStyles?.inspectorLabel}>Type</label>
+                  <select
+                    style={customStyles?.inspectorInput}
+                    value={seat?.type}
+                    onChange={(e) =>
+                      updateSeat(
+                        selected.secIndex,
+                        selected.colIndex!,
+                        selected.seatIndex!,
+                        "type",
+                        e.target.value
+                      )
+                    }
+                  >
+                    <option value="seater">Seater</option>
+                    <option value="sleeper">Sleeper</option>
+                  </select>
 
-                    <label
-                      className="busSeatLayoutDesigner-checkbox">
-                      <input
+                  <label className="busSeatLayoutDesigner-checkbox">
+                    <input
                       type="checkbox"
-                      checked={seat.isBlank}
+                      checked={seat?.isBlank}
                       onChange={(e) =>
                         updateSeat(
-                          selected.secKey,
+                          selected.secIndex,
                           selected.colIndex!,
                           selected.seatIndex!,
                           "isBlank",
@@ -388,23 +466,24 @@ export const BusSeatLayoutDesigner = ({
                       }
                     />
                     <span style={customStyles?.inspectorLabel}>Is Blank</span>
-                    </label>
+                  </label>
                 </div>
               );
             })()}
 
           {selected?.type === "section" && (
-            <div className="busSeatLayoutDesigner-form" style={customStyles?.inspectorForm}>
-              <label style={customStyles?.inspectorLabel}>
-                Section Title
-              </label>
-               <input
-                  style={customStyles?.inspectorInput}
-                  value={sections[selected.secKey].title}
-                  onChange={(e) =>
-                    updateSectionTitle(selected.secKey, e.target.value)
-                  }
-                />
+            <div
+              className="busSeatLayoutDesigner-form"
+              style={customStyles?.inspectorForm}
+            >
+              <label style={customStyles?.inspectorLabel}>Section Title</label>
+              <input
+                style={customStyles?.inspectorInput}
+                value={sections[selected.secIndex]?.title}
+                onChange={(e) =>
+                  updateSectionTitle(selected.secIndex, e.target.value)
+                }
+              />
             </div>
           )}
         </aside>
