@@ -324,7 +324,7 @@ export const TheaterSeatLayoutDesigner = ({
                   >
                     {row?.map((seat, colIndex) => (
                       <div
-                        key={seat.id}
+                        key={`${rowLabel}-${colIndex}`}
                         className={`theaterSeatLayoutDesigner-seat theaterSeatLayoutDesigner-${
                           seat.isBlank ? "blankSeat" : "AVAILABLE"
                         }`}
@@ -347,7 +347,7 @@ export const TheaterSeatLayoutDesigner = ({
                           })
                         }
                       >
-                        {seat.id}
+                        {seat.label}
                       </div>
                     ))}
                   </div>
