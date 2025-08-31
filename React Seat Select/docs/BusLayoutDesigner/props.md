@@ -15,6 +15,30 @@ sidebar_position: 2
 
 The initial bus layout configuration. A `BusConfig` is an array of sections, each containing columns and seats.
 
+Each seat has an `id`, `type` (`seater` or `sleeper`), and an `isBlank` flag to represent empty spaces.
+
+```tsx
+export type SeatType = "sleeper" | "seater";
+
+export interface Seat {
+  id: string;
+  type: SeatType;
+  isBlank: boolean;
+}
+
+export interface Column {
+  id: string;
+  seats: Seat[];
+}
+
+export interface Section {
+  title?: string;
+  columns: Column[];
+}
+
+export type BusConfig = Section[];
+```
+
 ---
 
 ### 2. `onChange`
@@ -22,7 +46,6 @@ The initial bus layout configuration. A `BusConfig` is an array of sections, eac
 - **Required:** `False`  
 - **Type:** `(config: BusConfig) => void`  
 - **Default:** `undefined`  
-- 
 
 Callback fired whenever the configuration changes (adding/removing seats, editing IDs, etc.).  
 Use this to sync state with your application.

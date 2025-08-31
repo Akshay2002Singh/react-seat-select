@@ -7,7 +7,7 @@ sidebar_position: 1
 
 # 🚌 BusSeatLayoutDesigner
 
-The `BusSeatLayoutDesigner` component provides an **interactive drag-and-drop–style workspace** to design and configure bus seat layouts.  
+The `BusSeatLayoutDesigner` component provides an **interactive workspace** to design and configure bus seat layouts.  
 It allows you to add sections, columns, seats (seater/sleeper), edit properties via an inspector, and export the configuration as JSON.
 
 ---
@@ -15,7 +15,7 @@ It allows you to add sections, columns, seats (seater/sleeper), edit properties 
 
 ## ✨ Features
 - Add/remove **sections**, **columns**, and **seats** dynamically.
-- Support for **seater**, **sleeper**, and **blank seats**.
+- Support for **seater**, **sleeper**, and **blank seats** (for creating gaps).
 - Editable **seat IDs** (with duplicate/invalid ID validation).
 - **Inspector panel** to edit section titles and seat properties.
 - Export the entire layout as a **JSON file**.
@@ -28,7 +28,9 @@ It allows you to add sections, columns, seats (seater/sleeper), edit properties 
 ```tsx live
 function Example(){
     return (
-        <BusSeatLayoutDesigner/>
+        <div style={{"overflow":"auto"}}> 
+            <BusSeatLayoutDesigner/>
+        </div>
     )
 }
 ```
