@@ -1,0 +1,212 @@
+.theaterSeatLayoutDesigner-designer-wrapper * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+/* ============ LAYOUT ============ */
+.theaterSeatLayoutDesigner-designer-wrapper {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+}
+
+/* Canvas (left) */
+.theaterSeatLayoutDesigner-designer-canvas {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Inspector (right) */
+.theaterSeatLayoutDesigner-inspector {
+  width: 280px;
+  height: 300px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+.theaterSeatLayoutDesigner-inspector h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+.theaterSeatLayoutDesigner-inspector h4 {
+  margin: 12px 0 6px;
+  font-size: 14px;
+}
+.theaterSeatLayoutDesigner-inspector input[type="text"],
+.theaterSeatLayoutDesigner-inspector input:not([type]) {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 13px;
+  outline: none;
+}
+.theaterSeatLayoutDesigner-inspector label {
+  display: block;
+  font-size: 12px;
+  margin: 8px 0 4px;
+}
+
+/* ============ SECTION CARD ============ */
+.theaterSeatLayoutDesigner-section-box {
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 16px;
+}
+
+/* centered like TheaterSeatSelect */
+.theaterSeatLayoutDesigner-section-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 5px 6px;
+  font-weight: 700;
+  font-size: 20px;
+  color: #cecece;
+}
+
+/* small helper for clickable titles */
+.theaterSeatLayoutDesigner-clickable-text {
+  cursor: pointer;
+  user-select: none;
+}
+.theaterSeatLayoutDesigner-clickable-text:hover {
+  opacity: 0.85;
+}
+
+/* Controls under section title */
+.theaterSeatLayoutDesigner-controls {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.theaterSeatLayoutDesigner-controls button {
+  border: 1px solid #d9d9d9;
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.theaterSeatLayoutDesigner-delete-section-btn {
+  border: none !important;
+  background: #f44336 !important;
+  color: #fff;
+}
+
+/* ============ GRID ============ */
+.theaterSeatLayoutDesigner-seat-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;                   
+  justify-content: center;
+  min-height: 32px;
+}
+
+/* Row container: label + seats */
+.theaterSeatLayoutDesigner-seat-row {
+  display: flex;
+  align-items: center;
+  gap: 32px;                    
+}
+
+/* Row label: fixed to seat size, clean badge with top-right delete like seats */
+.theaterSeatLayoutDesigner-row-label {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  border-radius: 4px;
+  background: #f6f6f6;
+  color: #333;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+.theaterSeatLayoutDesigner-row-label:hover {
+  transform: scale(1.04);
+}
+
+/* Seats group */
+.theaterSeatLayoutDesigner-seat-group {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;                    
+  /* flex-wrap: wrap; */
+}
+
+.theaterSeatLayoutDesigner-seat {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: black;
+  background: #eee;
+  display: block;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  padding: 0px 1px;
+}
+.theaterSeatLayoutDesigner-seat:hover {
+  transform: scale(1.06);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+}
+
+.theaterSeatLayoutDesigner-seat.theaterSeatLayoutDesigner-AVAILABLE {
+  background-color: #e0f7fa;
+  color: black;
+}
+
+.theaterSeatLayoutDesigner-blankSeat {
+  background-color: transparent;
+  border: 1px dashed #e5e5e5;
+}
+
+.theaterSeatLayoutDesigner-bottom-btn-container{
+    display: flex;
+    justify-content: center;
+    gap: 18px
+}
+
+/* Add section (outside all sections) */
+.theaterSeatLayoutDesigner-add-section-box {
+  text-align: center;
+  margin: 20px 0;
+}
+.theaterSeatLayoutDesigner-add-section-box button {
+  border: 1px solid #d9d9d9;
+  padding: 8px 12px;
+  font-size: 13px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.theaterSeatLayoutDesigner-inspector label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.theaterSeatLayoutDesigner-inspector-invalid-id {
+  border: 1px solid red !important; 
+}
