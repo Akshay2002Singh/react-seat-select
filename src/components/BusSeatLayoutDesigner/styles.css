@@ -30,7 +30,6 @@
 
 .busSeatLayoutDesigner-canvas {
   flex: 1;
-  overflow: auto;
 }
 
 /* Section */
@@ -167,6 +166,7 @@
 .busSeatLayoutDesigner-btn--tiny {
   font-size: 11px;
   padding: 3px 6px;
+  white-space: nowrap;
 }
 
 .busSeatLayoutDesigner-addColumnCard {

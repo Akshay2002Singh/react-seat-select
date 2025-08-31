@@ -93,6 +93,7 @@
   border-radius: 8px;
   cursor: pointer;
   transition: 0.2s;
+  white-space: nowrap;
 }
 
 .theaterSeatLayoutDesigner-delete-section-btn {
