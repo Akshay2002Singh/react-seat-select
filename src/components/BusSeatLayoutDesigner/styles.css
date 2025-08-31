@@ -139,6 +139,12 @@
   font-weight: 500;
   color: var(--text2);
   text-align: center;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  padding: 0px 1px;
 }
 
 /* Column actions */
@@ -219,6 +225,7 @@
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 6px 8px;
+  outline: none;
 }
 
 .busSeatLayoutDesigner-checkbox {
@@ -227,6 +234,10 @@
   align-items: center;
   gap: 8px;
   color: var(--muted);
+}
+
+.busSeatLayoutDesigner-invalid-id {
+  border: 1px solid red !important;
 }
 
 /* Bottom actions */

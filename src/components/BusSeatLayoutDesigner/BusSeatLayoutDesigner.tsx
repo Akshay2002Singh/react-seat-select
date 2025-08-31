@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { BusConfig, Seat, Section } from "../BusSeatSelect/types";
 import "./styles.css";
 
@@ -33,6 +33,7 @@ interface CustomStyles {
   inspectorLabel?: React.CSSProperties;
   inspectorInput?: React.CSSProperties;
   inspectorPlaceholder?: React.CSSProperties;
+  inspectorErrorMsg?: React.CSSProperties;
 }
 
 interface BusSeatLayoutDesignerProps {
@@ -52,6 +53,8 @@ export const BusSeatLayoutDesigner = ({
     secIndex: number;
     colIndex?: number;
     seatIndex?: number;
+    isSeatIdValid?: boolean;
+    inspectorDisplaySeatId?: string;
   } | null>(null);
 
   // Sync prop → state when config changes externally
@@ -61,6 +64,22 @@ export const BusSeatLayoutDesigner = ({
       onChange?.(config);
     }
   }, [config]);
+
+  // helpers
+  const generateUniqueSeatId = (): string => {
+    const existingIds = sections?.flatMap(
+      (section) =>
+        section?.columns?.flatMap((column) =>
+          column?.seats?.map((seat) => seat?.id)
+        ) ?? []
+    );
+    let id: string;
+    do {
+      const num = Math.floor(Math.random() * 100000); // 0–99999
+      id = num.toString().padStart(5, "0"); // ensures 5 digits, e.g., "00001"
+    } while (existingIds.includes(id));
+    return id;
+  };
 
   // ---- sections
   const addSection = () => {
@@ -141,9 +160,11 @@ export const BusSeatLayoutDesigner = ({
       // get specific column and create a copy
       const col = { ...cols[colIndex], seats: [...cols[colIndex].seats] };
 
+      const newId = generateUniqueSeatId();
+
       // push new seat
       col.seats.push({
-        id: `C${cols[colIndex].id}-S${col.seats.length + 1}`,
+        id: newId,
         type,
         isBlank: false,
       });
@@ -181,6 +202,20 @@ export const BusSeatLayoutDesigner = ({
       onChange?.(next);
       return next;
     });
+    if (
+      selected?.type === "seat" &&
+      field === "id" &&
+      typeof value === "string"
+    ) {
+      setSelected((prev) => {
+        if (!prev || prev.type !== "seat") return prev;
+        return {
+          ...prev,
+          isSeatIdValid: true,
+          inspectorDisplaySeatId: value,
+        };
+      });
+    }
   };
 
   const removeLastSeat = (secIndex: number, colIndex: number) => {
@@ -308,6 +343,8 @@ export const BusSeatLayoutDesigner = ({
                                 secIndex,
                                 colIndex,
                                 seatIndex,
+                                inspectorDisplaySeatId: seat?.id,
+                                isSeatIdValid: true,
                               })
                             }
                             title={seat.id || "Seat"}
@@ -422,17 +459,65 @@ export const BusSeatLayoutDesigner = ({
                   <label style={customStyles?.inspectorLabel}>Seat ID</label>
                   <input
                     style={customStyles?.inspectorInput}
-                    value={seat?.id}
-                    onChange={(e) =>
-                      updateSeat(
-                        selected.secIndex,
-                        selected.colIndex!,
-                        selected.seatIndex!,
-                        "id",
-                        e.target.value
-                      )
+                    value={selected?.inspectorDisplaySeatId}
+                    onChange={(e) => {
+                      const newId = e.target.value.trim();
+                      const listOfExistingIds = sections.flatMap((section) =>
+                        section.columns.flatMap((column) =>
+                          column.seats.map((seat) => seat.id)
+                        )
+                      );
+                      if (newId && !listOfExistingIds?.includes(newId)) {
+                        updateSeat(
+                          selected.secIndex,
+                          selected.colIndex!,
+                          selected.seatIndex!,
+                          "id",
+                          newId
+                        );
+                      } else if (seat?.id !== newId) {
+                        setSelected((prev) => {
+                          if (!prev || prev.type !== "seat") return prev;
+                          return {
+                            ...prev,
+                            inspectorDisplaySeatId: newId,
+                            isSeatIdValid: false,
+                          };
+                        });
+                      } else {
+                        setSelected((prev) => {
+                          if (!prev || prev.type !== "seat") return prev;
+                          return {
+                            ...prev,
+                            inspectorDisplaySeatId: newId,
+                            isSeatIdValid: true,
+                          };
+                        });
+                      }
+                    }}
+                    className={
+                      selected &&
+                      selected.type === "seat" &&
+                      selected.isSeatIdValid === false
+                        ? "busSeatLayoutDesigner-invalid-id"
+                        : ""
                     }
                   />
+                  <div
+                    style={{
+                      color: "red",
+                      fontSize: "12px",
+                      marginTop: "4px",
+                      ...customStyles.inspectorErrorMsg,
+                    }}
+                  >
+                    {selected &&
+                    selected?.type === "seat" &&
+                    selected.isSeatIdValid === false
+                      ? "Invalid or Duplicate Value"
+                      : "\u00A0"}
+                  </div>
+
                   <label style={customStyles?.inspectorLabel}>Type</label>
                   <select
                     style={customStyles?.inspectorInput}
