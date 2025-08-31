@@ -21,6 +21,7 @@ interface CustomStyles {
   inspectorHeader?: React.CSSProperties;
   inspectorLabel?: React.CSSProperties;
   inspectorInput?: React.CSSProperties;
+  inspectorErrorMsg?: React.CSSProperties;
 }
 
 interface TheaterSeatLayoutDesignerProps {
@@ -36,8 +37,16 @@ type InspectorTarget =
       secIndex: number;
       rowLabel: string;
       inspectorDisplayLabelValue: string;
+      isLabelValid: boolean;
     }
-  | { type: "seat"; secIndex: number; rowLabel: string; seatIndex: number }
+  | {
+      type: "seat";
+      secIndex: number;
+      rowLabel: string;
+      seatIndex: number;
+      inspectorDisplayId: string;
+      isIdValid: boolean;
+    }
   | null;
 
 export const TheaterSeatLayoutDesigner = ({
@@ -91,7 +100,8 @@ export const TheaterSeatLayoutDesigner = ({
   const randomTwoChars = () => {
     const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     return (
-      letters[Math.floor(Math.random() * letters.length)] + letters[Math.floor(Math.random() * letters.length)]
+      letters[Math.floor(Math.random() * letters.length)] +
+      letters[Math.floor(Math.random() * letters.length)]
     );
   };
 
@@ -191,6 +201,7 @@ export const TheaterSeatLayoutDesigner = ({
       secIndex,
       rowLabel: newLabel,
       inspectorDisplayLabelValue: newLabel,
+      isLabelValid: true,
     });
   };
 
@@ -206,6 +217,16 @@ export const TheaterSeatLayoutDesigner = ({
     if (seat) {
       (seat as any)[field] = value;
       updateSections(updated);
+      if (field === "id" && typeof value === "string") {
+        setSelected(
+          (prev) =>
+            ({
+              ...prev,
+              inspectorDisplayId: value,
+              isIdValid: true,
+            } as InspectorTarget)
+        );
+      }
     }
   };
 
@@ -310,6 +331,7 @@ export const TheaterSeatLayoutDesigner = ({
                         secIndex,
                         rowLabel,
                         inspectorDisplayLabelValue: rowLabel,
+                        isLabelValid: true,
                       })
                     }
                     style={customStyles.rowLabel}
@@ -344,6 +366,8 @@ export const TheaterSeatLayoutDesigner = ({
                             secIndex,
                             rowLabel,
                             seatIndex: colIndex,
+                            inspectorDisplayId: seat?.id,
+                            isIdValid: true,
                           })
                         }
                       >
@@ -413,18 +437,42 @@ export const TheaterSeatLayoutDesigner = ({
                     selected.rowLabel,
                     e.target.value
                   );
+                } else if (newLabel && newLabel === selected.rowLabel) {
+                  setSelected((prev) => {
+                    if (!prev || prev.type !== "row") return prev; // only rows have editable label
+                    return {
+                      ...prev,
+                      inspectorDisplayLabelValue: e.target.value,
+                      isLabelValid: true,
+                    };
+                  });
                 } else {
                   setSelected((prev) => {
                     if (!prev || prev.type !== "row") return prev; // only rows have editable label
                     return {
                       ...prev,
                       inspectorDisplayLabelValue: e.target.value,
+                      isLabelValid: false,
                     };
                   });
                 }
               }}
               style={customStyles?.inspectorInput}
+              className={
+                selected &&
+                selected?.type === "row" &&
+                selected.isLabelValid === false
+                  ? "theaterSeatLayoutDesigner-inspector-invalid-id"
+                  : ""
+              }
             />
+            <div style={{ color: "red", fontSize: "12px", marginTop: "4px", ...customStyles.inspectorErrorMsg }}>
+              {selected &&
+              selected?.type === "row" &&
+              selected.isLabelValid === false
+                ? "Invalid or Duplicate Value"
+                : "\u00A0"}
+            </div>
           </div>
         )}
 
@@ -432,22 +480,63 @@ export const TheaterSeatLayoutDesigner = ({
           <div>
             <label style={customStyles?.inspectorLabel}>Seat ID:</label>
             <input
-              value={
-                sections[selected.secIndex].seats[selected.rowLabel]?.[
-                  selected.seatIndex
-                ].id
-              }
-              onChange={(e) =>
-                updateSeat(
-                  selected.secIndex,
-                  selected.rowLabel,
-                  selected.seatIndex,
-                  "id",
-                  e.target.value
-                )
-              }
+              value={selected.inspectorDisplayId}
+              onChange={(e) => {
+                const newId = e.target.value.trim();
+                const listOfExistingIds = sections.flatMap((section) =>
+                  Object.values(section.seats).flatMap(
+                    (row) => row?.map((seat) => seat.id).filter(Boolean) ?? []
+                  )
+                );
+                if (newId && !listOfExistingIds?.includes(newId)) {
+                  updateSeat(
+                    selected.secIndex,
+                    selected.rowLabel,
+                    selected.seatIndex,
+                    "id",
+                    e.target.value
+                  );
+                } else if (
+                  sections[selected.secIndex].seats[selected.rowLabel]?.[
+                    selected.seatIndex
+                  ].id !== e.target.value
+                ) {
+                  setSelected((prev) => {
+                    if (!prev || prev.type !== "seat") return prev;
+                    return {
+                      ...prev,
+                      inspectorDisplayId: e.target.value,
+                      isIdValid: false,
+                    };
+                  });
+                } else {
+                  setSelected((prev) => {
+                    if (!prev || prev.type !== "seat") return prev;
+                    return {
+                      ...prev,
+                      inspectorDisplayId: e.target.value,
+                      isIdValid: true,
+                    };
+                  });
+                }
+              }}
               style={customStyles?.inspectorInput}
+              className={
+                selected &&
+                selected?.type === "seat" &&
+                selected.isIdValid === false
+                  ? "theaterSeatLayoutDesigner-inspector-invalid-id"
+                  : ""
+              }
             />
+            <div style={{ color: "red", fontSize: "12px", marginTop: "4px", ...customStyles.inspectorErrorMsg }}>
+              {selected &&
+              selected?.type === "seat" &&
+              selected.isIdValid === false
+                ? "Invalid or Duplicate Value"
+                : "\u00A0"}
+            </div>
+
             <label style={customStyles?.inspectorLabel}>Seat Label:</label>
             <input
               value={

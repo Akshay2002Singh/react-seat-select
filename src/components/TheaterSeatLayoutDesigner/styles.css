@@ -202,3 +202,7 @@
   align-items: center;
   gap: 6px;
 }
+
+.theaterSeatLayoutDesigner-inspector-invalid-id {
+  border: 1px solid red !important; 
+}
