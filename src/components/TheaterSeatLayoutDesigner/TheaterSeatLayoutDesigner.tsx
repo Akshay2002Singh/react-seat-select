@@ -74,12 +74,10 @@ export const TheaterSeatLayoutDesigner = ({
   };
 
   // --- Helpers ---
-  function createEmptySection(title = "Section"): SeatSection {
+  function createEmptySection(title = "Section 1"): SeatSection {
     return {
       title,
-      seats: {
-        A: [{ id: "A1", label: "A1" }],
-      },
+      seats: {},
     };
   }
 
@@ -111,7 +109,7 @@ export const TheaterSeatLayoutDesigner = ({
     const lastKey = rowKeys[rowKeys.length - 1];
     let nextKey: string;
     // case: single char like A, B, C
-    if (lastKey.length === 1 && /[A-Z]/.test(lastKey)) {
+    if (lastKey.length === 1 && /[A-Y]/.test(lastKey)) {
       nextKey = String.fromCharCode(lastKey.charCodeAt(0) + 1);
     } else {
       // otherwise, fallback
@@ -124,16 +122,42 @@ export const TheaterSeatLayoutDesigner = ({
     return nextKey;
   };
 
+  // helpers
+  const generateUniqueSeatId = (
+    rowLable: string,
+    existingIds: string[]
+  ): string => {
+    let id: string;
+    do {
+      const num = Math.floor(Math.random() * 1000); // 0–999
+      id = rowLable + num.toString().padStart(3, "0"); // ensures 3 digits, e.g., "001"
+    } while (existingIds.includes(id));
+    return id;
+  };
+
   // --- Row + Seat ---
   const addRow = (secIndex: number) => {
     const updated = [...sections];
     const rowKeys = Object.keys(updated[secIndex].seats);
     const nextRow = generateNextRowId(rowKeys);
+    // determine number of seats in the first row as a template
     const cols = updated[secIndex].seats[rowKeys[0] as string]?.length ?? 1;
-    updated[secIndex].seats[nextRow] = Array.from({ length: cols }, (_, i) => ({
-      id: `${nextRow}${i + 1}`,
-      label: `${nextRow}${i + 1}`,
-    }));
+    // collect all existing seat IDs across all sections
+    const existingIds = sections.flatMap((section) =>
+      Object.values(section?.seats)?.flatMap(
+        (row) => row?.map((seat) => seat?.id).filter(Boolean) ?? []
+      )
+    );
+
+    updated[secIndex].seats[nextRow] = Array.from({ length: cols }, (_, i) => {
+      const id = generateUniqueSeatId(nextRow, existingIds);
+      existingIds.push(id); // ensure subsequent seats in this row are unique
+      return {
+        id,
+        label: id,
+        isBlank: false,
+      };
+    });
     updateSections(updated);
   };
 
@@ -146,10 +170,22 @@ export const TheaterSeatLayoutDesigner = ({
 
   const addColumn = (secIndex: number) => {
     const updated = [...sections];
+    // collect all existing seat IDs across all sections
+    const existingIds = sections.flatMap((section) =>
+      Object.values(section.seats).flatMap(
+        (row) => row?.map((seat) => seat?.id).filter(Boolean) ?? []
+      )
+    );
+
     Object.entries(updated[secIndex].seats).forEach(([rowLabel, row]) => {
+      // generate a unique ID for the new seat
+      const id = generateUniqueSeatId(rowLabel, existingIds);
+      existingIds.push(id); // ensure uniqueness for subsequent seats in this column
+
       row?.push({
-        id: `${rowLabel}${row.length + 1}`,
-        label: `${rowLabel}${row.length + 1}`,
+        id,
+        label: id,
+        isBlank: false,
       });
     });
     updateSections(updated);
@@ -466,7 +502,14 @@ export const TheaterSeatLayoutDesigner = ({
                   : ""
               }
             />
-            <div style={{ color: "red", fontSize: "12px", marginTop: "4px", ...customStyles.inspectorErrorMsg }}>
+            <div
+              style={{
+                color: "red",
+                fontSize: "12px",
+                marginTop: "4px",
+                ...customStyles.inspectorErrorMsg,
+              }}
+            >
               {selected &&
               selected?.type === "row" &&
               selected.isLabelValid === false
@@ -494,18 +537,18 @@ export const TheaterSeatLayoutDesigner = ({
                     selected.rowLabel,
                     selected.seatIndex,
                     "id",
-                    e.target.value
+                    newId
                   );
                 } else if (
                   sections[selected.secIndex].seats[selected.rowLabel]?.[
                     selected.seatIndex
-                  ].id !== e.target.value
+                  ].id !== newId
                 ) {
                   setSelected((prev) => {
                     if (!prev || prev.type !== "seat") return prev;
                     return {
                       ...prev,
-                      inspectorDisplayId: e.target.value,
+                      inspectorDisplayId: newId,
                       isIdValid: false,
                     };
                   });
@@ -529,7 +572,14 @@ export const TheaterSeatLayoutDesigner = ({
                   : ""
               }
             />
-            <div style={{ color: "red", fontSize: "12px", marginTop: "4px", ...customStyles.inspectorErrorMsg }}>
+            <div
+              style={{
+                color: "red",
+                fontSize: "12px",
+                marginTop: "4px",
+                ...customStyles.inspectorErrorMsg,
+              }}
+            >
               {selected &&
               selected?.type === "seat" &&
               selected.isIdValid === false
