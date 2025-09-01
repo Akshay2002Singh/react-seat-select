@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkreact_seat_select=self.webpackChunkreact_seat_select||[]).push([[235],{8552:e=>{e.exports=JSON.parse('{"name":"docusaurus-plugin-content-pages","id":"default"}')}}]);
