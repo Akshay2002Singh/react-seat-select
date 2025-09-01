@@ -388,6 +388,7 @@ export const TheaterSeatLayoutDesigner = ({
                         }`}
                         style={{
                           ...customStyles.seat,
+                          lineHeight: customStyles.seat?.lineHeight,
                           ...(selected?.type === "seat" &&
                           selected?.rowLabel === rowLabel &&
                           selected?.seatIndex === colIndex &&

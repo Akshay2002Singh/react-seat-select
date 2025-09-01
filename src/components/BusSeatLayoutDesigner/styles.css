@@ -19,6 +19,7 @@
   height: 100%;
   padding: 16px;
   color: var(--text);
+  box-sizing: border-box;
 }
 
 /* Layout */
@@ -30,6 +31,7 @@
 
 .busSeatLayoutDesigner-canvas {
   flex: 1;
+  min-width: 0;
 }
 
 /* Section */
@@ -69,7 +71,7 @@
 
 /* Columns */
 .busSeatLayoutDesigner-columns {
-  display: inline-flex;
+  display: flex;
   gap: 24px;
   align-items: flex-start;
   overflow-x: auto;
@@ -81,7 +83,6 @@
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 10px;
-  min-width: 100px;
 }
 
 .busSeatLayoutDesigner-columnHeader {

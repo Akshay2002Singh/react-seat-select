@@ -125,23 +125,27 @@ const App: React.FC = () => {
             borderRadius: "8px",
             padding: "12px",
           },
-          controlButton:{fontSize:"18px", fontWeight:"bold"},
+          controlButton: { fontSize: "18px", fontWeight: "bold" },
           seat: {
             width: "32px",
             height: "32px",
             background: "#20487dff",
             margin: "4px",
             textAlign: "center",
-            lineHeight: "32px",
             cursor: "pointer",
           },
-          inspectorHeader:{fontSize:"40px"},
-          inspectorPlaceholder:{fontSize:"24px", color:"gray"},
-          inspectorLabel:{fontSize:"18px", fontWeight:"bold"},
-          inspectorInput:{width:"200px", height:"20px", cursor:"pointer"},
+          inspectorHeader: { fontSize: "40px" },
+          inspectorPlaceholder: { fontSize: "24px", color: "gray" },
+          inspectorLabel: { fontSize: "18px", fontWeight: "bold" },
+          inspectorInput: { width: "200px", height: "20px", cursor: "pointer" },
           blankSeat: { background: "transparent" },
           selectedSeat: { background: "#fbbf24", fontWeight: "bold" },
-          rowLabel: { color:"red",backgroundColor:"yellow", fontWeight: "bold", marginRight: "8px" },
+          rowLabel: {
+            color: "red",
+            backgroundColor: "yellow",
+            fontWeight: "bold",
+            marginRight: "8px",
+          },
         }}
       />
       <h2>Bus Seat Selection</h2>
@@ -302,154 +306,153 @@ const App: React.FC = () => {
           ]}
         />
       </div>
-      <BusSeatLayoutDesigner 
-  customStyles={{
-  root: {
-    backgroundColor: "#f9fafb",
-    fontFamily: "Arial, sans-serif",
-    padding: "16px",
-  },
-  workspace: {
-    border: "2px dashed #ccc",
-    borderRadius: "12px",
-    padding: "12px",
-    backgroundColor: "#fff",
-  },
-  canvas: {
-    gap: "16px",
-    backgroundColor: "#f0f4f8",
-    padding: "20px",
-    borderRadius: "8px",
-  },
+      <BusSeatLayoutDesigner
+        // customStyles={{
+        //   root: {
+        //     backgroundColor: "#f9fafb",
+        //     fontFamily: "Arial, sans-serif",
+        //     boxSizing: 'border-box',
+        //     padding: '16px'
+        //   },
+        //   workspace: {
+        //     border: "2px dashed #ccc",
+        //     borderRadius: "12px",
+        //     backgroundColor: "#fff",
+        //   },
+        //   canvas: {
+        //     gap: "16px",
+        //     backgroundColor: "#f0f4f8",
+        //     padding: "20px",
+        //     borderRadius: "8px",
+        //   },
 
-  section: {
-    border: "1px solid #ddd",
-    borderRadius: "10px",
-    padding: "10px",
-    backgroundColor: "#ffffff",
-  },
-  sectionHeader: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#f1f5f9",
-    padding: "6px 10px",
-    borderRadius: "6px",
-  },
-  sectionTitle: {
-    fontWeight: "bold",
-    fontSize: "16px",
-    color: "#1e293b",
-  },
-  deleteSectionBtn: {
-    cursor: "pointer",
-    fontWeight: "bold",
+        //   section: {
+        //     border: "1px solid #ddd",
+        //     borderRadius: "10px",
+        //     padding: "10px",
+        //     backgroundColor: "#ffffff",
+        //   },
+        //   sectionHeader: {
+        //     display: "flex",
+        //     justifyContent: "space-between",
+        //     alignItems: "center",
+        //     backgroundColor: "#f1f5f9",
+        //     padding: "6px 10px",
+        //     borderRadius: "6px",
+        //   },
+        //   sectionTitle: {
+        //     fontWeight: "bold",
+        //     fontSize: "16px",
+        //     color: "#1e293b",
+        //   },
+        //   deleteSectionBtn: {
+        //     cursor: "pointer",
+        //     fontWeight: "bold",
+        //   },
 
-  },
+        //   columns: {
+        //     display: "flex",
+        //     gap: "12px",
+        //     marginTop: "8px",
+        //   },
+        //   column: {
+        //     display: "flex",
+        //     flexDirection: "column",
+        //     gap: "6px",
+        //   },
 
-  columns: {
-    display: "flex",
-    gap: "12px",
-    marginTop: "8px",
-  },
-  column: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "6px",
-  },
+        //   seats: {
+        //     display: "flex",
+        //     gap: "6px",
+        //   },
+        //   seat: {
+        //     width: "40px",
+        //     height: "40px",
+        //     backgroundColor: "#e2e8f0",
+        //     border: "2px solid #94a3b8",
+        //     borderRadius: "6px",
+        //     display: "flex",
+        //     alignItems: "center",
+        //     justifyContent: "center",
+        //     fontSize: "12px",
+        //     fontWeight: "bold",
+        //     cursor: "pointer",
+        //   },
+        //   seaterSeat: {
+        //     backgroundColor: "#bae6fd",
+        //     border: "2px solid #0284c7",
+        //   },
+        //   sleeperSeat: {
+        //     backgroundColor: "#c7d2fe",
+        //     border: "2px solid #4f46e5",
+        //     width: "40px",
+        //     height: "80px",
+        //   },
+        //   blankSeat: {
+        //     backgroundColor: "#f8fafc",
+        //     border: "1px dashed #94a3b8",
+        //   },
+        //   selectedSeat: {
+        //     backgroundColor: "#34d399",
+        //     border: "2px solid #065f46",
+        //     color: "#fff",
+        //   },
 
-  seats: {
-    display: "flex",
-    gap: "6px",
-  },
-  seat: {
-    width: "40px",
-    height: "40px",
-    backgroundColor: "#e2e8f0",
-    border: "2px solid #94a3b8",
-    borderRadius: "6px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: "12px",
-    fontWeight: "bold",
-    cursor: "pointer",
-  },
-  seaterSeat: {
-    backgroundColor: "#bae6fd",
-    border: "2px solid #0284c7",
-  },
-  sleeperSeat: {
-    backgroundColor: "#c7d2fe",
-    border: "2px solid #4f46e5",
-    width: "40px",
-    height: "80px",
-  },
-  blankSeat: {
-    backgroundColor: "#f8fafc",
-    border: "1px dashed #94a3b8",
-  },
-  selectedSeat: {
-    backgroundColor: "#34d399",
-    border: "2px solid #065f46",
-    color: "#fff",
-  },
+        //   controls: {
+        //     display: "flex",
+        //     gap: "10px",
+        //     marginTop: "12px",
+        //   },
+        //   controlsButton: {
+        //     backgroundColor: "#3b82f6",
+        //     color: "#fff",
+        //     border: "none",
+        //     padding: "6px 12px",
+        //     borderRadius: "6px",
+        //     cursor: "pointer",
+        //   },
+        //   addColumnCard: {
+        //     border: "2px dashed #94a3b8",
+        //     padding: "10px",
+        //     borderRadius: "6px",
+        //     textAlign: "center",
+        //     cursor: "pointer",
+        //     color: "#475569",
+        //   },
 
-  controls: {
-    display: "flex",
-    gap: "10px",
-    marginTop: "12px",
-  },
-  controlsButton: {
-    backgroundColor: "#3b82f6",
-    color: "#fff",
-    border: "none",
-    padding: "6px 12px",
-    borderRadius: "6px",
-    cursor: "pointer",
-  },
-  addColumnCard: {
-    border: "2px dashed #94a3b8",
-    padding: "10px",
-    borderRadius: "6px",
-    textAlign: "center",
-    cursor: "pointer",
-    color: "#475569",
-  },
-
-  inspector: {
-    borderLeft: "2px solid #e5e7eb",
-    padding: "12px",
-    backgroundColor: "#f8fafc",
-  },
-  inspectorHeading: {
-    fontSize: "18px",
-    fontWeight: "bold",
-    marginBottom: "10px",
-    color: "#111827",
-  },
-  inspectorForm: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "8px",
-  },
-  inspectorLabel: {
-    fontSize: "14px",
-    fontWeight: "500",
-    color: "#374151",
-  },
-  inspectorInput: {
-    padding: "6px 10px",
-    borderRadius: "6px",
-    border: "1px solid #d1d5db",
-    fontSize: "14px",
-  },
-  inspectorPlaceholder: {
-    fontStyle: "italic",
-    color: "#9ca3af",
-  },
-}}
-/>
+        //   inspector: {
+        //     borderLeft: "2px solid #e5e7eb",
+        //     padding: "12px",
+        //     backgroundColor: "#f8fafc",
+        //   },
+        //   inspectorHeading: {
+        //     fontSize: "18px",
+        //     fontWeight: "bold",
+        //     marginBottom: "10px",
+        //     color: "#111827",
+        //   },
+        //   inspectorForm: {
+        //     display: "flex",
+        //     flexDirection: "column",
+        //     gap: "8px",
+        //   },
+        //   inspectorLabel: {
+        //     fontSize: "14px",
+        //     fontWeight: "500",
+        //     color: "#374151",
+        //   },
+        //   inspectorInput: {
+        //     padding: "6px 10px",
+        //     borderRadius: "6px",
+        //     border: "1px solid #d1d5db",
+        //     fontSize: "14px",
+        //   },
+        //   inspectorPlaceholder: {
+        //     fontStyle: "italic",
+        //     color: "#9ca3af",
+        //   },
+        // }}
+      />
     </div>
   );
 };
