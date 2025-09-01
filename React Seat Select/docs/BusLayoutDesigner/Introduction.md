@@ -35,11 +35,13 @@ function Example(){
 }
 ```
 
+---
 
 ## 📤 Exporting JSON
 
 You can click **Export JSON** at the bottom of the designer to download the current layout as `bus-layout.json`.
 
+---
 
 ## 🚀 Tips
 

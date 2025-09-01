@@ -27,25 +27,25 @@ The BusConfig is a record of sections, where each section contains columns and s
 Each seat has an `id`, `type` (`seater` or `sleeper`), and an `isBlank` flag to represent empty spaces.
 
 ```tsx
-export type SeatType = "sleeper" | "seater";
+type SeatType = "sleeper" | "seater";
 
-export interface Seat {
+interface Seat {
   id: string;
   type: SeatType;
   isBlank: boolean;
 }
 
-export interface Column {
+interface Column {
   id: string;
   seats: Seat[];
 }
 
-export interface Section {
+interface Section {
   title?: string;
   columns: Column[];
 }
 
-export type BusConfig = Section[];
+type BusConfig = Section[];
 ```
 
 ### ✅ Minimal Example Config

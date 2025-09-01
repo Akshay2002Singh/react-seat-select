@@ -20,22 +20,22 @@ The current seating layout configuration. Pass your own configuration or let the
 The **SeatConfig** is an array of sections, where each section contains rows and seats.
 
 ```tsx
-export type Seat = {
+type Seat = {
   id: string;
   isBlank?: boolean;
   label?: string;
 };
 
-export type SeatRow = Seat[];
+type SeatRow = Seat[];
 
-export type SeatMap = Partial<Record<string, SeatRow>>;
+type SeatMap = Partial<Record<string, SeatRow>>;
 
-export type SeatSection = {
+type SeatSection = {
   title?: string;
   seats: SeatMap;
 };
 
-export type SeatConfig = SeatSection[];
+type SeatConfig = SeatSection[];
 ```
 
 ### 2. `onChange`
