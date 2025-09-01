@@ -1,7 +1,7 @@
 .theaterSeatLayoutDesigner-designer-wrapper * {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 /* ============ LAYOUT ============ */
@@ -27,14 +27,17 @@
   overflow-y: auto;
   flex-shrink: 0;
 }
+
 .theaterSeatLayoutDesigner-inspector h3 {
   margin: 0 0 8px;
   font-size: 16px;
 }
+
 .theaterSeatLayoutDesigner-inspector h4 {
   margin: 12px 0 6px;
   font-size: 14px;
 }
+
 .theaterSeatLayoutDesigner-inspector input[type="text"],
 .theaterSeatLayoutDesigner-inspector input:not([type]) {
   width: 100%;
@@ -44,6 +47,7 @@
   font-size: 13px;
   outline: none;
 }
+
 .theaterSeatLayoutDesigner-inspector label {
   display: block;
   font-size: 12px;
@@ -74,6 +78,7 @@
   cursor: pointer;
   user-select: none;
 }
+
 .theaterSeatLayoutDesigner-clickable-text:hover {
   opacity: 0.85;
 }
@@ -85,7 +90,9 @@
   justify-content: center;
   align-items: center;
   margin-bottom: 8px;
+  flex-wrap: wrap;
 }
+
 .theaterSeatLayoutDesigner-controls button {
   border: 1px solid #d9d9d9;
   padding: 6px 10px;
@@ -106,16 +113,18 @@
 .theaterSeatLayoutDesigner-seat-grid {
   display: flex;
   flex-direction: column;
-  gap: 10px;                   
+  gap: 10px;
   justify-content: center;
   min-height: 32px;
+  overflow: auto;
+  padding-bottom: 8px;
 }
 
 /* Row container: label + seats */
 .theaterSeatLayoutDesigner-seat-row {
   display: flex;
   align-items: center;
-  gap: 32px;                    
+  gap: 32px;
 }
 
 /* Row label: fixed to seat size, clean badge with top-right delete like seats */
@@ -136,6 +145,7 @@
   cursor: pointer;
   transition: transform 0.15s ease;
 }
+
 .theaterSeatLayoutDesigner-row-label:hover {
   transform: scale(1.04);
 }
@@ -144,7 +154,7 @@
 .theaterSeatLayoutDesigner-seat-group {
   display: flex;
   flex-direction: row;
-  gap: 6px;                    
+  gap: 6px;
   /* flex-wrap: wrap; */
 }
 
@@ -154,6 +164,7 @@
   height: 32px;
   border-radius: 4px;
   font-size: 12px;
+  line-height: 32px;
   color: black;
   background: #eee;
   display: block;
@@ -167,9 +178,10 @@
   max-width: 100%;
   padding: 0px 1px;
 }
+
 .theaterSeatLayoutDesigner-seat:hover {
   transform: scale(1.06);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }
 
 .theaterSeatLayoutDesigner-seat.theaterSeatLayoutDesigner-AVAILABLE {
@@ -182,10 +194,10 @@
   border: 1px dashed #e5e5e5;
 }
 
-.theaterSeatLayoutDesigner-bottom-btn-container{
-    display: flex;
-    justify-content: center;
-    gap: 18px
+.theaterSeatLayoutDesigner-bottom-btn-container {
+  display: flex;
+  justify-content: center;
+  gap: 18px
 }
 
 /* Add section (outside all sections) */
@@ -193,6 +205,7 @@
   text-align: center;
   margin: 20px 0;
 }
+
 .theaterSeatLayoutDesigner-add-section-box button {
   border: 1px solid #d9d9d9;
   padding: 8px 12px;
@@ -209,5 +222,5 @@
 }
 
 .theaterSeatLayoutDesigner-inspector-invalid-id {
-  border: 1px solid red !important; 
+  border: 1px solid red !important;
 }
