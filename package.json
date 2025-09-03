@@ -1,18 +1,19 @@
 {
   "name": "react-seat-select",
-  "private": false,
   "version": "1.0.0",
+  "private": false,
   "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.esm.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/types/index.d.ts",
   "files": [
     "dist"
   ],
   "exports": {
     ".": {
       "import": "./dist/index.esm.js",
-      "require": "./dist/index.cjs"
+      "require": "./dist/index.cjs",
+      "types": "./dist/types/index.d.ts"
     }
   },
   "scripts": {
@@ -21,10 +22,6 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "release": "npm publish --access public"
-  },
-  "dependencies": {
-    "react": ">=16.8.0 <20",
-    "react-dom": ">=16.8.0 <20"
   },
   "peerDependencies": {
     "react": ">=16.8.0 <20",
@@ -42,6 +39,7 @@
     "globals": "^16.3.0",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.35.1",
-    "vite": "^7.0.4"
+    "vite": "^7.0.4",
+    "vite-plugin-dts": "^4.5.4"
   }
 }
