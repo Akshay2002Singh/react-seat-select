@@ -1,14 +1,14 @@
 import React from "react";
 // import { TheaterSeatSelect } from "./components/TheaterSeatSelect/TheaterSeatSelect.tsx";
 // import type { TheaterSeat } from "./components/TheaterSeatSelect/types.ts";
-import data from "./bus_layout.ts";
-import seatPriceMap from "./seat_price_map.ts";
+import data from "./bus_layout";
+import seatPriceMap from "./seat_price_map";
 // import SeatLayoutDesigner from "./components/SeatLayoutDesigner/SeatLayoutDesigner.tsx";
-import type { BusConfig, BusSeat } from "./components/BusSeatSelect/types.ts";
-import { BusSeatLayoutDesigner } from "./components/BusSeatLayoutDesigner/BusSeatLayoutDesigner.tsx";
-import { BusSeatSelect } from "./components/BusSeatSelect/BusSeatSelect.tsx";
+import type { BusConfig, BusSeat } from "./components/BusSeatSelect/types";
+import { BusSeatLayoutDesigner } from "./components/BusSeatLayoutDesigner/BusSeatLayoutDesigner";
+import { BusSeatSelect } from "./components/BusSeatSelect/BusSeatSelect";
 // import { TheaterSeatSelect } from "./components/TheaterSeatSelect/TheaterSeatSelect.tsx";
-import { TheaterSeatLayoutDesigner } from "./components/TheaterSeatLayoutDesigner/TheaterSeatLayoutDesigner.tsx";
+import { TheaterSeatLayoutDesigner } from "./components/TheaterSeatLayoutDesigner/TheaterSeatLayoutDesigner";
 
 // const generateSeats = (): Record<string, Seat[]> => {
 //   const rows = ["A", "B", "C", "D", "E", "F", "G","H","I","J","K","L","M"];

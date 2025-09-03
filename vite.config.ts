@@ -5,23 +5,15 @@ import dts from "vite-plugin-dts";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 
 export default defineConfig({
-  plugins: [
-    react(),
-    dts({
-      insertTypesEntry: true, // generates "types" entrypoint in package.json
-      outDir: "dist/types",
-    }),
-    cssInjectedByJsPlugin(), // ✅ this makes CSS auto-applied
-  ],
+  plugins: [react(), dts(), cssInjectedByJsPlugin()],
   build: {
     lib: {
-      entry: path.resolve(__dirname, "src/index.ts"),
+      entry: path.resolve(__dirname, "src/index.tsx"),
       name: "ReactSeatSelect",
-      formats: ["es", "cjs"],
-      fileName: (format) => `index.${format === "es" ? "esm" : format}.js`,
+      fileName: "index",
     },
     rollupOptions: {
-      external: ["react", "react-dom"],
+      external: ["react", "react-dom", "react/jsx-runtime"],
       output: {
         globals: {
           react: "React",
