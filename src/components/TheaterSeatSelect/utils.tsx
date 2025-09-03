@@ -1,4 +1,4 @@
-import type { screenConfig } from "./types";
+import type { TheaterScreenConfig } from "./types";
 
 type AspectRatio = { width: number; height: number };
 
@@ -17,7 +17,7 @@ export function getScreenSVG({
   screenColor = "#e0e0e0",
   textColor="#000",
   screenText = "",
-}: Omit<screenConfig, "height">): string {
+}: Omit<TheaterScreenConfig, "height">): string {
   const ratio = aspectRatios[screenVariant];
   if (!ratio) throw new Error("Invalid screenVariant number. Choose 1 to 6.");
 

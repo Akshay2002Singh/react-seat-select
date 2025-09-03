@@ -128,7 +128,7 @@ export const TheaterSeatLayoutDesigner = ({
       )
     );
 
-    updated[secIndex].seats[nextRow] = Array.from({ length: cols }, (_, i) => {
+    updated[secIndex].seats[nextRow] = Array.from({ length: cols }, (_) => {
       const id = generateUniqueSeatId(nextRow, existingIds);
       existingIds.push(id); // ensure subsequent seats in this row are unique
       return {

@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 // import { TheaterSeatSelect } from "./components/TheaterSeatSelect/TheaterSeatSelect.tsx";
-import type { Seat } from "./components/TheaterSeatSelect/types.ts";
+// import type { TheaterSeat } from "./components/TheaterSeatSelect/types.ts";
 import data from "./bus_layout.ts";
 import seatPriceMap from "./seat_price_map.ts";
 // import SeatLayoutDesigner from "./components/SeatLayoutDesigner/SeatLayoutDesigner.tsx";
-import type { BusConfig } from "./components/BusSeatSelect/types.ts";
+import type { BusConfig, BusSeat } from "./components/BusSeatSelect/types.ts";
 import { BusSeatLayoutDesigner } from "./components/BusSeatLayoutDesigner/BusSeatLayoutDesigner.tsx";
 import { BusSeatSelect } from "./components/BusSeatSelect/BusSeatSelect.tsx";
-import { TheaterSeatSelect } from "./components/TheaterSeatSelect/TheaterSeatSelect.tsx";
+// import { TheaterSeatSelect } from "./components/TheaterSeatSelect/TheaterSeatSelect.tsx";
 import { TheaterSeatLayoutDesigner } from "./components/TheaterSeatLayoutDesigner/TheaterSeatLayoutDesigner.tsx";
 
 // const generateSeats = (): Record<string, Seat[]> => {
@@ -105,11 +105,11 @@ const App: React.FC = () => {
   // const disabledSeats = ["A3", "C7","A3","A4","A5","A6","A7","A8","A9","A10","A11","A12","A13","A14","A15","A16","A17","A18"];
   const bookedForMaleSeats = ["LB6", "LB8"];
 
-  const handleSelect = (seat: Seat) => {
+  const handleSelect = (seat: BusSeat) => {
     console.log("Seat selected:", seat);
   };
 
-  const handleUnselect = (seat: Seat) => {
+  const handleUnselect = (seat: BusSeat) => {
     console.log("Seat unselected:", seat);
   };
 
