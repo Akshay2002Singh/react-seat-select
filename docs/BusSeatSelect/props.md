@@ -125,7 +125,7 @@ Seats restricted for male passengers only.
 ---
 
 ### 7. `onSelect`  
-**Type:** `(seat: Seat) => void`  
+**Type:** `(seat: BusSeat) => void`  
 **Default:** `() => {}`  
 
 Callback when a seat is selected.  
@@ -140,7 +140,7 @@ Callback when a seat is selected.
 ---
 
 ### 8. `onUnselect`  
-**Type:** `(seat: Seat) => void`  
+**Type:** `(seat: BusSeat) => void`  
 **Default:** `() => {}`  
 
 Callback when a seat is deselected.  
@@ -170,7 +170,7 @@ Limits the number of seats a user can select.
 ---
 
 ### 10. `customStyles`  
-**Type:** `CustomStyles`  
+**Type:** `BusSeatSelectCustomStyles`  
 **Default:** `[]`  
 
 Customize bus seat UI (gaps, colors, borders, etc.).  

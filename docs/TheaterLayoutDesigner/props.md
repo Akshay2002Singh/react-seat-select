@@ -12,36 +12,36 @@ The **TheaterSeatLayoutDesigner** component exposes the following props:
 ### 1. `config`
 
 - **Required:** `False`  
-- **Type:** `SeatConfig`  
+- **Type:** `TheaterSeatConfig`  
 - **Default:** `[]`   
 
 The current seating layout configuration. Pass your own configuration or let the component initialize with a default section.  
 
-The **SeatConfig** is an array of sections, where each section contains rows and seats.
+The **Config** is an array of sections, where each section contains rows and seats.
 
 ```tsx
-type Seat = {
+type TheaterSeat = {
   id: string;
   isBlank?: boolean;
   label?: string;
 };
 
-type SeatRow = Seat[];
+type TheaterSeatRow = TheaterSeat[];
 
-type SeatMap = Partial<Record<string, SeatRow>>;
+type TheaterSeatMap = Partial<Record<string, TheaterSeatRow>>;
 
-type SeatSection = {
+type TheaterSeatSection = {
   title?: string;
-  seats: SeatMap;
+  seats: TheaterSeatMap;
 };
 
-type SeatConfig = SeatSection[];
+type TheaterSeatConfig = TheaterSeatSection[];
 ```
 
 ### 2. `onChange`
 
 - **Required:** `False`  
-- **Type:** `(config: BusConfig) => void`  
+- **Type:** `(config: TheaterSeatConfig) => void`  
 - **Default:** `undefined`  
 
 Callback fired whenever the seating configuration changes. Use this to sync the state with your app or backend.  
@@ -49,13 +49,13 @@ Callback fired whenever the seating configuration changes. Use this to sync the 
 ### 3. `customStyles`
 
 - **Required:** `False`  
-- **Type:** `CustomStyles`  
+- **Type:** `TheaterSeatLayoutDesignerCustomStyles`  
 - **Default:** `{}`  
 
 An object to override the default styles of the component.  
 
 ```ts
-interface CustomStyles {
+interface TheaterSeatLayoutDesignerCustomStyles {
   wrapper?: React.CSSProperties;
   sectionBox?: React.CSSProperties;
   sectionHeader?: React.CSSProperties;

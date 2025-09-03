@@ -18,25 +18,25 @@ The initial bus layout configuration. A `BusConfig` is an array of sections, eac
 Each seat has an `id`, `type` (`seater` or `sleeper`), and an `isBlank` flag to represent empty spaces.
 
 ```tsx
-type SeatType = "sleeper" | "seater";
+type BusSeatType = "sleeper" | "seater";
 
-interface Seat {
+interface BusSeat {
   id: string;
-  type: SeatType;
+  type: BusSeatType;
   isBlank: boolean;
 }
 
-interface Column {
+interface BusColumn {
   id: string;
-  seats: Seat[];
+  seats: BusSeat[];
 }
 
-interface Section {
+interface BusSection {
   title?: string;
-  columns: Column[];
+  columns: BusColumn[];
 }
 
-type BusConfig = Section[];
+type BusConfig = BusSection[];
 ```
 
 ---
@@ -55,13 +55,13 @@ Use this to sync state with your application.
 ### 3. `customStyles`
 
 - **Required:** `False`  
-- **Type:** `CustomStyles`  
+- **Type:** `BusSeatLayoutDesignerCustomStyles`  
 - **Default:** `{}`  
 
 Customize the look and feel of different parts of the designer UI.
 
 ```ts
-interface CustomStyles {
+interface BusSeatLayoutDesignerCustomStyles {
   root?: React.CSSProperties;
   workspace?: React.CSSProperties;
   canvas?: React.CSSProperties;

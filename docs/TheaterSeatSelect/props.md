@@ -14,7 +14,7 @@ The `TheaterSeatSelect` component exposes a number of props to customize seat la
 ## 🔑 Props
 
 ### 1. `config` (required)
-**Type:** `SeatConfig`  
+**Type:** `TheaterSeatConfig`  
 
 Defines the seat map structure. It’s an array of **sections**, where each section contains rows, and each row contains `Seat` objects.
 
@@ -87,7 +87,7 @@ A list of seat IDs that are **reserved** (i.e., special kind of booked seats). T
 
 ### 5. `onSelect`
 
-**Type:** `(seat: Seat) => void`  
+**Type:** `(seat: TheaterSeat) => void`  
 **Default:** `() => {}`
 
 Callback function triggered when a user **selects a seat**. The function receives the full `Seat` object, allowing you to update state, display selected seats, or calculate pricing.
@@ -103,7 +103,7 @@ Callback function triggered when a user **selects a seat**. The function receive
 
 ### 6. `onUnselect`
 
-**Type:** `(seat: Seat) => void`  
+**Type:** `(seat: TheaterSeat) => void`  
 **Default:** `() => {}`
 
 A callback function that fires when a user **unselects a seat**. This is helpful for updating the UI or internal state, such as removing the seat from a cart or selection list.
@@ -164,7 +164,7 @@ Automatically selects adjacent seats when a user selects one, up to the `maxSele
 
 ### 10. `customStyles`
 
-**Type:** `CustomStyles` (array of `SectionStyle`)  
+**Type:** `TheaterSeatSelectCustomStyles ` (array of `TheaterSeatSelectSectionStyle`)  
 **Default:** `[]`
 
 Customizes layout and appearance of seats and sections.
@@ -224,7 +224,7 @@ Show or hide the built-in theater screen SVG above the seats.
 
 ### 13. `screenConfig`
 
-**Type:**
+**Type:**`TheaterScreenConfig `
 
 ```ts
 {

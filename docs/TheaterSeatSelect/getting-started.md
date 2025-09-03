@@ -26,22 +26,22 @@ yarn add react-seat-select
 The **SeatConfig** is an array of sections, where each section contains rows and seats.
 
 ```tsx
-type Seat = {
+type TheaterSeat = {
   id: string;
   isBlank?: boolean;
   label?: string;
 };
 
-type SeatRow = Seat[];
+type TheaterSeatRow = Seat[];
 
-type SeatMap = Partial<Record<string, SeatRow>>;
+type TheaterSeatMap  = Partial<Record<string, TheaterSeatRow>>;
 
-type SeatSection = {
+type TheaterSeatSection  = {
   title?: string;
-  seats: SeatMap;
+  seats: TheaterSeatMap;
 };
 
-type SeatConfig = SeatSection[];
+type TheaterSeatConfig  = TheaterSeatSection[];
 ```
 
 ✅ Minimal Example Config

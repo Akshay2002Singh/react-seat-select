@@ -18,7 +18,7 @@ The `screenConfig` prop allows you to define how the **screen** is displayed.
 ### Type Definition
 
 ```ts
-type screenConfig = {
+type TheaterScreenConfig  = {
   screenVariant: number; // Which screen design to render
   width: number;         // Width of the screen in px or %
   screenColor?: string;        // Background color of the screen
