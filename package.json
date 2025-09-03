@@ -6,6 +6,7 @@
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/types/index.d.ts",
+  "description": "Easily create and manage interactive bus and theater seat layouts in your React applications with React Seat Select. This flexible and customizable library supports seat selection, layout design, and real-time updates for an intuitive user experience.",
   "files": [
     "dist"
   ],
@@ -38,5 +39,22 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Akshay2002Singh/react-seat-select.git"
+  },
+  "keywords": [
+    "react",
+    "react-component",
+    "seat-select",
+    "seat-layout",
+    "bus-seat",
+    "theater-seat",
+    "seat-booking",
+    "seat-picker",
+    "interactive-seats",
+    "layout-designer"
+  ],
+  "author": "Akshay Singh,Aditi Jain"
 }
