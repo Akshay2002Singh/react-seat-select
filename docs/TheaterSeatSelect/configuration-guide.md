@@ -5,9 +5,6 @@ sidebar_label: Configuration Guide
 sidebar_position: 3
 ---
 
-<!-- import TheaterSeatSelectConfiguration from "@site/src/examples/TheaterSeatSelect/TheaterSeatSelectConfiguration"; -->
-import { TheaterSeatSelect } from "../../../src/components/TheaterSeatSelect/TheaterSeatSelect";
-
 # ⚙️ Configuration Guide
 
 The `config` prop defines your **theater layout**.  

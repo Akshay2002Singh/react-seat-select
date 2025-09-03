@@ -5,10 +5,6 @@ sidebar_label: Configuration Guide
 sidebar_position: 3
 ---
 
-<!-- import BusSeatSelectConfiguration from "@site/src/examples/BusSeatSelect/BusSeatSelectConfiguration"; -->
-
-import { BusSeatSelect } from "../../../src/components/BusSeatSelect/BusSeatSelect";
-
 # ⚙️ Configuration Guide
 
 The `config` prop defines your **bus layout**.  
