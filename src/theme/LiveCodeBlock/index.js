@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import OriginalLiveCodeBlock from "@theme-original/LiveCodeBlock";
-import { TheaterSeatSelect } from "../../../../src/components/TheaterSeatSelect/TheaterSeatSelect";
-import { BusSeatSelect } from "../../../../src/components/BusSeatSelect/BusSeatSelect";
-import {BusSeatLayoutDesigner} from "../../../../src/components/BusSeatLayoutDesigner/BusSeatLayoutDesigner";
-import {TheaterSeatLayoutDesigner} from "../../../../src/components/TheaterSeatLayoutDesigner/TheaterSeatLayoutDesigner";
+import { TheaterSeatSelect, TheaterSeatLayoutDesigner, BusSeatSelect, BusSeatLayoutDesigner } from "react-seat-select";
 
 export default function LiveCodeBlock(props) {
   return (
