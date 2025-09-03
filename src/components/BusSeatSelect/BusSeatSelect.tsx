@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import type { BusConfig, CustomStyles, Seat } from "./types";
+import type { BusConfig, BusSeatSelectCustomStyles, BusSeat } from "./types";
 import "./styles.css";
 import { useElementTotalSize } from "./utils";
 
@@ -10,12 +10,12 @@ type Props = {
   bookedByMaleSeats?: string[];
   availableForFemaleSeats?: string[];
   availableForMaleSeats?: string[];
-  onSelect?: (seat: Seat) => void;
-  onUnselect?: (seat: Seat) => void;
+  onSelect?: (seat: BusSeat) => void;
+  onUnselect?: (seat: BusSeat) => void;
   maxSelectedSeats?: number;
   customSectionWrapperStyle?: React.CSSProperties;
   SectionHeader?: React.ComponentType  | null;
-  customStyles?: CustomStyles;
+  customStyles?: BusSeatSelectCustomStyles;
   showBookedSeatLabel?: boolean;
   showSelectedSeatLabel?: boolean;
   CustomLegendComponent?: React.ComponentType;
@@ -194,11 +194,11 @@ export const BusSeatSelect = (props: Props) => {
     return false;
   };
 
-  const isSeatUnavailable = (seat: Seat) =>
+  const isSeatUnavailable = (seat: BusSeat) =>
     bookedByFemaleSeats?.includes(seat.id) ||
     bookedByMaleSeats?.includes(seat.id);
 
-  const handleSeatClick = (clickedSeat: Seat) => {
+  const handleSeatClick = (clickedSeat: BusSeat) => {
     if (selectedSeats.includes(clickedSeat.id)) {
       const updated = selectedSeats.filter((id) => id !== clickedSeat.id);
       setSelectedSeats(updated);

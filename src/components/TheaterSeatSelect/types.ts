@@ -1,21 +1,21 @@
-export type Seat = {
+export type TheaterSeat = {
   id: string;
   isBlank?: boolean;
   label?: string;
 };
 
-export type SeatRow = Seat[];
+export type TheaterSeatRow = TheaterSeat[];
 
-export type SeatMap = Partial<Record<string, SeatRow>>;
+export type TheaterSeatMap = Partial<Record<string, TheaterSeatRow>>;
 
-export type SeatSection = {
+export type TheaterSeatSection = {
   title?: string;
-  seats: SeatMap;
+  seats: TheaterSeatMap;
 };
 
-export type SeatConfig = SeatSection[];
+export type TheaterSeatConfig = TheaterSeatSection[];
 
-export type SectionStyle = {
+export type TheaterSeatSelectSectionStyle = {
   rowGap?: string;
   columnGap?: string;
   headerStyles?: React.CSSProperties;
@@ -27,9 +27,9 @@ export type SectionStyle = {
   selectedStyles?: React.CSSProperties;
 };
 
-export type CustomStyles = SectionStyle[];
+export type TheaterSeatSelectCustomStyles = TheaterSeatSelectSectionStyle[];
 
-export type screenConfig = {
+export type TheaterScreenConfig = {
   screenVariant: number;
   width: number;
   screenColor?: string;

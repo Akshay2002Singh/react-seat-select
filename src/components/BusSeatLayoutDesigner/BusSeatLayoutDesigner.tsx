@@ -1,45 +1,12 @@
-import React, { useEffect, useState } from "react";
-import type { BusConfig, Seat, Section } from "../BusSeatSelect/types";
+import { useEffect, useState } from "react";
+import type { BusConfig, BusSeat, BusSection } from "../BusSeatSelect/types";
 import "./styles.css";
-
-interface CustomStyles {
-  root?: React.CSSProperties;
-  workspace?: React.CSSProperties;
-  canvas?: React.CSSProperties;
-
-  section?: React.CSSProperties;
-  sectionHeader?: React.CSSProperties;
-  sectionTitle?: React.CSSProperties;
-  deleteSectionBtn?: React.CSSProperties;
-
-  columns?: React.CSSProperties;
-  column?: React.CSSProperties;
-
-  seats?: React.CSSProperties;
-  seat?: React.CSSProperties;
-  seaterSeat?: React.CSSProperties;
-  sleeperSeat?: React.CSSProperties;
-  blankSeat?: React.CSSProperties;
-  selectedSeat?: React.CSSProperties;
-
-  controls?: React.CSSProperties;
-  controlsButton?: React.CSSProperties;
-  addColumnCard?: React.CSSProperties;
-
-  // Inspector panel
-  inspector?: React.CSSProperties;
-  inspectorHeading?: React.CSSProperties;
-  inspectorForm?: React.CSSProperties;
-  inspectorLabel?: React.CSSProperties;
-  inspectorInput?: React.CSSProperties;
-  inspectorPlaceholder?: React.CSSProperties;
-  inspectorErrorMsg?: React.CSSProperties;
-}
+import type { BusSeatLayoutDesignerCustomStyles } from "./types";
 
 interface BusSeatLayoutDesignerProps {
   config?: BusConfig;
   onChange?: (config: BusConfig) => void;
-  customStyles?: CustomStyles;
+  customStyles?: BusSeatLayoutDesignerCustomStyles;
 }
 
 export const BusSeatLayoutDesigner = ({
@@ -47,7 +14,7 @@ export const BusSeatLayoutDesigner = ({
   onChange,
   customStyles = {},
 }: BusSeatLayoutDesignerProps) => {
-  const [sections, setSections] = useState<Section[]>(config ?? []);
+  const [sections, setSections] = useState<BusSection[]>(config ?? []);
   const [selected, setSelected] = useState<{
     type: "seat" | "column" | "section";
     secIndex: number;
@@ -180,7 +147,7 @@ export const BusSeatLayoutDesigner = ({
     secIndex: number,
     colIndex: number,
     seatIndex: number,
-    field: keyof Seat,
+    field: keyof BusSeat,
     value: string | boolean
   ) => {
     setSections((prev) => {

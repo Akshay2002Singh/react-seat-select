@@ -1,32 +1,32 @@
 import React, { useState } from "react";
 import "./styles.css";
 import type {
-  CustomStyles,
-  screenConfig,
-  Seat,
-  SeatConfig,
-  SeatSection,
+  TheaterSeatSelectCustomStyles,
+  TheaterScreenConfig,
+  TheaterSeat,
+  TheaterSeatConfig,
+  TheaterSeatSection,
 } from "./types";
 import { getScreenSVG } from "./utils";
 
 type Props = {
-  config: SeatConfig;
+  config: TheaterSeatConfig;
   bookedSeats?: string[];
   disabledSeats?: string[];
   reservedSeats?: string[];
-  onSelect?: (seat: Seat) => void;
-  onUnselect?: (seat: Seat) => void;
+  onSelect?: (seat: TheaterSeat) => void;
+  onUnselect?: (seat: TheaterSeat) => void;
   showRowNumbers?: boolean;
   maxSelectedSeats?: number;
   autoSeatExpansion?: boolean;
-  customStyles?: CustomStyles;
+  customStyles?: TheaterSeatSelectCustomStyles;
   showBookedSeatLabel?: boolean;
   showDisabledSeatLabel?: boolean;
   showReservedSeatLabel?: boolean;
   showBlankSeatLabel?: boolean;
   showSelectedSeatLabel?: boolean;
   showDefaultScreen?: boolean;
-  screenConfig?: screenConfig;
+  screenConfig?: TheaterScreenConfig;
   CustomScreenComponent?: React.ComponentType;
   CustomLegendComponent?: React.ComponentType;
   showDefaultLegend?: boolean;
@@ -82,13 +82,13 @@ export const TheaterSeatSelect: React.FC<Props> = ({
 }) => {
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
 
-  const isSeatUnavailable = (seat: Seat) =>
+  const isSeatUnavailable = (seat: TheaterSeat) =>
     bookedSeats?.includes(seat.id) ||
     disabledSeats?.includes(seat.id) ||
     reservedSeats?.includes(seat.id);
 
-  function getSeatsByIds(ids: string[]): Seat[] {
-    const result: Seat[] = [];
+  function getSeatsByIds(ids: string[]): TheaterSeat[] {
+    const result: TheaterSeat[] = [];
 
     const idSet = new Set(ids);
 
@@ -107,9 +107,9 @@ export const TheaterSeatSelect: React.FC<Props> = ({
   }
 
   const handleSeatClick = (
-    clickedSeat: Seat,
+    clickedSeat: TheaterSeat,
     rowLabel: string,
-    section: SeatSection
+    section: TheaterSeatSection
   ) => {
     const rowSeats = section?.seats?.[rowLabel];
     if (!rowSeats) return;
@@ -130,12 +130,12 @@ export const TheaterSeatSelect: React.FC<Props> = ({
         }
         const requiredSeats = maxSelectedSeats;
         const clickedIndex = rowSeats.findIndex(
-          (seat: Seat) => seat.id === clickedSeat.id
+          (seat: TheaterSeat) => seat.id === clickedSeat.id
         );
         if (clickedIndex === -1) return;
 
-        const trySelect = (indexes: number[]): Seat[] => {
-          const result: Seat[] = [];
+        const trySelect = (indexes: number[]): TheaterSeat[] => {
+          const result: TheaterSeat[] = [];
           for (const i of indexes) {
             const seat = rowSeats[i];
             if (seat && !seat.isBlank && !isSeatUnavailable(seat)) {

@@ -1,33 +1,12 @@
 import { useState, useEffect } from "react";
-import type { SeatSection } from "../TheaterSeatSelect/types";
+import type { TheaterSeatSection } from "../TheaterSeatSelect/types";
 import "./styles.css";
-
-interface CustomStyles {
-  wrapper?: React.CSSProperties;
-  sectionBox?: React.CSSProperties;
-  sectionHeader?: React.CSSProperties;
-  controlsBox?: React.CSSProperties;
-  controlButton?: React.CSSProperties;
-  deleteSectionBtn?: React.CSSProperties;
-  seatGrid?: React.CSSProperties;
-  row?: React.CSSProperties;
-  rowLabel?: React.CSSProperties;
-  seatGroup?: React.CSSProperties;
-  seat?: React.CSSProperties;
-  blankSeat?: React.CSSProperties;
-  selectedSeat?: React.CSSProperties;
-  inspectorBox?: React.CSSProperties;
-  inspectorPlaceholder?: React.CSSProperties;
-  inspectorHeader?: React.CSSProperties;
-  inspectorLabel?: React.CSSProperties;
-  inspectorInput?: React.CSSProperties;
-  inspectorErrorMsg?: React.CSSProperties;
-}
+import type { TheaterSeatLayoutDesignerCustomStyles } from "./types";
 
 interface TheaterSeatLayoutDesignerProps {
-  config?: SeatSection[];
-  onChange?: (config: SeatSection[]) => void;
-  customStyles?: CustomStyles;
+  config?: TheaterSeatSection[];
+  onChange?: (config: TheaterSeatSection[]) => void;
+  customStyles?: TheaterSeatLayoutDesignerCustomStyles;
 }
 
 type InspectorTarget =
@@ -54,7 +33,7 @@ export const TheaterSeatLayoutDesigner = ({
   onChange,
   customStyles = {},
 }: TheaterSeatLayoutDesignerProps) => {
-  const [sections, setSections] = useState<SeatSection[]>(
+  const [sections, setSections] = useState<TheaterSeatSection[]>(
     config || [createEmptySection()]
   );
   const [selected, setSelected] = useState<InspectorTarget>(null);
@@ -68,13 +47,13 @@ export const TheaterSeatLayoutDesigner = ({
   }, [config]);
 
   // Helper to update + propagate change
-  const updateSections = (next: SeatSection[]) => {
+  const updateSections = (next: TheaterSeatSection[]) => {
     setSections(next);
     onChange?.(next);
   };
 
   // --- Helpers ---
-  function createEmptySection(title = "Section 1"): SeatSection {
+  function createEmptySection(title = "Section 1"): TheaterSeatSection {
     return {
       title,
       seats: {},

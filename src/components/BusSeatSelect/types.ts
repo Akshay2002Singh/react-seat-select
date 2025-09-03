@@ -1,24 +1,24 @@
-export type SeatType = "sleeper" | "seater";
+export type BusSeatType = "sleeper" | "seater";
 
-export interface Seat {
+export interface BusSeat {
   id: string;
-  type: SeatType;
+  type: BusSeatType;
   isBlank: boolean;
 }
 
-export interface Column {
+export interface BusColumn {
   id: string;
-  seats: Seat[];
+  seats: BusSeat[];
 }
 
-export interface Section {
+export interface BusSection {
   title?: string;
-  columns: Column[];
+  columns: BusColumn[];
 }
 
-export type BusConfig = Section[];
+export type BusConfig = BusSection[];
 
-export type SectionStyle = {
+export type BusSeatSelectSectionStyle = {
   rowGap?: string;
   columnGap?: string;
   sectionStyle?: React.CSSProperties;
@@ -34,4 +34,4 @@ export type SectionStyle = {
   seatPriceStyles?: React.CSSProperties;
 };
 
-export type CustomStyles = SectionStyle[];
+export type BusSeatSelectCustomStyles = BusSeatSelectSectionStyle[];
